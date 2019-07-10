@@ -3,8 +3,8 @@ from framework.domain.TXTReader import TXTReader
 from framework.common.aux_functions import find_files
 import os
 
+
 class FileReaderService:
-    
     def __init__(self, filepath):
         self.__files = find_files(filepath)
         self.__readers = self.__add_readers()
@@ -25,10 +25,5 @@ class FileReaderService:
 
                 if biological_sequences:
                     results[os.path.basename(file)] = biological_sequences
-        
+
         return results
-
-
-
-
-    

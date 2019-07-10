@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class IIdentificationProcess(ABC):
-
     @abstractmethod
     def run_commands(self):
         pass
@@ -10,6 +9,3 @@ class IIdentificationProcess(ABC):
     @abstractmethod
     def is_success(self, process):
         pass
-
-
-        

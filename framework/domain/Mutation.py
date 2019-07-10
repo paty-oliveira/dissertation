@@ -1,3 +1,2 @@
-
 class Mutation:
-    pass 
+    pass
