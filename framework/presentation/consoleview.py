@@ -42,7 +42,7 @@ class ConsoleView(IUserInterface):
         response = input("Detect mutations? [Y|n]: ")
         params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
         if self.__parse_response(response):
-            filepath_detection = input("File direactory: ")
+            filepath_detection = input("File directory: ")
             params[ParameterKeys.FILEPATH_DETECTION] = convert_path(filepath_detection)
 
         response = input("Will you continue executing other pipelines? [y|N]: ")

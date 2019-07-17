@@ -1,12 +1,11 @@
 from framework.domain.pipeline import Pipeline
-from framework.domain.IStep import IStep
 from framework.domain.ImportSequencingFile import ImportSequecingFile
-from framework.domain.IdentificationStep import IdentificationStep
-from framework.domain.DetectionMutationsStep import DetectionMutationStep
-from framework.domain.IIdentificationProcess import IIdentificationProcess
-from framework.domain.PIPITSSequencePreparation import PIPITSSequencePreparation
-from framework.domain.PIPITSitsExtraction import PIPITSitsExtraction
-from framework.domain.PIPITSTaxonomicIdentification import PIPITSTaxonomicIdentification
+from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
+from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
+from framework.domain.PipelineStep import PipelineStep
+from framework.domain.PipitsProcess import PipitsProcess
+
+
 from framework.domain.ReportWriter import ReportWriter
 from framework.domain.IFileReader import IFileReader
 from framework.domain.FASTAReader import FASTAReader

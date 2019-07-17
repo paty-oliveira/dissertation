@@ -1,10 +1,11 @@
-from framework.domain.IStep import IStep
+from framework.domain.PipelineStep import PipelineStep
 import shutil
 import os
 import subprocess
 
 
-class ImportSequecingFile:
+
+class ImportSequecingFile(PipelineStep):
 
     """
         Allows import the sequencing file throught the filepath. 
@@ -16,11 +17,11 @@ class ImportSequecingFile:
 
     def execute(self):
         "Execute the importing of sequencing files to temporary directory."
-        if True:
+        try:
             self.__import_files()
 
-        else:
-            pass
+        except FileNotFoundError:
+            return 'File not found. Please introduce a filepath correct.'
 
     def __import_files(self):
         "Copy files from path introduced by user to data folder in temporary directory"

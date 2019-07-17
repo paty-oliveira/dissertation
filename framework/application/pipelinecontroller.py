@@ -1,5 +1,6 @@
-from framework.domain.pipeline import Pipeline
-
+from framework.common.ParameterKeys import ParameterKeys
+from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
+from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
 
 class PipelineController:
 
@@ -16,8 +17,16 @@ class PipelineController:
         self.__config = configuration
 
     def execute(self, params):
-        "Execute pipeline according the parameters transmitted."
+        "Execute pipelines according the parameters transmitted."
 
-        pipeline = Pipeline(self.__config, params)
+        try:
+            if params[ParameterKeys.IDENTIFICATION_KEY]:
+                result = IdentificationSpeciePipeline(self.__config, params).execute()
+                return result
 
-        pipeline.run()
+            if params[ParameterKeys.MUTATION_KEY]:
+                result = DetectionMutationPipeline(self.__config, params).execute()
+                return result
+        
+
+        

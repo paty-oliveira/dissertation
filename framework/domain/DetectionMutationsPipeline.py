@@ -1,4 +1,4 @@
-from framework.domain.IStep import IStep
+from framework.domain.pipeline import Pipeline
 from framework.domain.ImportSequencingFile import ImportSequecingFile
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.FileReaderService import FileReaderService
@@ -6,7 +6,7 @@ from framework.domain.ReportWriter import ReportWriter
 from framework.domain.Mutation import Mutation
 
 
-class DetectionMutationStep(IStep):
+class DetectionMutationPipeline(Pipeline):
 
     """
         Allows detect the mutations presente in the dataset.
