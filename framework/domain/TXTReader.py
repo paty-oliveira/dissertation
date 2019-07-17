@@ -2,7 +2,6 @@ from framework.domain.IFileReader import IFileReader
 import os
 import re
 
-
 class TXTReader(IFileReader):
 
     EXTENSIONS = [".txt"]
