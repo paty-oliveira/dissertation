@@ -1,7 +1,12 @@
 import os
 
 
-class ReportWriter:
+class WriteResult:
+    
+    """
+        Allows the writing of the results.
+    """
+
     def __init__(self, results_path):
         self.__path = results_path
 

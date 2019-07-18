@@ -1,14 +1,12 @@
-from framework.domain.pipeline import Pipeline
-from framework.domain.ImportSequencingFile import ImportSequecingFile
+from framework.domain.IPipeline import IPipeline
+from framework.domain.ImportFile import ImportFile
 from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
 from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
-from framework.domain.PipelineStep import PipelineStep
+from framework.domain.IStep import IStep
 from framework.domain.PipitsProcess import PipitsProcess
-
-
-from framework.domain.ReportWriter import ReportWriter
-from framework.domain.IFileReader import IFileReader
-from framework.domain.FASTAReader import FASTAReader
-from framework.domain.TXTReader import TXTReader
-from framework.domain.FileReaderService import FileReaderService
+from framework.domain.ReadFile import IReadFile
+from framework.domain.ReadFile import ReadFile
+from framework.domain.ReadFile import ReadFasta
+from framework.domain.ReadFile import ReadTxt
+from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation

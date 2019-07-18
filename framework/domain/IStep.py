@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 
-class PipelineStep(ABC):
+class IStep(ABC):
+
+    """
+        Interface that implements the step behavior.
+    """
 
     @abstractmethod
     def execute(self):

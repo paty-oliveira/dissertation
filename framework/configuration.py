@@ -22,9 +22,7 @@ class Configuration:
         return self.__parser.get("IDENTIFICATIONPROCESS", "fasta_file_prepped")
 
     def get_path_detection_mutation_process(self):
-        return self.__parser.get(
-            "DETECTIONMUTATIONPROCESS", "detection_mutation_folder"
-        )
+        return self.__parser.get("DETECTIONMUTATIONPROCESS", "detection_mutation_folder")
 
     def get_path_data_folder_mutation(self):
         return self.__parser.get("DETECTIONMUTATIONPROCESS", "data_folder_mutation")

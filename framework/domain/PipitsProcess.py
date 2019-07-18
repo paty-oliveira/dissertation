@@ -1,9 +1,9 @@
-from framework.domain.PipelineStep import PipelineStep
+from framework.domain.IStep import IStep
 import subprocess
 import pandas as pd 
 
 
-class PipitsProcess(PipelineStep):
+class PipitsProcess(IStep):
 
     """
         Represent the PIPITS_PREP step from PIPITS.
@@ -67,16 +67,13 @@ class PipitsProcess(PipelineStep):
     def execute(self):
         "Execute all commands of each subprocess called."
 
-        try:
-            self.__generate_read_pairs_list()
-            self.__preprocessing_sequence()
-            self.__extract_its_regions()
-            self.__analyze_taxonomy()
-            self.__get_specie_identification()
-
-        else:
-            pass
-
+        self.__generate_read_pairs_list()
+        self.__preprocessing_sequence()
+        self.__extract_its_regions()
+        self.__analyze_taxonomy()
+        result = self.__get_specie_identification()
+        
+        return result
 
     def __generate_read_pairs_list(self):
         "Create read pair list file throught the subprocess of PIPITS."

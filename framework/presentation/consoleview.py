@@ -1,7 +1,7 @@
 from framework.common.ParameterKeys import ParameterKeys
-from framework.application.pipelinecontroller import PipelineController
+from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.IUserInterface import IUserInterface
-from framework.common.aux_functions import convert_path
+from framework.common.Auxiliar import convert_path
 
 
 class ConsoleView(IUserInterface):

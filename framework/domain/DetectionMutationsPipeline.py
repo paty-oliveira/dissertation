@@ -1,15 +1,15 @@
-from framework.domain.pipeline import Pipeline
-from framework.domain.ImportSequencingFile import ImportSequecingFile
+from framework.domain.IPipeline import IPipeline
+from framework.domain.ImportFile import ImportFile
 from framework.common.ParameterKeys import ParameterKeys
-from framework.domain.FileReaderService import FileReaderService
-from framework.domain.ReportWriter import ReportWriter
+from framework.domain.ReadFile import ReadFile
+from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
 
 
-class DetectionMutationPipeline(Pipeline):
+class DetectionMutationPipeline(IPipeline):
 
     """
-        Allows detect the mutations presente in the dataset.
+        Pipeline for the detection of the mutations presente in the dataset.
     """
 
     def __init__(self, configuration, params):
@@ -21,9 +21,9 @@ class DetectionMutationPipeline(Pipeline):
     def execute(self):
         if self.__execution:
             filepath = self.__params[ParameterKeys.FILEPATH_DETECTION]
-            importing_file = ImportSequecingFile(filepath, self.__data_folder).execute()
+            importing_file = ImportFile(filepath, self.__data_folder).execute()
 
-            dna_sequence = FileReaderService(
+            dna_sequence = ReadFile(
                 self.__data_folder
             ).read()  # é um dicionário com key -> ficheiro, value -> (id_sequence, sequence)
 
@@ -32,7 +32,7 @@ class DetectionMutationPipeline(Pipeline):
 
             # if result:
             #     antifungal_resistant = self.__get_antifungal_results()
-            #     antifungal_results = ReportWriter(filepath).write_mutations(antifungal_resistant)
+            #     antifungal_results = WriteResult(filepath).write_mutations(antifungal_resistant)
             #     return antifungal_results
 
     # def __get_mutations_results(self):
