@@ -1,7 +1,7 @@
 from framework.domain.IPipeline import IPipeline
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.ImportFile import ImportFile
-from framework.domain.PipitsProcess import PipitsProcess
+from framework.domain.Taxonomy import Taxonomy
 from framework.domain.WriteResult import WriteResult
 
 
@@ -36,6 +36,6 @@ class IdentificationSpeciePipeline(IPipeline):
         steps = []
 
         steps.append(ImportFile(self.__filepath, self.__data_folder))
-        steps.append(PipitsProcess(self.__configuration))
+        steps.append(Taxonomy(self.__configuration))
 
         return steps

@@ -3,7 +3,9 @@ from framework.domain.ImportFile import ImportFile
 from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
 from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
 from framework.domain.IStep import IStep
-from framework.domain.PipitsProcess import PipitsProcess
+from framework.domain.Taxonomy import Taxonomy
+from framework.domain.Taxonomy import IIdentification
+from framework.domain.Taxonomy import Pipits
 from framework.domain.ReadFile import IReadFile
 from framework.domain.ReadFile import ReadFile
 from framework.domain.ReadFile import ReadFasta
