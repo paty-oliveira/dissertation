@@ -14,26 +14,27 @@ class DetectionMutationPipeline(IPipeline):
 
     def __init__(self, configuration, params):
         self.__configuration = configuration
-        self.__params = params
-        self.__execution = params[ParameterKeys.MUTATION_KEY]
+        self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
         self.__data_folder = self.__configuration.get_path_data_folder_mutation()
+        self.__list_steps = self.__add_steps()
 
     def execute(self):
-        if self.__execution:
-            filepath = self.__params[ParameterKeys.FILEPATH_DETECTION]
-            importing_file = ImportFile(filepath, self.__data_folder).execute()
+        "Executes all the steps of the pipeline."
 
-            dna_sequence = ReadFile(
-                self.__data_folder
-            ).read()  # é um dicionário com key -> ficheiro, value -> (id_sequence, sequence)
+        for step in self.__list_steps:
+            result = step.execute()
 
-            # mutations = Mutation().identify_alterations()
-            # result = Mutation().get_antifungual_resistance(mutations)
+            if result:
+                mutations_results = WriteResult(result)
 
-            # if result:
-            #     antifungal_resistant = self.__get_antifungal_results()
-            #     antifungal_results = WriteResult(filepath).write_mutations(antifungal_resistant)
-            #     return antifungal_results
+                return mutations_results
 
-    # def __get_mutations_results(self):
-    #     pass
+    def __add_steps(self):
+        "Adds the pipeline steps."
+
+        # Falta adicionar os restantes steps da identificação das mutações e associação à resistencia aos antifungicos
+        list_steps = []
+        list_steps.append(ImportFile(self.__filepath, self.__data_folder))
+        list_steps.append(ReadFile(self.__data_folder))
+
+        return list_steps

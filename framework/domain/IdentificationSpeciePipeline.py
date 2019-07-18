@@ -18,7 +18,7 @@ class IdentificationSpeciePipeline(IPipeline):
         self.__pipeline_steps = self.__add_pipeline_steps()
 
     def execute(self):
-        "Executes all steps of the pipeline"
+        "Executes all the steps of the pipeline"
 
         for step in self.__pipeline_steps:
             result = step.execute()

@@ -1,4 +1,5 @@
 from framework.common.Auxiliar import find_files
+from framework.domain.IStep import IStep
 from abc import ABC, abstractmethod
 import os
 import re
@@ -20,7 +21,7 @@ class IReadFile(ABC):
         pass
 
 
-class ReadFile:
+class ReadFile(IStep):
 
     """
         Allows the read  of the files with *.txt and *.fasta extensions.
@@ -30,7 +31,7 @@ class ReadFile:
         self.__files = find_files(filepath)
         self.__readers = self.__add_readers()
 
-    def read(self):
+    def execute(self):
         "Read the files according their extension."
 
         results = {}
