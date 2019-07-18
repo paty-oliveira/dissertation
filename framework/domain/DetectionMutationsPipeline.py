@@ -25,7 +25,7 @@ class DetectionMutationPipeline(IPipeline):
             result = step.execute()
 
             if result:
-                mutations_results = WriteResult(result)
+                mutations_results = WriteResult(self.__filepath).write_mutations(result)
 
                 return mutations_results
 
