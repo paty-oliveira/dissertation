@@ -1,3 +1,3 @@
-from .consoleview import ConsoleView
-from .guiview import GuiView
-from .IUserInterface import IUserInterface
+from framework.presentation.ConsoleView import ConsoleView
+from framework.presentation.GuiView import GuiView
+from framework.presentation.IUserInterface import IUserInterface

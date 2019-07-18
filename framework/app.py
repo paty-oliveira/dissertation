@@ -2,8 +2,8 @@ import os
 import argparse
 import shutil
 from framework.application.BuildDataFlow import BuildDataFlow
-from framework.presentation.consoleview import ConsoleView
-from framework.presentation.guiview import GuiView
+from framework.presentation.ConsoleView import ConsoleView
+from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
 
 
