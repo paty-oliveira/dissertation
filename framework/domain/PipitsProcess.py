@@ -1,6 +1,6 @@
 from framework.domain.IStep import IStep
 import subprocess
-import pandas as pd 
+import pandas as pd
 
 
 class PipitsProcess(IStep):
@@ -29,7 +29,7 @@ class PipitsProcess(IStep):
         "-l",
         "readpairslist.txt",
     ]
-    
+
     cmd_args_its_extraction = [
         "pipits_funits",
         "-i",
@@ -41,7 +41,7 @@ class PipitsProcess(IStep):
         "-v",
         "-r",
     ]
-    
+
     cmd_args_taxonomic_id = [
         "pipits_process",
         "-i",
@@ -54,15 +54,15 @@ class PipitsProcess(IStep):
 
     def __init__(self, configuration):
         self.__configuration = configuration
-        self.__tmp_identification = self.__configuration.get_path_identification_process()
+        self.__tmp_identification = (
+            self.__configuration.get_path_identification_process()
+        )
         self.__phylotype_file = self.__configuration.get_phylotype_table_results()
-
 
     def is_success(self, process):
         "Verify if the subprocess called happened."
 
         return process == 0
-
 
     def execute(self):
         "Execute all commands of each subprocess called."
@@ -72,7 +72,7 @@ class PipitsProcess(IStep):
         self.__extract_its_regions()
         self.__analyze_taxonomy()
         result = self.__get_specie_identification()
-        
+
         return result
 
     def __generate_read_pairs_list(self):
@@ -85,7 +85,6 @@ class PipitsProcess(IStep):
         if self.is_success(process_to_execute):
             return True
 
-
     def __preprocessing_sequence(self):
         "Preprocess the sequencing files throught the subprocess of PIPITS."
 
@@ -96,7 +95,6 @@ class PipitsProcess(IStep):
         if self.is_success(process_to_execute):
             return True
 
-    
     def __extract_its_regions(self):
         "Extract all ITS regions throught the subprocess of PIPITS."
 
@@ -106,7 +104,6 @@ class PipitsProcess(IStep):
 
         if self.is_success(process_to_execute):
             return True
-
 
     def __analyze_taxonomy(self):
         """Return the identification of the fungal specie present in the sequencing files,
@@ -118,7 +115,6 @@ class PipitsProcess(IStep):
 
         if self.is_success(process_to_execute):
             return True
-
 
     def __get_specie_identification(self):
         "Obtains the specie identification from PIPITS process"

@@ -2,7 +2,7 @@ import os
 
 
 class WriteResult:
-    
+
     """
         Allows the writing of the results.
     """

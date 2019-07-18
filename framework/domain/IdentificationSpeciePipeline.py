@@ -24,10 +24,11 @@ class IdentificationSpeciePipeline(IPipeline):
             result = step.execute()
 
             if result:
-                identification_results = WriteResult(self.__filepath).write_identification(result)
+                identification_results = WriteResult(
+                    self.__filepath
+                ).write_identification(result)
 
                 return identification_results
-
 
     def __add_pipeline_steps(self):
         "Adds the pipeline steps"
@@ -36,6 +37,5 @@ class IdentificationSpeciePipeline(IPipeline):
 
         steps.append(ImportFile(self.__filepath, self.__data_folder))
         steps.append(PipitsProcess(self.__configuration))
-        
-        return steps
 
+        return steps

@@ -2,6 +2,7 @@ from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
 from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
 
+
 class BuildDataFlow:
 
     """
@@ -18,16 +19,13 @@ class BuildDataFlow:
 
     def execute(self, params):
         "Execute the pipelines according the parameters transmitted."
-        
+
         if params[ParameterKeys.IDENTIFICATION_KEY]:
             result = IdentificationSpeciePipeline(self.__config, params).execute()
-            
+
             return result
 
         if params[ParameterKeys.MUTATION_KEY]:
             result = DetectionMutationPipeline(self.__config, params).execute()
-            
-            return result
-        
 
-        
+            return result

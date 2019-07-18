@@ -4,7 +4,6 @@ import os
 import subprocess
 
 
-
 class ImportFile(IStep):
 
     """
@@ -21,7 +20,7 @@ class ImportFile(IStep):
             self.__import_files()
 
         except FileNotFoundError:
-            return 'File not found. Please introduce a filepath correct.'
+            return "File not found. Please introduce a filepath correct."
 
     def __import_files(self):
         "Copy files from path introduced by user to specific data folder."

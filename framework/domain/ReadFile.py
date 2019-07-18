@@ -15,10 +15,10 @@ class IReadFile(ABC):
     def read(self, file):
         pass
 
-
     @abstractmethod
     def __is_extension(self, file):
         pass
+
 
 class ReadFile:
 
@@ -29,7 +29,6 @@ class ReadFile:
     def __init__(self, filepath):
         self.__files = find_files(filepath)
         self.__readers = self.__add_readers()
-
 
     def read(self):
         "Read the files according their extension."
@@ -45,7 +44,6 @@ class ReadFile:
 
         return results
 
-
     def __add_readers(self):
         "Adds the readers."
 
@@ -57,7 +55,7 @@ class ReadFile:
 
 
 class ReadFasta(IReadFile):
-    
+
     EXTENSIONS = [".fa", ".fasta"]
 
     def read(self, file):
@@ -109,9 +107,8 @@ class ReadTxt(IReadFile):
 
         return False
 
-
     def __is_extension(self, file):
         "Verify the file extension."
-        
+
         file_name, file_extension = os.path.splitext(file)
         return file_extension in ReadTxt.EXTENSIONS
