@@ -29,6 +29,9 @@ class Configuration:
     def get_path_data_folder_mutation(self):
         return self.__parser.get("DETECTIONMUTATIONPROCESS", "data_folder_mutation")
 
+    def get_antifungal_genes_file(self):
+        return self.__parser.get("DETECTIONMUTATIONPROCESS", "antifungal_genes")
+
     def get_initial_message(self):
         return self.__parser.get("MESSAGES", "inicial_message")
 
