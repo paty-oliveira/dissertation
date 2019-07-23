@@ -1,6 +1,7 @@
 from framework.common.Auxiliar import find_files
 from framework.domain.IStep import IStep
 from abc import ABC, abstractmethod
+import pandas as pd
 import os
 import re
 from Bio import SeqIO
@@ -39,11 +40,12 @@ class ReadFile(IStep):
         for file in self.__files:
             for reader in self.__readers:
                 biological_sequences = reader.read(file)
-
+                
                 if biological_sequences:
                     results[os.path.basename(file)] = biological_sequences
 
         return results
+
 
     def __add_readers(self):
         "Adds the readers."
@@ -51,6 +53,7 @@ class ReadFile(IStep):
         list_readers = []
         list_readers.append(ReadFasta())
         list_readers.append(ReadTxt())
+        list_readers.append(ReadCsv())
 
         return list_readers
 
@@ -77,6 +80,7 @@ class ReadFasta(IReadFile):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
+
         return file_extension in ReadFasta.EXTENSIONS
 
 
@@ -112,4 +116,27 @@ class ReadTxt(IReadFile):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
+       
         return file_extension in ReadTxt.EXTENSIONS
+
+
+class ReadCsv(IReadFile):
+
+    EXTENSIONS = [".csv"]
+
+    def read(self, file):
+        "Read files with *.csv extension"
+
+        if self.__is_extension(file):
+            dataframe = pd.read_csv(file).to_dict()
+            return dataframe
+        
+        return False
+
+
+    def __is_extension(self, file):
+        "Verify the file extension." 
+
+        file_name, file_extension = os.path.splitext(file)
+       
+        return file_extension in ReadCsv.EXTENSIONS
