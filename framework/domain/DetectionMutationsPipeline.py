@@ -15,6 +15,8 @@ class DetectionMutationPipeline(IPipeline):
     def __init__(self, configuration, params):
         self.__configuration = configuration
         self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
+        self.__specie = params[ParameterKeys.SPECIE_NAME]
+        self.__gene = params[ParameterKeys.GENE_NAME]
         self.__data_folder = self.__configuration.get_path_data_folder_mutation()
         self.__list_steps = self.__add_steps()
 

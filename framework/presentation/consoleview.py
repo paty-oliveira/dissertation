@@ -45,6 +45,12 @@ class ConsoleView(IUserInterface):
             filepath_detection = input("File directory: ")
             params[ParameterKeys.FILEPATH_DETECTION] = convert_path(filepath_detection)
 
+            specie_name = input("Specie name: ").capitalize()
+            params[ParameterKeys.SPECIE_NAME] = specie_name
+
+            gene_name = input("Gene: ").upper()
+            params[ParameterKeys.GENE_NAME] = gene_name
+
         response = input("Will you continue executing other pipelines? [y|N]: ")
         should_exit = self.__parse_response(response, default="n")
 
