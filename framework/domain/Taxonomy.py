@@ -92,11 +92,6 @@ class Pipits(IIdentification):
         self.__phylotype_file = configuration.get_phylotype_table_results()
         self.__folder_results = filepath
 
-    def is_success(self, process):
-        "Verify if the subprocess called happened."
-
-        return process == 0
-
     def identify(self):
         "Execute all commands for identification of specie."
 
@@ -108,21 +103,17 @@ class Pipits(IIdentification):
 
         return result
 
-    def __generate_read_pairs_list(self):
-        "Create read pair list file throught the subprocess of PIPITS."
+    def is_success(self, process):
+        "Verify if the subprocess called happened."
+
+        return process == 0
+
+    def __analyze_taxonomy(self):
+        """Return the identification of the fungal specie present in the sequencing files,
+         throught the subprocess of PIPITS."""
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
-        )
-
-        if self.is_success(process_to_execute):
-            return True
-
-    def __preprocessing_sequence(self):
-        "Preprocess the sequencing files throught the subprocess of PIPITS."
-
-        process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
+            Pipits.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
         )
 
         if self.is_success(process_to_execute):
@@ -138,12 +129,11 @@ class Pipits(IIdentification):
         if self.is_success(process_to_execute):
             return True
 
-    def __analyze_taxonomy(self):
-        """Return the identification of the fungal specie present in the sequencing files,
-         throught the subprocess of PIPITS."""
+    def __generate_read_pairs_list(self):
+        "Create read pair list file throught the subprocess of PIPITS."
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
+            Pipits.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
         )
 
         if self.is_success(process_to_execute):
@@ -156,3 +146,12 @@ class Pipits(IIdentification):
 
         return phylotype_results
 
+    def __preprocessing_sequence(self):
+        "Preprocess the sequencing files throught the subprocess of PIPITS."
+
+        process_to_execute = subprocess.call(
+            Pipits.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
+        )
+
+        if self.is_success(process_to_execute):
+            return True
