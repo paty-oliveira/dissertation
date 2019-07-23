@@ -19,7 +19,7 @@ class IIdentification(ABC):
 class Taxonomy(IStep):
 
     """
-        Allows the identification of species present in the dataset.
+        It allows the identification of species present in the dataset.
     """
 
     def __init__(self, configuration, filepath):

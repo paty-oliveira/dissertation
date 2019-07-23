@@ -10,5 +10,7 @@ from framework.domain.ReadFile import IReadFile
 from framework.domain.ReadFile import ReadFile
 from framework.domain.ReadFile import ReadFasta
 from framework.domain.ReadFile import ReadTxt
+from framework.domain.ReadFile import ReadCsv
 from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
+from framework.domain.InformationExtractor import InformationExtractor
