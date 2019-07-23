@@ -1,6 +1,7 @@
 from framework.domain.IStep import IStep
 from abc import ABC, abstractmethod
 import subprocess
+import shutil
 import pandas as pd
 
 
@@ -21,8 +22,9 @@ class Taxonomy(IStep):
         Allows the identification of species present in the dataset.
     """
 
-    def __init__(self, configuration):
+    def __init__(self, configuration, filepath):
         self.__configuration = configuration
+        self.__filepath = filepath
         self.__list_identifiers = self.__add_identifiers()
 
     def execute(self):
@@ -34,7 +36,7 @@ class Taxonomy(IStep):
 
     def __add_identifiers(self):
         list_identifiers = []
-        list_identifiers.append(Pipits(self.__configuration))
+        list_identifiers.append(Pipits(self.__configuration, self.__filepath))
 
         return list_identifiers
 
@@ -85,12 +87,10 @@ class Pipits(IIdentification):
         "-r",
     ]
 
-    def __init__(self, configuration):
-        self.__configuration = configuration
-        self.__tmp_identification = (
-            self.__configuration.get_path_identification_process()
-        )
-        self.__phylotype_file = self.__configuration.get_phylotype_table_results()
+    def __init__(self, configuration, filepath):
+        self.__tmp_identification = configuration.get_path_identification_process()
+        self.__phylotype_file = configuration.get_phylotype_table_results()
+        self.__folder_results = filepath
 
     def is_success(self, process):
         "Verify if the subprocess called happened."
@@ -152,10 +152,7 @@ class Pipits(IIdentification):
     def __get_specie_identification(self):
         "Obtains the specie identification from PIPITS process"
 
-        phylotype_file = pd.read_csv(
-            self.__phylotype_file, sep="\t", engine="python", encoding="utf-8"
-        )
-        pd.set_option("display.max_colwidth", 2000)
-        fungi_taxonomy = phylotype_file["taxonomy"]
+        phylotype_results = shutil.copy(self.__phylotype_file, self.__folder_results)
 
-        return fungi_taxonomy
+        return phylotype_results
+

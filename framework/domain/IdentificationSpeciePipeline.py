@@ -2,7 +2,6 @@ from framework.domain.IPipeline import IPipeline
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.ImportFile import ImportFile
 from framework.domain.Taxonomy import Taxonomy
-from framework.domain.WriteResult import WriteResult
 
 
 class IdentificationSpeciePipeline(IPipeline):
@@ -24,11 +23,7 @@ class IdentificationSpeciePipeline(IPipeline):
             result = step.execute()
 
             if result:
-                identification_results = WriteResult(
-                    self.__filepath
-                ).write_identification(result)
-
-                return identification_results
+                return result
 
     def __add_pipeline_steps(self):
         "Adds the pipeline steps"
@@ -36,6 +31,6 @@ class IdentificationSpeciePipeline(IPipeline):
         steps = []
 
         steps.append(ImportFile(self.__filepath, self.__data_folder))
-        steps.append(Taxonomy(self.__configuration))
+        steps.append(Taxonomy(self.__configuration, self.__filepath))
 
         return steps
