@@ -37,5 +37,11 @@ class ExtractInformation(IStep):
 
         return dna_sequence, dna_position
 
+    def get_preffix(self, sequence):
+        return sequence[0:11]
+
+    def get__suffix(self, sequence):
+        return sequence[-11:]
+
 
     
