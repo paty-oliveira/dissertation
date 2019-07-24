@@ -2,6 +2,7 @@ from framework.domain.IPipeline import IPipeline
 from framework.domain.ImportFile import ImportFile
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.ReadFile import ReadFile
+from framework.domain.ExtractInformation import ExtractInformation
 from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
 
@@ -38,5 +39,6 @@ class DetectionMutationPipeline(IPipeline):
         list_steps = []
         list_steps.append(ImportFile(self.__filepath, self.__data_folder))
         list_steps.append(ReadFile(self.__data_folder))
+        list_steps.append(ExtractInformation(self.__configuration, self.__specie, self.__gene))
 
         return list_steps

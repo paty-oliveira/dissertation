@@ -53,7 +53,6 @@ class ReadFile(IStep):
         list_readers = []
         list_readers.append(ReadFasta())
         list_readers.append(ReadTxt())
-        list_readers.append(ReadCsv())
 
         return list_readers
 
@@ -128,7 +127,7 @@ class ReadCsv(IReadFile):
         "Read files with *.csv extension"
 
         if self.__is_extension(file):
-            dataframe = pd.read_csv(file).to_dict()
+            dataframe = pd.read_csv(file)
             return dataframe
         
         return False
