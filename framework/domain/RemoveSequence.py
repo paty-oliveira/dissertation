@@ -4,6 +4,11 @@ import re
 
 class RemoveSequence(IStep):
 
+    """
+        It allows the removal of subsequences from reference sequence.
+    """
+
+
     def remove_primers(self, sequence, list_primers):
         return re.sub(r"|".join(map(re.escape, list_primers)), "", sequence)
 

@@ -15,3 +15,4 @@ from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
 from framework.domain.ExtractInformation import ExtractInformation
 from framework.domain.RemoveSequence import RemoveSequence
+from framework.domain.Translation import Translation
