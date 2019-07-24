@@ -40,12 +40,11 @@ class ReadFile(IStep):
         for file in self.__files:
             for reader in self.__readers:
                 biological_sequences = reader.read(file)
-                
+
                 if biological_sequences:
                     results[os.path.basename(file)] = biological_sequences
 
         return results
-
 
     def __add_readers(self):
         "Adds the readers."
@@ -115,7 +114,7 @@ class ReadTxt(IReadFile):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
-       
+
         return file_extension in ReadTxt.EXTENSIONS
 
 
@@ -129,13 +128,12 @@ class ReadCsv(IReadFile):
         if self.__is_extension(file):
             dataframe = pd.read_csv(file)
             return dataframe
-        
+
         return False
 
-
     def __is_extension(self, file):
-        "Verify the file extension." 
+        "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
-       
+
         return file_extension in ReadCsv.EXTENSIONS

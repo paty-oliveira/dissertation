@@ -2,16 +2,15 @@ from framework.domain.IStep import IStep
 from framework.domain.ExtractInformation import get_preffix, get_suffix
 import re
 
+
 class RemoveSequence(IStep):
 
     """
         It allows the removal of subsequences from reference sequence.
     """
 
-
     def remove_primers(self, sequence, list_primers):
         return re.sub(r"|".join(map(re.escape, list_primers)), "", sequence)
-
 
     def trim_sequence(self, reference_sequence, subject_sequence):
         start_sequence = get_preffix(subject_sequence)
@@ -25,4 +24,3 @@ class RemoveSequence(IStep):
             return trimmed_sequence
 
         return False
-

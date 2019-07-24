@@ -2,12 +2,13 @@ from framework.domain.IStep import IStep
 from framework.domain.ReadFile import ReadCsv
 import pandas as pd
 
+
 class ExtractInformation(IStep):
-    
+
     """
         It allows the extraction of specific information from files.
     """
-    
+
     def __init__(self, configuration, specie, gene):
         self.__filepath = configuration.get_antifungal_genes_file()
         self.__file_reader = ReadCsv(self.__filepath)
@@ -42,6 +43,3 @@ class ExtractInformation(IStep):
 
     def get__suffix(self, sequence):
         return sequence[-11:]
-
-
-    

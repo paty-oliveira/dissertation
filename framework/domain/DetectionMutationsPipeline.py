@@ -24,6 +24,10 @@ class DetectionMutationPipeline(IPipeline):
     def execute(self):
         "Executes all the steps of the pipeline."
 
+        # Necessário reformular toda esta parte para construir a pipeline com
+        # as classes criadas
+        # ImportFile -> ReadFile -> ExtractInformation -> RemoveSequences -> Translation -> Mutations -> etc
+
         for step in self.__list_steps:
             result = step.execute()
 
@@ -39,6 +43,8 @@ class DetectionMutationPipeline(IPipeline):
         list_steps = []
         list_steps.append(ImportFile(self.__filepath, self.__data_folder))
         list_steps.append(ReadFile(self.__data_folder))
-        list_steps.append(ExtractInformation(self.__configuration, self.__specie, self.__gene))
+        list_steps.append(
+            ExtractInformation(self.__configuration, self.__specie, self.__gene)
+        )
 
         return list_steps

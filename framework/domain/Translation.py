@@ -14,4 +14,3 @@ class Translation(IStep):
         aminoacid_sequence = coding_dna.translate()
 
         return aminoacid_sequence
-
