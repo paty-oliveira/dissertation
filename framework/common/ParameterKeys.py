@@ -5,3 +5,4 @@ class ParameterKeys:
     MUTATION_KEY = "detection_mutation"
     SPECIE_NAME = "specie_name"
     GENE_NAME = "gene_name"
+    PRIMERS = "primers"

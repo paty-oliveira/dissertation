@@ -9,7 +9,15 @@ class Translation(IStep):
         It allows the translation of the dna sequence into amino acid sequence.
     """
 
-    def translate(self, dna_sequence):
+    def __init__(self, dna_sequence):
+        self.__dna_sequence = dna_sequence
+
+    def execute(self):
+        aminoacid_sequence = self.__translate(self.__dna_sequence)
+
+        return aminoacid_sequence
+
+    def __translate(self, dna_sequence):
         coding_dna = Seq(dna_sequence, IUPAC.unambiguous_dna)
         aminoacid_sequence = coding_dna.translate()
 

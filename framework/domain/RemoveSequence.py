@@ -1,5 +1,5 @@
 from framework.domain.IStep import IStep
-from framework.domain.ExtractInformation import get_preffix, get_suffix
+from framework.domain.ExtractInformation import ExtractInformation 
 import re
 
 
@@ -9,12 +9,21 @@ class RemoveSequence(IStep):
         It allows the removal of subsequences from reference sequence.
     """
 
-    def remove_primers(self, sequence, list_primers):
-        return re.sub(r"|".join(map(re.escape, list_primers)), "", sequence)
+    def __init__(self, sbjct_sequence, ref_sequence, primers):
+        self.__sbjct_sequence = sbjct_sequence
+        self.__ref_sequence = ref_sequence
+        self.__list_primer = primers
 
-    def trim_sequence(self, reference_sequence, subject_sequence):
-        start_sequence = get_preffix(subject_sequence)
-        end_sequence = get_suffix(subject_sequence)
+    def execute(self):
+        for filename, sequence in self.__sbjct_sequence.items():
+            sbjct_sequence_trimmed = self.__remove_primers(sequence, self.__list_primer)
+            ref_sequence_trimmed = self.__trim_sequence(self.__ref_sequence, sequence)
+
+        return sbjct_sequence_trimmed, ref_sequence_trimmed
+
+    def __trim_sequence(self, reference_sequence, subject_sequence):
+        start_sequence = ExtractInformation().get_preffix(subject_sequence)
+        end_sequence = ExtractInformation().get__suffix(subject_sequence)
 
         if start_sequence and end_sequence in reference_sequence:
             initial_pos = reference_sequence.index(start_sequence)
@@ -24,3 +33,6 @@ class RemoveSequence(IStep):
             return trimmed_sequence
 
         return False
+
+    def __remove_primers(self, sequence, list_primers):
+        return re.sub(r"|".join(map(re.escape, list_primers)), "", sequence)

@@ -21,10 +21,17 @@ class WriteResult:
     #         output_file.write(head)
     #         output_file.write(results)
 
-    def write_mutations(self, results):
+    def write(self, results):
         "Writes a report with the results of the all mutations detected in a *.txt file."
-        pass
 
-        # with open(os.path.join(self.__path, 'mutations.txt'), 'w') as output_file:
-        #     for file, sequence_info in results.items():
-        #         output_file.write(str(file))
+        with open(
+            os.path.join(self.__path, "mutations_result.csv"), "w"
+        ) as output_file:
+            header = "Reference, Position, Substitutions"
+            to_write = "\n".join(
+                "{}, {}, {}".format(str(x[0]), str(x[1]), str(x[2])) for x in results
+            )
+            output_file.write(header)
+            output_file.write(to_write)
+
+        return output_file

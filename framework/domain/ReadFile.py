@@ -17,10 +17,6 @@ class IReadFile(ABC):
     def read(self, file):
         pass
 
-    @abstractmethod
-    def __is_extension(self, file):
-        pass
-
 
 class ReadFile(IStep):
 

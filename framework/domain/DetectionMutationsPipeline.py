@@ -3,8 +3,11 @@ from framework.domain.ImportFile import ImportFile
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.ReadFile import ReadFile
 from framework.domain.ExtractInformation import ExtractInformation
+from framework.domain.RemoveSequence import RemoveSequence
+from framework.domain.Translation import Translation
 from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
+from framework.common.Auxiliar import put_element_into_list
 
 
 class DetectionMutationPipeline(IPipeline):
@@ -18,6 +21,7 @@ class DetectionMutationPipeline(IPipeline):
         self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
         self.__specie = params[ParameterKeys.SPECIE_NAME]
         self.__gene = params[ParameterKeys.GENE_NAME]
+        self.__primer = put_element_into_list(params[ParameterKeys.PRIMERS])
         self.__data_folder = self.__configuration.get_path_data_folder_mutation()
         self.__list_steps = self.__add_steps()
 
@@ -29,12 +33,32 @@ class DetectionMutationPipeline(IPipeline):
         # ImportFile -> ReadFile -> ExtractInformation -> RemoveSequences -> Translation -> Mutations -> etc
 
         for step in self.__list_steps:
-            result = step.execute()
+            sbjt_sequence = step.execute()
 
-            if result:
-                mutations_results = WriteResult(self.__filepath).write_mutations(result)
+            if sbjt_sequence:
+                ref_sequence, position = ExtractInformation(
+                    self.__configuration, self.__specie, self.__gene
+                ).execute()
 
-                return mutations_results
+                sbjct_trimmed, ref_trimmed = RemoveSequence(
+                    sbjt_sequence, ref_sequence, self.__primer
+                ).execute()
+
+                sbjct_aminoacid_seq = Translation(sbjct_trimmed).execute()
+                ref_aminoacif_seq = Translation(ref_trimmed).execute()
+
+                mutations = Mutation(ref_aminoacif_seq, sbjct_aminoacid_seq).execute()
+
+                if mutations:
+                    result = WriteResult(self.__filepath).write(mutations)
+
+                    return result
+
+                return "No mutations identified."
+
+            return False
+
+        return False
 
     def __add_steps(self):
         "Adds the pipeline steps."
@@ -43,8 +67,5 @@ class DetectionMutationPipeline(IPipeline):
         list_steps = []
         list_steps.append(ImportFile(self.__filepath, self.__data_folder))
         list_steps.append(ReadFile(self.__data_folder))
-        list_steps.append(
-            ExtractInformation(self.__configuration, self.__specie, self.__gene)
-        )
 
         return list_steps

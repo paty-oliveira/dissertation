@@ -51,6 +51,9 @@ class ConsoleView(IUserInterface):
             gene_name = input("Gene: ").upper()
             params[ParameterKeys.GENE_NAME] = gene_name
 
+            primers = input("Primers: ").upper()
+            params[ParameterKeys.PRIMERS] = primers
+
         response = input("Will you continue executing other pipelines? [y|N]: ")
         should_exit = self.__parse_response(response, default="n")
 
