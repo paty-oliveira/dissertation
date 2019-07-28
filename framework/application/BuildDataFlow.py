@@ -21,11 +21,11 @@ class BuildDataFlow:
         "Execute the pipelines according the parameters transmitted."
 
         if params[ParameterKeys.IDENTIFICATION_KEY]:
-            result = IdentificationSpeciePipeline(self.__config, params).execute()
+            result = IdentificationSpeciePipeline(self.__config, params).run()
 
             return result
 
         if params[ParameterKeys.MUTATION_KEY]:
-            result = DetectionMutationPipeline(self.__config, params).execute()
+            result = DetectionMutationPipeline(self.__config, params).run()
 
             return result

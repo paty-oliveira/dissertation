@@ -16,7 +16,7 @@ class IdentificationSpeciePipeline(IPipeline):
         self.__data_folder = self.__configuration.get_path_data_folder_identification()
         self.__pipeline_steps = self.__add_pipeline_steps()
 
-    def execute(self):
+    def run(self):
         "Executes all the steps of the pipeline"
 
         for step in self.__pipeline_steps:

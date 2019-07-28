@@ -25,7 +25,7 @@ class DetectionMutationPipeline(IPipeline):
         self.__data_folder = self.__configuration.get_path_data_folder_mutation()
         self.__list_steps = self.__add_steps()
 
-    def execute(self):
+    def run(self):
         "Executes all the steps of the pipeline."
 
         # Necessário reformular toda esta parte para construir a pipeline com

@@ -8,5 +8,5 @@ class IPipeline(ABC):
     """
 
     @abstractmethod
-    def execute(self):
+    def run(self):
         pass
