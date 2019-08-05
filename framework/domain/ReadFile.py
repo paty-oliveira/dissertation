@@ -25,7 +25,7 @@ class ReadFile(IStep):
     """
 
     def __init__(self, filepath):
-        self.__file= filepath
+        self.__file = filepath
         self.__readers = self.__add_readers()
 
     def execute(self):

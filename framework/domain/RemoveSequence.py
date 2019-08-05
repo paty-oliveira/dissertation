@@ -1,9 +1,11 @@
 from framework.domain.IStep import IStep
-from framework.domain.ExtractInformation import ExtractInformation 
+from framework.domain.ExtractInformation import ExtractInformation
 import re
+
 
 def get_preffix(sequence):
     return sequence[0:11]
+
 
 def get__suffix(sequence):
     return sequence[-11:]

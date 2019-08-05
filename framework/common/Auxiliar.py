@@ -12,4 +12,3 @@ def convert_path(path):
         .replace("\n", "")
     )
     return str(result)
-

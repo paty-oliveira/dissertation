@@ -10,6 +10,7 @@ from framework.domain.Mutation import Mutation
 from framework.common.Auxiliar import put_element_into_list
 import os
 
+
 def put_element_into_list(string):
     return [element for element in string.split(" ")]
 
@@ -44,18 +45,14 @@ class DetectionMutationPipeline(IPipeline):
 
     def __extract(self):
         reference_sequence, position = ExtractInformation(
-            self.__configuration, 
-            self.__specie,
-            self.__gene
+            self.__configuration, self.__specie, self.__gene
         ).execute()
 
         return reference_sequence, position
 
     def __remove(self, query_sequence, ref_sequence):
         query_trimmed, ref_trimmed = RemoveSequence(
-            query_sequence,
-            ref_sequence, 
-            self.__primer
+            query_sequence, ref_sequence, self.__primer
         ).execute()
 
         return query_trimmed, ref_trimmed
@@ -66,16 +63,21 @@ class DetectionMutationPipeline(IPipeline):
         return aminoacid_sequence
 
     def __mutations(self, aminoacid_ref, aminoacid_query, position):
-        mutations = Mutation(
-            aminoacid_ref,
-            aminoacid_query,
-            position
-        ).execute()
+        mutations = Mutation(aminoacid_ref, aminoacid_query, position).execute()
 
         return mutations
 
     def __write(self, results):
         output_folder = os.path.dirname(self.__filepath)
-        output_file = WriteResult(output_folder).write(results)
+
+        with open(
+            os.path.join(output_folder, "mutations_result.csv"), "w"
+        ) as output_file:
+            header = "Reference, Position, Substitutions"
+            to_write = "\n".join(
+                "{}, {}, {}".format(str(x[0]), str(x[1]), str(x[2])) for x in results
+            )
+            output_file.write(header)
+            output_file.write(to_write)
 
         return output_file

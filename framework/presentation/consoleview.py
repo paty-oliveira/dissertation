@@ -22,7 +22,7 @@ class ConsoleView(IUserInterface):
             print("\nRunning pipeline...")
 
             results = self.__controller.execute(params)
-            
+
             if should_exit:
                 break
 
