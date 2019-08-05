@@ -8,6 +8,10 @@ from framework.domain.Translation import Translation
 from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
 from framework.common.Auxiliar import put_element_into_list
+import os
+
+def put_element_into_list(string):
+    return [element for element in string.split(" ")]
 
 
 class DetectionMutationPipeline(IPipeline):
@@ -22,50 +26,56 @@ class DetectionMutationPipeline(IPipeline):
         self.__specie = params[ParameterKeys.SPECIE_NAME]
         self.__gene = params[ParameterKeys.GENE_NAME]
         self.__primer = put_element_into_list(params[ParameterKeys.PRIMERS])
-        self.__data_folder = self.__configuration.get_path_data_folder_mutation()
-        self.__list_steps = self.__add_steps()
 
     def run(self):
         "Executes all the steps of the pipeline."
 
-        # Necessário reformular toda esta parte para construir a pipeline com
-        # as classes criadas
-        # ImportFile -> ReadFile -> ExtractInformation -> RemoveSequences -> Translation -> Mutations -> etc
+        stage_1 = self.__read()
+        stage_2 = self.__extract()
+        stage_3 = self.__remove(stage_1, stage_2[0])
+        stage_4 = self.__translate(stage_3)
+        stage_5 = self.__mutations(stage_4[1], stage_4[0], stage_2[1])
+        output_file = self.__write(stage_5)
 
-        for step in self.__list_steps:
-            sbjt_sequence = step.execute()
+    def __read(self):
+        dna_sequences = ReadFile(self.__filepath).execute()
+        if dna_sequences:
+            return dna_sequences[1]
 
-            if sbjt_sequence:
-                ref_sequence, position = ExtractInformation(
-                    self.__configuration, self.__specie, self.__gene
-                ).execute()
+    def __extract(self):
+        reference_sequence, position = ExtractInformation(
+            self.__configuration, 
+            self.__specie,
+            self.__gene
+        ).execute()
 
-                sbjct_trimmed, ref_trimmed = RemoveSequence(
-                    sbjt_sequence, ref_sequence, self.__primer
-                ).execute()
+        return reference_sequence, position
 
-                sbjct_aminoacid_seq = Translation(sbjct_trimmed).execute()
-                ref_aminoacif_seq = Translation(ref_trimmed).execute()
+    def __remove(self, query_sequence, ref_sequence):
+        query_trimmed, ref_trimmed = RemoveSequence(
+            query_sequence,
+            ref_sequence, 
+            self.__primer
+        ).execute()
 
-                mutations = Mutation(ref_aminoacif_seq, sbjct_aminoacid_seq).execute()
+        return query_trimmed, ref_trimmed
 
-                if mutations:
-                    result = WriteResult(self.__filepath).write(mutations)
+    def __translate(self, sequence):
+        aminoacid_sequence = Translation(sequence).execute()
 
-                    return result
+        return aminoacid_sequence
 
-                return "No mutations identified."
+    def __mutations(self, aminoacid_ref, aminoacid_query, position):
+        mutations = Mutation(
+            aminoacid_ref,
+            aminoacid_query,
+            position
+        ).execute()
 
-            return False
+        return mutations
 
-        return False
+    def __write(self, results):
+        output_folder = os.path.dirname(self.__filepath)
+        output_file = WriteResult(output_folder).write(results)
 
-    def __add_steps(self):
-        "Adds the pipeline steps."
-
-        # Falta adicionar os restantes steps da identificação das mutações e associação à resistencia aos antifungicos
-        list_steps = []
-        list_steps.append(ImportFile(self.__filepath, self.__data_folder))
-        list_steps.append(ReadFile(self.__data_folder))
-
-        return list_steps
+        return output_file

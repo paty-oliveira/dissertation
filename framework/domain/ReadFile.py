@@ -25,22 +25,17 @@ class ReadFile(IStep):
     """
 
     def __init__(self, filepath):
-        self.__files = find_files(filepath)
+        self.__file= filepath
         self.__readers = self.__add_readers()
 
     def execute(self):
         "Read the files according their extension."
 
-        results = {}
+        for reader in self.__readers:
+            biological_sequences = reader.read(self.__file)
 
-        for file in self.__files:
-            for reader in self.__readers:
-                biological_sequences = reader.read(file)
-
-                if biological_sequences:
-                    results[os.path.basename(file)] = biological_sequences
-
-        return results
+            if biological_sequences:
+                return biological_sequences
 
     def __add_readers(self):
         "Adds the readers."
@@ -60,13 +55,11 @@ class ReadFasta(IReadFile):
         "Read files with *.fasta extension."
 
         if self.__is_extension(file):
-            list_sequences = []
             record = SeqIO.read(file, "fasta")
             id_sequence = str(record.id)
             sequence = str(record.seq)
-            list_sequences.append((id_sequence, sequence))
 
-            return list_sequences
+            return id_sequence, sequence
 
         return False
 
@@ -86,7 +79,6 @@ class ReadTxt(IReadFile):
         "Read files with *.txt extension."
 
         if self.__is_extension(file):
-            list_sequences = []
             sequence = ""
             id_sequence = ""
 
@@ -100,9 +92,7 @@ class ReadTxt(IReadFile):
                     else:
                         sequence += line.replace("\n", "")
 
-                list_sequences.append((id_sequence, sequence))
-
-            return list_sequences
+            return id_sequence, sequence
 
         return False
 

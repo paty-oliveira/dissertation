@@ -13,14 +13,3 @@ def convert_path(path):
     )
     return str(result)
 
-
-def find_files(path):
-    return [
-        os.path.join(path, file)
-        for file in os.listdir(path)
-        if os.path.isfile(os.path.join(path, file))
-    ]
-
-
-def put_element_into_list(string):
-    return [element for element in string.split(" ")]

@@ -11,7 +11,7 @@ class ExtractInformation(IStep):
 
     def __init__(self, configuration, specie, gene):
         self.__filepath = configuration.get_antifungal_genes_file()
-        self.__file_reader = ReadCsv(self.__filepath)
+        self.__file_reader = ReadCsv().read(self.__filepath)
         self.__specie = specie
         self.__gene = gene
 

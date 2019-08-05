@@ -21,15 +21,16 @@ class Mutation(IStep):
         return []
 
     def __identify_substitutions(self):
-        return [
-            (
-                self.__aminoacid_ref[position],
-                self.__initial_pos + position,
-                self.__aminoacid_sbjct[position],
-            )
-            for position in range(len(self.__aminoacid_ref))
-            if self.__aminoacid_ref[position] != self.__aminoacid_sbjct[position]
-        ]
+        for specie, initial_pos in self.__initial_pos.items():
+            return [
+                (
+                    self.__aminoacid_ref[position],
+                    initial_pos + position,
+                    self.__aminoacid_sbjct[position],
+                )
+                for position in range(len(self.__aminoacid_ref))
+                if self.__aminoacid_ref[position] != self.__aminoacid_sbjct[position]
+            ]
 
     def __is_equal(self, reference_sequence, subject_sequence):
         return str(reference_sequence) == str(subject_sequence)

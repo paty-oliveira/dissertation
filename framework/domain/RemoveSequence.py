@@ -2,6 +2,12 @@ from framework.domain.IStep import IStep
 from framework.domain.ExtractInformation import ExtractInformation 
 import re
 
+def get_preffix(sequence):
+    return sequence[0:11]
+
+def get__suffix(sequence):
+    return sequence[-11:]
+
 
 class RemoveSequence(IStep):
 
@@ -15,15 +21,20 @@ class RemoveSequence(IStep):
         self.__list_primer = primers
 
     def execute(self):
-        for filename, sequence in self.__sbjct_sequence.items():
-            sbjct_sequence_trimmed = self.__remove_primers(sequence, self.__list_primer)
-            ref_sequence_trimmed = self.__trim_sequence(self.__ref_sequence, sequence)
+        sbjct_sequence_trimmed = self.__remove_primers(
+            self.__sbjct_sequence, self.__list_primer
+        )
+
+        for name, sequence in self.__ref_sequence.items():
+            ref_sequence_trimmed = self.__trim_sequence(
+                sequence, sbjct_sequence_trimmed
+            )
 
         return sbjct_sequence_trimmed, ref_sequence_trimmed
 
     def __trim_sequence(self, reference_sequence, subject_sequence):
-        start_sequence = ExtractInformation().get_preffix(subject_sequence)
-        end_sequence = ExtractInformation().get__suffix(subject_sequence)
+        start_sequence = get_preffix(subject_sequence)
+        end_sequence = get__suffix(subject_sequence)
 
         if start_sequence and end_sequence in reference_sequence:
             initial_pos = reference_sequence.index(start_sequence)
