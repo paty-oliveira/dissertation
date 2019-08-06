@@ -13,9 +13,13 @@ class Translation(IStep):
         self.__dna_sequence = dna_sequence
 
     def execute(self):
+        "Executes the translation of dna sequences."
+
         return tuple([self.__translate(sequence) for sequence in self.__dna_sequence])
 
     def __translate(self, dna_sequence):
+        "Tanslates dna sequences in amino acid sequences."
+        
         coding_dna = Seq(dna_sequence, IUPAC.unambiguous_dna)
         aminoacid_sequence = coding_dna.translate()
 

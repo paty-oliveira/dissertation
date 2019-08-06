@@ -7,9 +7,7 @@ class BuildDataFlow:
 
     """
         Logic of pipelines controllers.
-
         Receive configurations from the app settings.
-
         Execute the pipelines according parameters introduced in console or GUI mode.
 
     """

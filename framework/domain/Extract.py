@@ -1,9 +1,9 @@
 from framework.domain.IStep import IStep
-from framework.domain.ReadFile import ReadCsv
+from framework.domain.Read import ReadCsv
 import pandas as pd
 
 
-class ExtractInformation(IStep):
+class Extract(IStep):
 
     """
         It allows the extraction of specific information from files.
@@ -16,11 +16,13 @@ class ExtractInformation(IStep):
         self.__gene = gene
 
     def execute(self):
-        dna_sequence, dna_position = self.__retrieve_reference_fields()
+        "Executes the extraction of the reference fields."
+        
+        dna_sequence, dna_position = self.__reference_fields()
 
         return dna_sequence, dna_position
 
-    def __retrieve_reference_fields(self):
+    def __reference_fields(self):
         "Obtains the information about dna sequence and dna position of the reference gene and specie."
 
         dataframe = self.__file_reader
@@ -37,9 +39,3 @@ class ExtractInformation(IStep):
         ].to_dict()
 
         return dna_sequence, dna_position
-
-    def get_preffix(self, sequence):
-        return sequence[0:11]
-
-    def get__suffix(self, sequence):
-        return sequence[-11:]

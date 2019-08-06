@@ -4,7 +4,7 @@ import os
 import subprocess
 
 
-class ImportFile(IStep):
+class Import(IStep):
 
     """
         Allows the importation of the file for the specific filepath. 
@@ -16,15 +16,16 @@ class ImportFile(IStep):
 
     def execute(self):
         "Execute the importing of the files."
+
         try:
-            self.__import_files()
+            self.__import_file()
 
         except FileNotFoundError:
             return "File not found. Please introduce a filepath correct."
 
-    def __import_files(self):
+    def __import_file(self):
         "Copy files from path introduced by user to specific data folder."
-
+        
         with os.scandir(self.__filepath) as data_folder:
             for file in data_folder:
                 shutil.copy(file, self.__data_folder)

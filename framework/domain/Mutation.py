@@ -13,14 +13,18 @@ class Mutation(IStep):
         self.__initial_pos = initial_pos
 
     def execute(self):
+        "Executes the detection of mutations present in the sequence."
+
         if not self.__is_equal(self.__aminoacid_ref, self.__aminoacid_sbjct):
-            aminoacid_mutations = self.__identify_substitutions()
+            aminoacid_mutations = self.__sequence_alterations()
 
             return aminoacid_mutations
 
         return []
 
-    def __identify_substitutions(self):
+    def __sequence_alterations(self):
+        "Identifies the alterations present in the sequences."
+
         for specie, initial_pos in self.__initial_pos.items():
             return [
                 (
@@ -33,4 +37,6 @@ class Mutation(IStep):
             ]
 
     def __is_equal(self, reference_sequence, subject_sequence):
+        "Verifies if two sequences are equals."
+        
         return str(reference_sequence) == str(subject_sequence)

@@ -17,7 +17,7 @@ class IReadFile(ABC):
         pass
 
 
-class ReadFile(IStep):
+class Read(IStep):
 
     """
         Allows the read  of the files with *.txt and *.fasta extensions.
@@ -108,7 +108,7 @@ class ReadCsv(IReadFile):
     EXTENSIONS = [".csv"]
 
     def read(self, file):
-        "Read files with *.csv extension"
+        "Read files with *.csv extension."
 
         if self.__is_extension(file):
             dataframe = pd.read_csv(file)

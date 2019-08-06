@@ -28,6 +28,8 @@ class Taxonomy(IStep):
         self.__list_identifiers = self.__add_identifiers()
 
     def execute(self):
+        "Executes the identification pipeline, according the list of identifiers."
+
         for identifier in self.__list_identifiers:
             result = identifier.identify()
 
@@ -35,6 +37,8 @@ class Taxonomy(IStep):
                 return result
 
     def __add_identifiers(self):
+        "Adds the  dentifiers."
+
         list_identifiers = []
         list_identifiers.append(Pipits(self.__configuration, self.__filepath))
 
@@ -94,19 +98,16 @@ class Pipits(IIdentification):
 
     def identify(self):
         "Execute all commands for identification of specie."
+        
+        try:
+            self.__generate_read_pairs_list()
+            self.__preprocessing_sequence()
+            self.__extract_its_regions()
+            self.__analyze_taxonomy()
+            self.__fungi_specie()
 
-        self.__generate_read_pairs_list()
-        self.__preprocessing_sequence()
-        self.__extract_its_regions()
-        self.__analyze_taxonomy()
-        result = self.__get_specie_identification()
-
-        return result
-
-    def is_success(self, process):
-        "Verify if the subprocess called happened."
-
-        return process == 0
+        except Exception as error:
+            print("Error in the pipeline of Identification.", error)
 
     def __analyze_taxonomy(self):
         """Return the identification of the fungal specie present in the sequencing files,
@@ -116,7 +117,7 @@ class Pipits(IIdentification):
             Pipits.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
         )
 
-        if self.is_success(process_to_execute):
+        if self.__is_success(process_to_execute):
             return True
 
     def __extract_its_regions(self):
@@ -126,7 +127,7 @@ class Pipits(IIdentification):
             Pipits.CMD_ARGS_ITS_EXTRACTION, cwd=self.__tmp_identification
         )
 
-        if self.is_success(process_to_execute):
+        if self.__is_success(process_to_execute):
             return True
 
     def __generate_read_pairs_list(self):
@@ -136,15 +137,20 @@ class Pipits(IIdentification):
             Pipits.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
         )
 
-        if self.is_success(process_to_execute):
+        if self.__is_success(process_to_execute):
             return True
 
-    def __get_specie_identification(self):
+    def __fungi_specie(self):
         "Obtains the specie identification from PIPITS process"
 
         phylotype_results = shutil.copy(self.__phylotype_file, self.__folder_results)
 
         return phylotype_results
+
+    def __is_success(self, process):
+        "Verify if the subprocess called happened."
+
+        return process == 0
 
     def __preprocessing_sequence(self):
         "Preprocess the sequencing files throught the subprocess of PIPITS."
@@ -153,5 +159,5 @@ class Pipits(IIdentification):
             Pipits.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
         )
 
-        if self.is_success(process_to_execute):
+        if self.__is_success(process_to_execute):
             return True

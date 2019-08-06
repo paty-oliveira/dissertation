@@ -4,6 +4,7 @@ from framework.presentation.IUserInterface import IUserInterface
 from framework.common.Auxiliar import convert_path
 import sys
 
+
 class ConsoleView(IUserInterface):
     """
         Console View presents the user with the form for running the pipeline
@@ -13,11 +14,12 @@ class ConsoleView(IUserInterface):
         self.__controller = controller
 
     def show(self):
-        "Presents the user with the form needed for running the pipeline"
-        self._ConsoleView__show_headline()
+        "Presents the user with the form needed for running the pipeline."
+
+        self.__headline()
 
         while True:
-            params, should_exit = self.__get_form_response()
+            params, should_exit = self.__user_options()
             print("\nRunning pipeline...")
 
             results = self.__controller.execute(params)
@@ -25,15 +27,46 @@ class ConsoleView(IUserInterface):
             if should_exit:
                 break
 
-    def __get_form_response(self):
-        "The user responds to the form and gets the parameters"
+    def __mock_options(self):
+        "Represents a dictionary with parameters for test mode."
+
+        params = {
+            ParameterKeys.IDENTIFICATION_KEY: False,
+            ParameterKeys.MUTATION_KEY: True,
+            ParameterKeys.FILEPATH_DETECTION: convert_path(
+                "C:/Users/anapatricia/Documents/test_data/test_mutations.txt"
+            ),
+            ParameterKeys.SPECIE_NAME: "Candida glabrata",
+            ParameterKeys.GENE_NAME: "ERG3",
+            ParameterKeys.PRIMERS: "AAAAAT TTTTTA",
+        }
+        should_exit = True
+        return params, should_exit
+
+    def __parse_response(self, response, default="y"):
+        "Parses the response given by the user."
+
+        return (
+            response == default.lower() or response == default.upper() or response == ""
+        )
+
+    def __headline(self):
+        "Prints the headline of the framework."
+
+        print("##################################################")
+        print("# Identification and Detection - Framework ")
+        print("##################################################")
+
+    def __user_options(self):
+        "The user responds to the form and gets the parameters."
+
         should_exit = False
         params = {}
 
         response = input("Test mode [y|N]: ")
-        params[ParameterKeys.TEST_MODE] = self.__parse_response(response)
         if self.__parse_response(response):
-            params, should_exit = self.__test_options()
+            params, should_exit = self.__mock_options()
+
             return params, should_exit
 
         else:
@@ -49,7 +82,9 @@ class ConsoleView(IUserInterface):
             params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
             if self.__parse_response(response):
                 filepath_detection = input("File directory: ")
-                params[ParameterKeys.FILEPATH_DETECTION] = convert_path(filepath_detection)
+                params[ParameterKeys.FILEPATH_DETECTION] = convert_path(
+                    filepath_detection
+                )
 
                 specie_name = input("Specie name: ").capitalize()
                 params[ParameterKeys.SPECIE_NAME] = specie_name
@@ -64,27 +99,3 @@ class ConsoleView(IUserInterface):
             should_exit = self.__parse_response(response, default="n")
 
             return params, should_exit
-        
-
-    def __test_options(self):
-        params =  {
-            ParameterKeys.IDENTIFICATION_KEY: False,
-            ParameterKeys.MUTATION_KEY: True,
-            ParameterKeys.FILEPATH_DETECTION: convert_path("C:/Users/anapatricia/Documents/test_data/test_mutations.txt"),
-            ParameterKeys.SPECIE_NAME: "Candida glabrata",
-            ParameterKeys.GENE_NAME: "ERG3",
-            ParameterKeys.PRIMERS: "AAAAAT TTTTTA"
-        }
-        should_exit = True
-        return params, should_exit
-     
-    def __parse_response(self, response, default="y"):
-        "Parses the response given by the user"
-        return (
-            response == default.lower() or response == default.upper() or response == ""
-        )
-
-    def __show_headline(self):
-        print("##################################################")
-        print("# Paty Framework")
-        print("##################################################")

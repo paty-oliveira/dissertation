@@ -1,9 +1,9 @@
 from framework.domain.IPipeline import IPipeline
-from framework.domain.ImportFile import ImportFile
+from framework.domain.Import import Import
 from framework.common.ParameterKeys import ParameterKeys
-from framework.domain.ReadFile import ReadFile
-from framework.domain.ExtractInformation import ExtractInformation
-from framework.domain.RemoveSequence import RemoveSequence
+from framework.domain.Read import Read
+from framework.domain.Extract import Extract
+from framework.domain.Remove import Remove
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 import os
@@ -33,23 +33,28 @@ class DetectionMutationPipeline(IPipeline):
         stage_2 = self.__extract()
         stage_3 = self.__remove(stage_1, stage_2[0])
         stage_4 = self.__translate(stage_3)
-        stage_5 = self.__mutations(stage_4[1], stage_4[0], stage_2[1])
+        stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
         output_file = self.__write(stage_5)
 
-    def __read(self):
-        dna_sequences = ReadFile(self.__filepath).execute()
-        if dna_sequences:
-            return dna_sequences[1]
-
     def __extract(self):
-        reference_sequence, position = ExtractInformation(
+        reference_sequence, position = Extract(
             self.__configuration, self.__specie, self.__gene
         ).execute()
 
         return reference_sequence, position
 
+    def __mutation(self, aminoacid_ref, aminoacid_query, position):
+        mutations = Mutation(aminoacid_ref, aminoacid_query, position).execute()
+
+        return mutations
+
+    def __read(self):
+        dna_sequences = Read(self.__filepath).execute()
+        if dna_sequences:
+            return dna_sequences[1]
+
     def __remove(self, query_sequence, ref_sequence):
-        query_trimmed, ref_trimmed = RemoveSequence(
+        query_trimmed, ref_trimmed = Remove(
             query_sequence, ref_sequence, self.__primer
         ).execute()
 
@@ -59,11 +64,6 @@ class DetectionMutationPipeline(IPipeline):
         aminoacid_sequence = Translation(sequence).execute()
 
         return aminoacid_sequence
-
-    def __mutations(self, aminoacid_ref, aminoacid_query, position):
-        mutations = Mutation(aminoacid_ref, aminoacid_query, position).execute()
-
-        return mutations
 
     def __write(self, results):
         output_folder = os.path.dirname(self.__filepath)
