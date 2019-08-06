@@ -7,7 +7,7 @@ from framework.domain.Taxonomy import Taxonomy
 class IdentificationSpecieProcess(IProcess):
 
     """
-        Pipeline for the identification of species present in the dataset.
+        Logic of the identification specie process.
     """
 
     def __init__(self, configuration, params):
@@ -17,7 +17,7 @@ class IdentificationSpecieProcess(IProcess):
         self.__steps = self.__add_step()
 
     def run(self):
-        "Executes all the steps of the pipeline"
+        "Executes all the steps of the process."
 
         for step in self.__steps:
             identification = step.execute()
@@ -26,7 +26,7 @@ class IdentificationSpecieProcess(IProcess):
                 return identification
 
     def __add_step(self):
-        "Adds the pipeline steps"
+        "Adds the steps of the process."
 
         steps = []
         steps.append(Import(self.__filepath, self.__data_folder))
