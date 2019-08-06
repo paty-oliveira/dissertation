@@ -2,7 +2,7 @@ from framework.common.ParameterKeys import ParameterKeys
 from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.IUserInterface import IUserInterface
 from framework.common.Auxiliar import convert_path
-
+import sys
 
 class ConsoleView(IUserInterface):
     """
@@ -17,8 +17,7 @@ class ConsoleView(IUserInterface):
         self._ConsoleView__show_headline()
 
         while True:
-            params, should_exit = self._ConsoleView__get_form_response()
-
+            params, should_exit = self.__get_form_response()
             print("\nRunning pipeline...")
 
             results = self.__controller.execute(params)
@@ -31,34 +30,54 @@ class ConsoleView(IUserInterface):
         should_exit = False
         params = {}
 
-        response = input("Identify specie [Y|n]:")
-        params[ParameterKeys.IDENTIFICATION_KEY] = self.__parse_response(response)
+        response = input("Test mode [y|N]: ")
+        params[ParameterKeys.TEST_MODE] = self.__parse_response(response)
         if self.__parse_response(response):
-            filepath_identification = input("File directory: ")
-            params[ParameterKeys.FILEPATH_IDENTIFICATION] = convert_path(
-                filepath_identification
-            )
+            params, should_exit = self.__test_options()
+            return params, should_exit
 
-        response = input("Detect mutations? [Y|n]: ")
-        params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
-        if self.__parse_response(response):
-            filepath_detection = input("File directory: ")
-            params[ParameterKeys.FILEPATH_DETECTION] = convert_path(filepath_detection)
+        else:
+            response = input("Identify specie [Y|n]:")
+            params[ParameterKeys.IDENTIFICATION_KEY] = self.__parse_response(response)
+            if self.__parse_response(response):
+                filepath_identification = input("File directory: ")
+                params[ParameterKeys.FILEPATH_IDENTIFICATION] = convert_path(
+                    filepath_identification
+                )
 
-            specie_name = input("Specie name: ").capitalize()
-            params[ParameterKeys.SPECIE_NAME] = specie_name
+            response = input("Detect mutations? [Y|n]: ")
+            params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
+            if self.__parse_response(response):
+                filepath_detection = input("File directory: ")
+                params[ParameterKeys.FILEPATH_DETECTION] = convert_path(filepath_detection)
 
-            gene_name = input("Gene: ").upper()
-            params[ParameterKeys.GENE_NAME] = gene_name
+                specie_name = input("Specie name: ").capitalize()
+                params[ParameterKeys.SPECIE_NAME] = specie_name
 
-            primers = input("Primers: ").upper()
-            params[ParameterKeys.PRIMERS] = primers
+                gene_name = input("Gene: ").upper()
+                params[ParameterKeys.GENE_NAME] = gene_name
 
-        response = input("Will you continue executing other pipelines? [y|N]: ")
-        should_exit = self.__parse_response(response, default="n")
+                primers = input("Primers: ").upper()
+                params[ParameterKeys.PRIMERS] = primers
 
+            response = input("Will you continue executing other pipelines? [y|N]: ")
+            should_exit = self.__parse_response(response, default="n")
+
+            return params, should_exit
+        
+
+    def __test_options(self):
+        params =  {
+            ParameterKeys.IDENTIFICATION_KEY: False,
+            ParameterKeys.MUTATION_KEY: True,
+            ParameterKeys.FILEPATH_DETECTION: convert_path("C:/Users/anapatricia/Documents/test_data/test_mutations.txt"),
+            ParameterKeys.SPECIE_NAME: "Candida glabrata",
+            ParameterKeys.GENE_NAME: "ERG3",
+            ParameterKeys.PRIMERS: "AAAAAT TTTTTA"
+        }
+        should_exit = True
         return params, should_exit
-
+     
     def __parse_response(self, response, default="y"):
         "Parses the response given by the user"
         return (

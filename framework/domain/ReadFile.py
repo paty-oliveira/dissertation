@@ -1,4 +1,3 @@
-from framework.common.Auxiliar import find_files
 from framework.domain.IStep import IStep
 from abc import ABC, abstractmethod
 import pandas as pd

@@ -5,9 +5,7 @@ from framework.domain.ReadFile import ReadFile
 from framework.domain.ExtractInformation import ExtractInformation
 from framework.domain.RemoveSequence import RemoveSequence
 from framework.domain.Translation import Translation
-from framework.domain.WriteResult import WriteResult
 from framework.domain.Mutation import Mutation
-from framework.common.Auxiliar import put_element_into_list
 import os
 
 

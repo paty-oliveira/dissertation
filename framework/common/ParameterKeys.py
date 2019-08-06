@@ -6,3 +6,4 @@ class ParameterKeys:
     SPECIE_NAME = "specie_name"
     GENE_NAME = "gene_name"
     PRIMERS = "primers"
+    TEST_MODE = "test"
