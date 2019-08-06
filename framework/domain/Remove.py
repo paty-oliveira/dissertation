@@ -43,7 +43,7 @@ class Remove(IStep):
 
     def __trims(self, reference_sequence, subject_sequence):
         "Trims the sequence according the constraints."
-        
+
         start_sequence = preffix(subject_sequence)
         end_sequence = suffix(subject_sequence)
 

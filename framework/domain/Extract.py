@@ -17,7 +17,7 @@ class Extract(IStep):
 
     def execute(self):
         "Executes the extraction of the reference fields."
-        
+
         dna_sequence, dna_position = self.__reference_fields()
 
         return dna_sequence, dna_position

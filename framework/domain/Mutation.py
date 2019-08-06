@@ -38,5 +38,5 @@ class Mutation(IStep):
 
     def __is_equal(self, reference_sequence, subject_sequence):
         "Verifies if two sequences are equals."
-        
+
         return str(reference_sequence) == str(subject_sequence)

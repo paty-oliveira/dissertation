@@ -126,7 +126,6 @@ class Application:
         identification_process_folder = self.__config.get_path_identification_process()
         data_folder_identification = self.__config.get_path_data_folder_identification()
         detection_mutation_process = self.__config.get_path_detection_mutation_process()
-        data_folder_detection_mutation = self.__config.get_path_data_folder_mutation()
 
         if not os.path.exists(tmp_folder):
             os.mkdir(tmp_folder)
@@ -140,12 +139,9 @@ class Application:
         if not os.path.exists(detection_mutation_process):
             os.mkdir(detection_mutation_process)
 
-        if not os.path.exists(data_folder_detection_mutation):
-            os.mkdir(data_folder_detection_mutation)
-
     def __removal_folder_content(self, path_folder):
         "Removes all files and directories in a specific folder."
-        
+
         with os.scandir(path_folder) as items:
             for item in items:
 

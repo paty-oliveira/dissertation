@@ -25,7 +25,7 @@ class Import(IStep):
 
     def __import_file(self):
         "Copy files from path introduced by user to specific data folder."
-        
+
         with os.scandir(self.__filepath) as data_folder:
             for file in data_folder:
                 shutil.copy(file, self.__data_folder)

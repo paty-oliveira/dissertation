@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IPipeline(ABC):
+class IProcess(ABC):
 
     """
        Interface that implements the pipeline behavior. 

@@ -1,6 +1,6 @@
 from framework.common.ParameterKeys import ParameterKeys
-from framework.domain.IdentificationSpeciePipeline import IdentificationSpeciePipeline
-from framework.domain.DetectionMutationsPipeline import DetectionMutationPipeline
+from framework.domain.IdentificationSpecieProcess import IdentificationSpecieProcess
+from framework.domain.DetectionResistanceProcess import DetectionResistanceProcess
 
 
 class BuildDataFlow:
@@ -19,11 +19,11 @@ class BuildDataFlow:
         "Execute the pipelines according the parameters transmitted."
 
         if params[ParameterKeys.IDENTIFICATION_KEY]:
-            result = IdentificationSpeciePipeline(self.__config, params).run()
+            result = IdentificationSpecieProcess(self.__config, params).run()
 
             return result
 
         if params[ParameterKeys.MUTATION_KEY]:
-            result = DetectionMutationPipeline(self.__config, params).run()
+            result = DetectionResistanceProcess(self.__config, params).run()
 
             return result

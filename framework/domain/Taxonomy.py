@@ -37,18 +37,18 @@ class Taxonomy(IStep):
                 return result
 
     def __add_identifiers(self):
-        "Adds the  dentifiers."
+        "Adds the identifiers."
 
         list_identifiers = []
-        list_identifiers.append(Pipits(self.__configuration, self.__filepath))
+        list_identifiers.append(PipitsPipeline(self.__configuration, self.__filepath))
 
         return list_identifiers
 
 
-class Pipits(IIdentification):
+class PipitsPipeline(IIdentification):
 
     """
-        Run the Bioconda library PIPITS for specie identification.
+        Pipeline for specie identification (PIPITS) from Bioconda library.
     """
 
     CMD_ARGS_READPAIRLIST = [
@@ -98,7 +98,7 @@ class Pipits(IIdentification):
 
     def identify(self):
         "Execute all commands for identification of specie."
-        
+
         try:
             self.__generate_read_pairs_list()
             self.__preprocessing_sequence()
@@ -114,34 +114,34 @@ class Pipits(IIdentification):
          throught the subprocess of PIPITS."""
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
         )
 
         if self.__is_success(process_to_execute):
             return True
 
     def __extract_its_regions(self):
-        "Extract all ITS regions throught the subprocess of PIPITS."
+        "Extract all ITS regions throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_ITS_EXTRACTION, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_ITS_EXTRACTION, cwd=self.__tmp_identification
         )
 
         if self.__is_success(process_to_execute):
             return True
 
     def __generate_read_pairs_list(self):
-        "Create read pair list file throught the subprocess of PIPITS."
+        "Create read pair list file throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
         )
 
         if self.__is_success(process_to_execute):
             return True
 
     def __fungi_specie(self):
-        "Obtains the specie identification from PIPITS process"
+        "Obtains the specie identification from PipitsPipeline process"
 
         phylotype_results = shutil.copy(self.__phylotype_file, self.__folder_results)
 
@@ -153,10 +153,10 @@ class Pipits(IIdentification):
         return process == 0
 
     def __preprocessing_sequence(self):
-        "Preprocess the sequencing files throught the subprocess of PIPITS."
+        "Preprocess the sequencing files throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            Pipits.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
         )
 
         if self.__is_success(process_to_execute):

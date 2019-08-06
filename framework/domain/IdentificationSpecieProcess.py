@@ -1,10 +1,10 @@
-from framework.domain.IPipeline import IPipeline
+from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.Import import Import
 from framework.domain.Taxonomy import Taxonomy
 
 
-class IdentificationSpeciePipeline(IPipeline):
+class IdentificationSpecieProcess(IProcess):
 
     """
         Pipeline for the identification of species present in the dataset.
@@ -14,18 +14,18 @@ class IdentificationSpeciePipeline(IPipeline):
         self.__configuration = configuration
         self.__filepath = params[ParameterKeys.FILEPATH_IDENTIFICATION]
         self.__data_folder = self.__configuration.get_path_data_folder_identification()
-        self.__pipeline_steps = self.__add_pipeline_steps()
+        self.__steps = self.__add_step()
 
     def run(self):
         "Executes all the steps of the pipeline"
 
-        for step in self.__pipeline_steps:
-            result = step.execute()
+        for step in self.__steps:
+            identification = step.execute()
 
-            if result:
-                return result
+            if identification:
+                return identification
 
-    def __add_pipeline_steps(self):
+    def __add_step(self):
         "Adds the pipeline steps"
 
         steps = []

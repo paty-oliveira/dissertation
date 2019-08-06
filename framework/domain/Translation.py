@@ -19,7 +19,7 @@ class Translation(IStep):
 
     def __translate(self, dna_sequence):
         "Tanslates dna sequences in amino acid sequences."
-        
+
         coding_dna = Seq(dna_sequence, IUPAC.unambiguous_dna)
         aminoacid_sequence = coding_dna.translate()
 
