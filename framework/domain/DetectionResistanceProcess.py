@@ -8,6 +8,11 @@ def put_element_into_list(string):
 
 
 class DetectionResistanceProcess(IProcess):
+
+    """
+        Logic of the detection resistance process.
+    """
+
     def __init__(self, configuration, params):
         self.__configuration = configuration
         self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
@@ -17,6 +22,8 @@ class DetectionResistanceProcess(IProcess):
         self.__steps = self.__add_step()
 
     def run(self):
+        "Executes all the steps of the process."
+
         for step in self.__steps:
             resistance = step.execute()
 
@@ -24,8 +31,9 @@ class DetectionResistanceProcess(IProcess):
                 return resistance
 
     def __add_step(self):
-        steps = []
+        "Adds the steps of the process."
 
+        steps = []
         steps.append(
             DetectionResistance(
                 self.__configuration,
