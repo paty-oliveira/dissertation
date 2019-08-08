@@ -21,7 +21,7 @@ class Configuration:
     def get_file_preprocessed(self):
         return self.__parser.get("IDENTIFICATIONPROCESS", "fasta_file_prepped")
 
-    def get_path_detection_mutation_process(self):
+    def get_path_detection_resistance_process(self):
         return self.__parser.get(
             "DETECTIONMUTATIONPROCESS", "detection_mutation_folder"
         )
