@@ -10,22 +10,39 @@ class Extract(IStep):
     """
 
     def __init__(self, configuration, specie, gene):
-        self.__filepath = configuration.get_antifungal_genes_file()
-        self.__file_reader = ReadCsv().read(self.__filepath)
+        self.__ref_genes_file = configuration.get_antifungal_genes_file()
+        self.__mardy_file = configuration.get_mardy_file()
+        self.__file_reader = ReadCsv()
         self.__specie = specie
         self.__gene = gene
 
     def execute(self):
         "Executes the extraction of the reference fields."
 
-        dna_sequence, dna_position = self.__reference_fields()
+        dna_sequence, dna_position = self.__sequence_position_reference()
+        mardy_information = self.__drugs_mutations_reference()
 
-        return dna_sequence, dna_position
+        return dna_sequence, dna_position, mardy_information
 
-    def __reference_fields(self):
+    def __drugs_mutations_reference(self):
+
+        dataframe = self.__file_reader.read(self.__mardy_file)
+        dataframe.set_index("Organism", inplace=True)
+
+        subdata_specie = dataframe.loc[self.__specie]
+
+        subdata_antifungal = subdata_specie.loc[
+            subdata_specie["Gene name"] == self.__gene, ["AA mutation", "Drug"]
+        ]
+
+        return set(
+            [(value[1], value[0]) for index, value in subdata_antifungal.iterrows()]
+        )
+
+    def __sequence_position_reference(self):
         "Obtains the information about dna sequence and dna position of the reference gene and specie."
 
-        dataframe = self.__file_reader
+        dataframe = self.__file_reader.read(self.__ref_genes_file)
         dataframe.set_index("Specie", inplace=True)
 
         subdata_specie = dataframe.loc[self.__specie]

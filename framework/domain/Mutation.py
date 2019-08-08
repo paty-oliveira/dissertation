@@ -27,12 +27,10 @@ class Mutation(IStep):
 
         for specie, initial_pos in self.__initial_pos.items():
             return [
-                (
-                    self.__aminoacid_ref[position],
-                    initial_pos + position,
-                    self.__aminoacid_sbjct[position],
-                )
-                for position in range(len(self.__aminoacid_ref))
+                self.__aminoacid_ref[position]
+                + str(initial_pos + position)
+                + self.__aminoacid_sbjct[position]
+                for position in range(len(self.__aminoacid_sbjct))
                 if self.__aminoacid_ref[position] != self.__aminoacid_sbjct[position]
             ]
 

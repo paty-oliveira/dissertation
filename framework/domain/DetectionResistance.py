@@ -6,11 +6,12 @@ from framework.domain.Extract import Extract
 from framework.domain.Remove import Remove
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
+from framework.domain.AntifungalResistance import AntifungalResistance
 import os
 from abc import ABC, abstractmethod
 
 
-class IResistance(ABC):
+class IPipeline(ABC):
 
     """
         Interface that implements the antifungal resistance behavior.
@@ -29,7 +30,7 @@ class DetectionResistance(IStep):
 
     def __init__(self, configuration, filepath, specie, gene, primers):
         self.__configuration = configuration
-        self.__filepath = filepath
+        self.__input_file = filepath
         self.__specie = specie
         self.__gene = gene
         self.__primers = primers
@@ -52,7 +53,7 @@ class DetectionResistance(IStep):
         pipelines.append(
             AntifungalResistancePipeline(
                 self.__configuration,
-                self.__filepath,
+                self.__input_file,
                 self.__specie,
                 self.__gene,
                 self.__primers,
@@ -61,7 +62,7 @@ class DetectionResistance(IStep):
         return pipelines
 
 
-class AntifungalResistancePipeline(IResistance):
+class AntifungalResistancePipeline(IPipeline):
 
     """
         Example of pipeline for the detection of the antifungal resistance present in the file imported. 
@@ -69,7 +70,7 @@ class AntifungalResistancePipeline(IResistance):
 
     def __init__(self, configuration, filepath, specie, gene, primers):
         self.__configuration = configuration
-        self.__filepath = filepath
+        self.__input_file = filepath
         self.__specie = specie
         self.__gene = gene
         self.__primer = primers
@@ -82,16 +83,22 @@ class AntifungalResistancePipeline(IResistance):
         stage_3 = self.__remove(stage_1, stage_2[0])
         stage_4 = self.__translate(stage_3)
         stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
+        stage_6 = self.__antifungals(stage_2[2], stage_5)
         output_file = self.__write(stage_5)
+
+    def __antifungals(self, reference_data, mutations):
+        antifungals = AntifungalResistance(reference_data, mutations).execute()
+
+        return antifungals
 
     def __extract(self):
         "Creates the Extract object to extract information."
 
-        reference_sequence, position = Extract(
+        reference_sequence, position, mardy_information = Extract(
             self.__configuration, self.__specie, self.__gene
         ).execute()
 
-        return reference_sequence, position
+        return reference_sequence, position, mardy_information
 
     def __mutation(self, aminoacid_ref, aminoacid_query, position):
         "Creates the Mutation object to identifies the amino acid substitutions "
@@ -103,7 +110,7 @@ class AntifungalResistancePipeline(IResistance):
     def __read(self):
         "Creates the Read object to read the file."
 
-        dna_sequences = Read(self.__filepath).execute()
+        dna_sequences = Read(self.__input_file).execute()
         if dna_sequences:
             return dna_sequences[1]
 
@@ -123,18 +130,25 @@ class AntifungalResistancePipeline(IResistance):
 
         return aminoacid_sequence
 
-    def __write(self, results):
+    def __write(self, mutations, antifungals):
         "Writes the results of amino acid substitutions on the csv file."
 
-        output_folder = os.path.dirname(self.__filepath)
+        output_folder = os.path.dirname(self.__input_file)
+
         with open(
-            os.path.join(output_folder, "mutations_result.csv"), "w"
+            os.path.join(output_folder, "antifungal_detection_results.csv"), "w"
         ) as output_file:
-            header = "Reference, Position, Substitutions"
-            to_write = "\n".join(
-                "{}, {}, {}".format(str(x[0]), str(x[1]), str(x[2])) for x in results
+
+            header = "Reference Position Substitutions\n"
+            mutations_results = "\n".join(
+                "{}".format(mutation) for mutation in mutations
             )
             output_file.write(header)
-            output_file.write(to_write)
+            output_file.write(mutations_results)
+            output_file.write("\n")
+            output_file.write("\nAntifungal Resistance \n")
+
+            for result in antifungal_result:
+                output_file.write(result + "\n")
 
         return output_file
