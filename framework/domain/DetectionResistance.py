@@ -84,9 +84,11 @@ class AntifungalResistancePipeline(IPipeline):
         stage_4 = self.__translate(stage_3)
         stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
         stage_6 = self.__antifungals(stage_2[2], stage_5)
-        output_file = self.__write(stage_5)
+        output_file = self.__write(stage_5, stage_6)
 
     def __antifungals(self, reference_data, mutations):
+        "Creates the AntifungalResistance object to identify the antifungals to which the organism is resistant."
+
         antifungals = AntifungalResistance(reference_data, mutations).execute()
 
         return antifungals
@@ -131,7 +133,7 @@ class AntifungalResistancePipeline(IPipeline):
         return aminoacid_sequence
 
     def __write(self, mutations, antifungals):
-        "Writes the results of amino acid substitutions on the csv file."
+        "Writes the results of the detection of resistance on the csv file."
 
         output_folder = os.path.dirname(self.__input_file)
 
@@ -148,7 +150,7 @@ class AntifungalResistancePipeline(IPipeline):
             output_file.write("\n")
             output_file.write("\nAntifungal Resistance \n")
 
-            for result in antifungal_result:
+            for result in antifungals:
                 output_file.write(result + "\n")
 
         return output_file

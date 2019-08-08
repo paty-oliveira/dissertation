@@ -1,8 +1,20 @@
 from framework.common.ParameterKeys import ParameterKeys
 from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.IUserInterface import IUserInterface
-from framework.common.Auxiliar import convert_path
 import sys
+import subprocess
+
+
+def convert_path(path):
+    "Convert windows path format for linux format."
+
+    cmd_args = ["wslpath", path]
+    result = (
+        subprocess.run(cmd_args, stdout=subprocess.PIPE)
+        .stdout.decode("utf-8")
+        .replace("\n", "")
+    )
+    return str(result)
 
 
 class ConsoleView(IUserInterface):
@@ -34,10 +46,10 @@ class ConsoleView(IUserInterface):
             ParameterKeys.IDENTIFICATION_KEY: False,
             ParameterKeys.MUTATION_KEY: True,
             ParameterKeys.FILEPATH_DETECTION: convert_path(
-                "C:/Users/anapatricia/Documents/test_data/test_mutations.txt"
+                "C:/Users/anapatricia/Documents/test_data/test_calbicans_erg11.txt"
             ),
-            ParameterKeys.SPECIE_NAME: "Candida glabrata",
-            ParameterKeys.GENE_NAME: "ERG3",
+            ParameterKeys.SPECIE_NAME: "Candida albicans",
+            ParameterKeys.GENE_NAME: "ERG11",
             ParameterKeys.PRIMERS: "AAAAAT TTTTTA",
         }
         should_exit = True

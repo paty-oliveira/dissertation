@@ -1,3 +1,4 @@
+#Database version 1.1 Compiled: Thursday 8th of August 2019 08:34:00 PM
 Drug,Organism,Found in,Gene name,Gene locus,AA mutation,Tandem repeat name,Tandem repeat sequence,Reference
 Fluconazole,Cryptococcus neoformans,Human,ERG11,,Y136F ,,,10.1093/jac/dkl133
 Fluconazole,Candida albicans,Human,ERG11,C5_00660C_A,Y132F Y205E Y257H D116E K143Q ,,,10.1111/1567-1364.12042

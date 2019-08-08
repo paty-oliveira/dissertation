@@ -4,6 +4,8 @@ from framework.domain.DetectionResistance import DetectionResistance
 
 
 def put_element_into_list(string):
+    "Puts elements of the string into a list."
+
     return [element for element in string.split(" ")]
 
 

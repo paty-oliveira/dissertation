@@ -17,6 +17,5 @@ from framework.domain.Remove import Remove
 from framework.domain.Translation import Translation
 from framework.domain.DetectionResistance import DetectionResistance
 from framework.domain.DetectionResistance import IPipeline
-from framework.domain.DetectionResistance import MutationPipeline
 from framework.domain.DetectionResistance import AntifungalResistancePipeline
 from framework.domain.AntifungalResistance import AntifungalResistance

@@ -25,8 +25,9 @@ class Extract(IStep):
         return dna_sequence, dna_position, mardy_information
 
     def __drugs_mutations_reference(self):
+        "Obtains the reference information about drugs and mutations from Mardy database."
 
-        dataframe = self.__file_reader.read(self.__mardy_file)
+        dataframe = self.__file_reader.read(self.__mardy_file, header=1)
         dataframe.set_index("Organism", inplace=True)
 
         subdata_specie = dataframe.loc[self.__specie]
@@ -42,7 +43,7 @@ class Extract(IStep):
     def __sequence_position_reference(self):
         "Obtains the information about dna sequence and dna position of the reference gene and specie."
 
-        dataframe = self.__file_reader.read(self.__ref_genes_file)
+        dataframe = self.__file_reader.read(self.__ref_genes_file, header=0)
         dataframe.set_index("Specie", inplace=True)
 
         subdata_specie = dataframe.loc[self.__specie]
