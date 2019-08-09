@@ -32,6 +32,9 @@ class Configuration:
     def get_mardy_file(self):
         return self.__parser.get("DETECTIONMUTATIONPROCESS", "mardy_file")
 
+    def get_resource_folder_path(self):
+        return self.__parser.get("DETECTIONMUTATIONPROCESS", "resource_folder")
+
     def get_initial_message(self):
         return self.__parser.get("MESSAGES", "inicial_message")
 
