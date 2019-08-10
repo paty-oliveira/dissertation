@@ -111,7 +111,7 @@ class ReadCsv(IReadFile):
         "Read files with *.csv extension."
 
         if self.__is_extension(file):
-            dataframe = pd.read_csv(file, header=header, encoding='utf-8')
+            dataframe = pd.read_csv(file, header=header)
             return dataframe
 
         return False

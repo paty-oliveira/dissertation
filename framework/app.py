@@ -125,7 +125,9 @@ class Application:
         tmp_folder = self.__config.get_path_root_folder()
         identification_process_folder = self.__config.get_path_identification_process()
         data_folder_identification = self.__config.get_path_data_folder_identification()
-        detection_resistance_process = self.__config.get_path_detection_resistance_process()
+        detection_resistance_process = (
+            self.__config.get_path_detection_resistance_process()
+        )
 
         if not os.path.exists(tmp_folder):
             os.mkdir(tmp_folder)

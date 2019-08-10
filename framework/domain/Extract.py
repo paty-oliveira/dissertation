@@ -9,9 +9,9 @@ class Extract(IStep):
         It allows the extraction of specific information from files.
     """
 
-    def __init__(self, configuration, specie, gene):
-        self.__ref_genes_file = configuration.get_antifungal_genes_file()
-        self.__mardy_file = configuration.get_mardy_file()
+    def __init__(self, filepath_ref_genes, filepath_mardy, specie, gene):
+        self.__ref_genes_file = filepath_ref_genes
+        self.__mardy_file = filepath_mardy
         self.__file_reader = ReadCsv()
         self.__specie = specie
         self.__gene = gene

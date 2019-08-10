@@ -1,8 +1,6 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.DetectionResistance import DetectionResistance
-import urllib.request
-import os
 
 
 def put_element_into_list(string):
@@ -49,4 +47,3 @@ class DetectionResistanceProcess(IProcess):
         )
 
         return steps
-
