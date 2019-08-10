@@ -23,44 +23,44 @@ class IPipeline(ABC):
         pass
 
 
-class DetectionResistance(IStep):
+# class DetectionResistance(IStep):
 
-    """
-        It allows the detection of resistance present in the file imported.
-    """
+#     """
+#         It allows the detection of resistance present in the file imported.
+#     """
 
-    def __init__(self, configuration, filepath, specie, gene, primers):
-        self.__configuration = configuration
-        self.__input_file = filepath
-        self.__specie = specie
-        self.__gene = gene
-        self.__primers = primers
-        self.__pipelines = self.__add_pipeline()
+#     def __init__(self, configuration, filepath, specie, gene, primers):
+#         self.__configuration = configuration
+#         self.__input_file = filepath
+#         self.__specie = specie
+#         self.__gene = gene
+#         self.__primers = primers
+#         self.__pipelines = self.__add_pipeline()
 
-    def execute(self):
-        "Execute the detection resistance pipeline, accordinf the list of pipelines."
+#     def execute(self):
+#         "Execute the detection resistance pipeline, accordinf the list of pipelines."
 
-        for pipeline in self.__pipelines:
-            result = pipeline.run()
+#         for pipeline in self.__pipelines:
+#             result = pipeline.run()
 
-            if result:
-                return result
+#             if result:
+#                 return result
 
-    def __add_pipeline(self):
-        "Add the pipelines."
+#     def __add_pipeline(self):
+#         "Add the pipelines."
 
-        pipelines = []
+#         pipelines = []
 
-        pipelines.append(
-            AntifungalResistancePipeline(
-                self.__configuration,
-                self.__input_file,
-                self.__specie,
-                self.__gene,
-                self.__primers,
-            )
-        )
-        return pipelines
+#         pipelines.append(
+#             AntifungalResistancePipeline(
+#                 self.__configuration,
+#                 self.__input_file,
+#                 self.__specie,
+#                 self.__gene,
+#                 self.__primers,
+#             )
+#         )
+#         return pipelines
 
 
 class AntifungalResistancePipeline(IPipeline):

@@ -1,6 +1,6 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys
-from framework.domain.DetectionResistance import DetectionResistance
+from framework.domain.DetectionResistance import AntifungalResistancePipeline
 
 
 def put_element_into_list(string):
@@ -21,23 +21,23 @@ class DetectionResistanceProcess(IProcess):
         self.__specie = params[ParameterKeys.SPECIE_NAME]
         self.__gene = params[ParameterKeys.GENE_NAME]
         self.__primer = put_element_into_list(params[ParameterKeys.PRIMERS])
-        self.__steps = self.__add_step()
+        self.__pipeline = self.__add_pipeline()
 
     def run(self):
         "Executes all the steps of the process."
 
-        for step in self.__steps:
-            resistance = step.execute()
+        for pipeline in self.__pipeline:
+            resistance = pipeline.run()
 
             if resistance:
                 return resistance
 
-    def __add_step(self):
+    def __add_pipeline(self):
         "Adds the steps of the process."
 
         steps = []
         steps.append(
-            DetectionResistance(
+            AntifungalResistancePipeline(
                 self.__configuration,
                 self.__filepath,
                 self.__specie,
