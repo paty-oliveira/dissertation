@@ -34,7 +34,7 @@ class IPipeline(ABC):
 #         self.__input_file = filepath
 #         self.__specie = specie
 #         self.__gene = gene
-#         self.__primers = primers
+#         self.__primersss = primers
 #         self.__pipelines = self.__add_pipeline()
 
 #     def execute(self):
@@ -57,7 +57,7 @@ class IPipeline(ABC):
 #                 self.__input_file,
 #                 self.__specie,
 #                 self.__gene,
-#                 self.__primers,
+#                 self.__primerss,
 #             )
 #         )
 #         return pipelines
@@ -75,7 +75,7 @@ class AntifungalResistancePipeline(IPipeline):
         self.__input_file = filepath
         self.__specie = specie
         self.__gene = gene
-        self.__primer = primers
+        self.__primers = primers
 
     def run(self):
         "Executes all the steps of the pipeline."
@@ -122,7 +122,7 @@ class AntifungalResistancePipeline(IPipeline):
         "Creates the Remove object to remove primers and trims sequences."
 
         query_trimmed, ref_trimmed = Remove(
-            query_sequence, ref_sequence, self.__primer
+            query_sequence, ref_sequence, self.__primers
         ).execute()
 
         return query_trimmed, ref_trimmed

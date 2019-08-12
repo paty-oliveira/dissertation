@@ -50,7 +50,8 @@ class ConsoleView(IUserInterface):
             ),
             ParameterKeys.SPECIE_NAME: "Candida albicans",
             ParameterKeys.GENE_NAME: "ERG11",
-            ParameterKeys.PRIMERS: "AAAAAT TTTTTA",
+            ParameterKeys.FORWARD_PRIMER: "AAAAAT",
+            ParameterKeys.REVERSE_PRIMER: "TTTTTA"
         }
         should_exit = True
         return params, should_exit
@@ -104,8 +105,11 @@ class ConsoleView(IUserInterface):
                 gene_name = input("Gene: ").upper()
                 params[ParameterKeys.GENE_NAME] = gene_name
 
-                primers = input("Primers: ").upper()
-                params[ParameterKeys.PRIMERS] = primers
+                forward_primer = input("Forward primer: ").upper()
+                params[ParameterKeys.FORWARD_PRIMER] = forward_primer
+
+                reverse_primer = input("Reverse primer: ").upper()
+                params[ParameterKeys.REVERSE_PRIMER] = reverse_primer
 
             response = input("Will you continue executing other pipelines? [y|N]: ")
             should_exit = self.__parse_response(response, default="n")

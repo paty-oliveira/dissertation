@@ -3,10 +3,10 @@ from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.DetectionResistance import AntifungalResistancePipeline
 
 
-def put_element_into_list(string):
-    "Puts elements of the string into a list."
+def add_elements(first_element, second_element):
+    "Add elements to a list."
 
-    return [element for element in string.split(" ")]
+    return list([first_element, second_element])
 
 
 class DetectionResistanceProcess(IProcess):
@@ -20,7 +20,7 @@ class DetectionResistanceProcess(IProcess):
         self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
         self.__specie = params[ParameterKeys.SPECIE_NAME]
         self.__gene = params[ParameterKeys.GENE_NAME]
-        self.__primer = put_element_into_list(params[ParameterKeys.PRIMERS])
+        self.__primers = add_elements(params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER])
         self.__pipeline = self.__add_pipeline()
 
     def run(self):
@@ -42,7 +42,7 @@ class DetectionResistanceProcess(IProcess):
                 self.__filepath,
                 self.__specie,
                 self.__gene,
-                self.__primer,
+                self.__primers,
             )
         )
 
