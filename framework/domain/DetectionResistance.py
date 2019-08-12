@@ -72,14 +72,10 @@ class AntifungalResistancePipeline(IPipeline):
     def __init__(self, configuration, filepath, specie, gene, primers):
         self.__ref_genes_filepath = configuration.get_antifungal_genes_file()
         self.__mardy_file = configuration.get_mardy_file()
-        self.__detection_resistance_folder = (
-            configuration.get_path_detection_resistance_process()
-        )
         self.__input_file = filepath
         self.__specie = specie
         self.__gene = gene
         self.__primer = primers
-        self.__dowmload(self.__detection_resistance_folder)
 
     def run(self):
         "Executes all the steps of the pipeline."
@@ -107,13 +103,6 @@ class AntifungalResistancePipeline(IPipeline):
         ).execute()
 
         return reference_sequence, position, mardy_information
-
-    def __dowmload(self, path):
-        "Executes the download of the file from Mardy database."
-
-        url = " http://mardy.dide.ic.ac.uk/session_files/DB_by_drug.csv"
-        file_name = os.path.join(path, "DB_by_drug.csv")
-        urllib.request.urlretrieve(url, file_name)
 
     def __mutation(self, aminoacid_ref, aminoacid_query, position):
         "Creates the Mutation object to identifies the amino acid substitutions "

@@ -35,6 +35,12 @@ class Configuration:
     def get_resource_folder_path(self):
         return self.__parser.get("DETECTIONMUTATIONPROCESS", "resource_folder")
 
+    def get_url(self):
+        return self.__parser.get("DOWNLOAD", "url")
+
+    def get_file_name(self):
+        return self.__parser.get("DOWNLOAD", "file_name")
+
     def get_initial_message(self):
         return self.__parser.get("MESSAGES", "inicial_message")
 
