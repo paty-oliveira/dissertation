@@ -51,7 +51,7 @@ class ConsoleView(IUserInterface):
             ParameterKeys.SPECIE_NAME: "Candida albicans",
             ParameterKeys.GENE_NAME: "ERG11",
             ParameterKeys.FORWARD_PRIMER: "AAAAAT",
-            ParameterKeys.REVERSE_PRIMER: "TTTTTA"
+            ParameterKeys.REVERSE_PRIMER: "TTTTTA",
         }
         should_exit = True
         return params, should_exit

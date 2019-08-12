@@ -20,7 +20,9 @@ class DetectionResistanceProcess(IProcess):
         self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
         self.__specie = params[ParameterKeys.SPECIE_NAME]
         self.__gene = params[ParameterKeys.GENE_NAME]
-        self.__primers = add_elements(params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER])
+        self.__primers = add_elements(
+            params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER]
+        )
         self.__pipeline = self.__add_pipeline()
 
     def run(self):

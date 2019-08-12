@@ -30,7 +30,7 @@ class Application:
         print(self.__configuration.get_initial_message())
 
         args = self.__args_parser.parse_args()
-        params = vars(args)  
+        params = vars(args)
 
         if self.__is_mode(params["mode"], "console"):
             self.run_console()
@@ -125,7 +125,6 @@ class Application:
         filepath = os.path.join(path, file_name)
         urllib.request.urlretrieve(url, filepath)
 
-
     def __is_mode(self, base_mode, mode):
         "Verifies if the arguments contain the given mode."
 
@@ -135,8 +134,12 @@ class Application:
         "Prepares environment of execution before the start of the application."
 
         tmp_folder = self.__configuration.get_path_root_folder()
-        identification_process_folder = self.__configuration.get_path_identification_process()
-        data_folder_identification = self.__configuration.get_path_data_folder_identification()
+        identification_process_folder = (
+            self.__configuration.get_path_identification_process()
+        )
+        data_folder_identification = (
+            self.__configuration.get_path_data_folder_identification()
+        )
         detection_resistance_process = (
             self.__configuration.get_path_detection_resistance_process()
         )
