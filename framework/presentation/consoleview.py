@@ -178,9 +178,6 @@ class ConsoleView(IUserInterface):
 
                     return params, should_exit
 
-        except SyntaxError as error:
-            print("Syntax error during the introduction of the options: ", error)
-
         except WrongFilePath as error:
             print(error.message)
 
