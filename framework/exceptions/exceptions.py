@@ -43,28 +43,56 @@ class WrongPrimerError(WrongOptionError):
 
 
 class EmptyFileError(FileReadindError):
-    pass
+    def __init__(self):
+        self.message = "Empty file. Please introduce new file."
+
+    def __str__(self):
+        return "{}".format(self.message)
 
 
 class InvalidFileError(FileReadindError):
-    pass
+    def __init__(self):
+        self.message = "The file extension isn´t supported. Please introduce a correct file."
+
+    def __str__(self):
+        return "{}".format(self.message)
 
 
 class SpecieIdentificationError(ProcessExecutionError):
-    pass
+    def __init__(self):
+        self.message = "Error during the specie identification."
+    
+    def __str__(self):
+        return "{}".format(self.message)
 
 
-class ResistanceDetectionError(ProcessExecutionError):
-    pass
+class AntifungalResistanceProcessError(Exception):
+    def  __init__(self):
+        self.message = "Error during the detection of antifungal resistance."
+
+    def __str__(self):
+        return "{}".format(self.message)
 
 
 class InformationExtractionError(Exception):
-    pass
+    def  __init__(self):
+        self.message = "Error during the information extraction."
+
+    def __str__(self):
+        return "{}".format(self.message)
 
 
 class SequenceLengthError(Exception):
-    pass
+    def __init__(self):
+        self.message = "The sequence introduced haven't a correct length. Please review the sequence."
 
-    
+    def __str__(self):
+        return "{}".format(self.message)
+
+
 class PipitsExecutionError(Exception):
-    pass
+    def __init__(self):
+        self.message = "An error has occurred during the PIPITS process."
+
+    def __str__(self):
+        return "{}".format(self.message)
