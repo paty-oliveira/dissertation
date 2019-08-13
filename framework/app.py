@@ -6,6 +6,7 @@ from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.ConsoleView import ConsoleView
 from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
+from framework.exceptions.exceptions import AppExecutionError
 
 
 class Application:
@@ -26,24 +27,27 @@ class Application:
 
     def start(self):
         "This is the initialization of the application, throught the modes selected by user."
+        try:
+            print(self.__configuration.get_initial_message())
 
-        print(self.__configuration.get_initial_message())
+            args = self.__args_parser.parse_args()
+            params = vars(args)
 
-        args = self.__args_parser.parse_args()
-        params = vars(args)
+            if self.__is_mode(params["mode"], "console"):
+                self.run_console()
 
-        if self.__is_mode(params["mode"], "console"):
-            self.run_console()
+            elif self.__is_mode(params["mode"], "gui"):
+                self.run_gui()
 
-        elif self.__is_mode(params["mode"], "gui"):
-            self.run_gui()
+            else:
+                self.run_batch_mode(params)
 
-        else:
-            self.run_batch_mode(params)
+            self.__removal_folder_content(self.__tmp_folder_path)
 
-        self.__removal_folder_content(self.__tmp_folder_path)
+            print(self.__configuration.get_final_message())
 
-        print(self.__configuration.get_final_message())
+        except Exception:
+            print("Error during the execution of the application. Please try again.")
 
     def run_console(self):
         "This is the default behavior. The application calls the console view."
@@ -122,8 +126,12 @@ class Application:
     def __download(self, url, file_name, path):
         "Executes the download of the file from specific URL.."
 
-        filepath = os.path.join(path, file_name)
-        urllib.request.urlretrieve(url, filepath)
+        try:
+            filepath = os.path.join(path, file_name)
+            urllib.request.urlretrieve(url, filepath)
+
+        except ConnectionRefusedError as error:
+            print("Connection error with the HTTP connection: ", error)
 
     def __is_mode(self, base_mode, mode):
         "Verifies if the arguments contain the given mode."
