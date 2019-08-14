@@ -7,6 +7,7 @@ from framework.domain.Remove import Remove
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
+from framework.exceptions.exceptions import AntifungalResistanceProcessError
 import os
 import urllib.request
 from abc import ABC, abstractmethod
@@ -79,7 +80,7 @@ class AntifungalResistancePipeline(IPipeline):
 
     def run(self):
         "Executes all the steps of the pipeline."
-
+        
         stage_1 = self.__read()
         stage_2 = self.__extract()
         stage_3 = self.__remove(stage_1, stage_2[0])

@@ -6,7 +6,6 @@ from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.ConsoleView import ConsoleView
 from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
-from framework.exceptions.exceptions import AppExecutionError
 
 
 class Application:
@@ -45,9 +44,9 @@ class Application:
             self.__removal_folder_content(self.__tmp_folder_path)
 
             print(self.__configuration.get_final_message())
-
-        except Exception:
-            print("Error during the execution of the application. Please try again.")
+        
+        except Exception as error:
+            print("Error during the execution of the application. Please try again.", error)
 
     def run_console(self):
         "This is the default behavior. The application calls the console view."

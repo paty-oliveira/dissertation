@@ -1,4 +1,5 @@
 from framework.domain.IStep import IStep
+from framework.exceptions.exceptions import PipitsExecutionError
 from abc import ABC, abstractmethod
 import subprocess
 import shutil
@@ -100,14 +101,17 @@ class PipitsPipeline(IIdentification):
         "Execute all commands for identification of specie."
 
         try:
-            self.__generate_read_pairs_list()
-            self.__preprocessing_sequence()
-            self.__extract_its_regions()
-            self.__analyze_taxonomy()
-            self.__fungi_specie()
+            pair_list = self.__generate_read_pairs_list()
+            preprocessing = self.__preprocessing_sequence()
+            extraction = self.__extract_its_regions()
+            taxonomy = self.__analyze_taxonomy()
+            result = self.__fungi_specie()
 
-        except Exception as error:
-            print("Error in the pipeline of Identification.", error)
+            if not result:
+                raise PipitsExecutionError
+
+        except PipitsExecutionError as error:
+            print(error.message)
 
     def __analyze_taxonomy(self):
         """Return the identification of the fungal specie present in the sequencing files,

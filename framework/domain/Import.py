@@ -1,4 +1,5 @@
 from framework.domain.IStep import IStep
+from framework.exceptions.exceptions import FileReadindError
 import shutil
 import os
 import subprocess
@@ -16,12 +17,9 @@ class Import(IStep):
 
     def execute(self):
         "Execute the importing of the files."
-
-        try:
-            self.__import_file()
-
-        except FileNotFoundError:
-            return "File not found. Please introduce a filepath correct."
+        
+        file = self.__import_file()
+        return file
 
     def __import_file(self):
         "Copy files from path introduced by user to specific data folder."
