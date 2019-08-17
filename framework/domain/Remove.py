@@ -1,5 +1,6 @@
 from framework.domain.IStep import IStep
 from framework.domain.Extract import Extract
+from framework.exceptions.exceptions import InvalidSequenceError
 import re
 
 
@@ -34,7 +35,10 @@ class Remove(IStep):
         for name, sequence in self.__ref_sequence.items():
             ref_sequence_trimmed = self.__trims(sequence, sbjct_sequence_trimmed)
 
-        return sbjct_sequence_trimmed, ref_sequence_trimmed
+        if sbjct_sequence_trimmed and ref_sequence_trimmed:
+            return sbjct_sequence_trimmed, ref_sequence_trimmed
+
+        raise InvalidSequenceError
 
     def __remove(self, sequence, primers):
         "Removes substrings of the string."

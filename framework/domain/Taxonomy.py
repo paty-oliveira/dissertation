@@ -37,6 +37,8 @@ class Taxonomy(IStep):
             if result:
                 return result
 
+            return False
+
     def __add_identifiers(self):
         "Adds the identifiers."
 
@@ -100,18 +102,16 @@ class PipitsPipeline(IIdentification):
     def identify(self):
         "Execute all commands for identification of specie."
 
-        try:
-            pair_list = self.__generate_read_pairs_list()
-            preprocessing = self.__preprocessing_sequence()
-            extraction = self.__extract_its_regions()
-            taxonomy = self.__analyze_taxonomy()
-            result = self.__fungi_specie()
+        pair_list = self.__generate_read_pairs_list()
+        preprocessing = self.__preprocessing_sequence()
+        extraction = self.__extract_its_regions()
+        taxonomy = self.__analyze_taxonomy()
+        result = self.__fungi_specie()
 
-            if not result:
-                raise PipitsExecutionError
+        if result:
+            return "Specie identification pipeline executed."
 
-        except PipitsExecutionError as error:
-            print(error.message)
+        return False
 
     def __analyze_taxonomy(self):
         """Return the identification of the fungal specie present in the sequencing files,

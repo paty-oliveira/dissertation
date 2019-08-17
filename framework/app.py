@@ -26,6 +26,7 @@ class Application:
 
     def start(self):
         "This is the initialization of the application, throught the modes selected by user."
+
         try:
             print(self.__configuration.get_initial_message())
 
@@ -44,9 +45,9 @@ class Application:
             self.__removal_folder_content(self.__tmp_folder_path)
 
             print(self.__configuration.get_final_message())
-        
+
         except Exception as error:
-            print("Error during the execution of the application. Please try again.", error)
+            print("Error during the execution of the application.", error)
 
     def run_console(self):
         "This is the default behavior. The application calls the console view."

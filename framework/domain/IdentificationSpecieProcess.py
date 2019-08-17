@@ -25,6 +25,8 @@ class IdentificationSpecieProcess(IProcess):
             if identification:
                 return identification
 
+            return "No species identified."
+
     def __add_step(self):
         "Adds the steps of the process."
 

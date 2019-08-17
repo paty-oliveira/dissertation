@@ -1,16 +1,4 @@
-class WrongOptionError(Exception):
-    pass
-
-
-class FileReadindError(Exception):
-    pass
-
-
-class ProcessExecutionError(Exception):
-    pass
-
-
-class WrongFilePath(WrongOptionError):
+class WrongFilePath(Exception):
     def __init__(self):
         self.message = "Invalid file path. Please introduce a valid path."
 
@@ -18,7 +6,7 @@ class WrongFilePath(WrongOptionError):
         return "{}".format(self.message)
 
 
-class WrongSpecieError(WrongOptionError):
+class WrongSpecieError(Exception):
     def __init__(self):
         self.message = "Error in the specie syntax. Please introduce a valid specie."
 
@@ -26,7 +14,7 @@ class WrongSpecieError(WrongOptionError):
         return "{}".format(self.message)
 
 
-class WrongGeneError(WrongOptionError):
+class WrongGeneError(Exception):
     def __init__(self):
         self.message = "Error in the gene syntax.Please introduce a valid gene."
 
@@ -34,7 +22,7 @@ class WrongGeneError(WrongOptionError):
         return "{}".format(self.message)
 
 
-class WrongPrimerError(WrongOptionError):
+class WrongPrimerError(Exception):
     def __init__(self):
         self.message = "Error in the primer syntax. Please introduce a valid primer."
 
@@ -42,7 +30,7 @@ class WrongPrimerError(WrongOptionError):
         return "{}".format(self.message)
 
 
-class EmptyFileError(FileReadindError):
+class EmptyFileError(Exception):
     def __init__(self):
         self.message = "Empty file. Please introduce new file."
 
@@ -50,41 +38,25 @@ class EmptyFileError(FileReadindError):
         return "{}".format(self.message)
 
 
-class InvalidFileError(FileReadindError):
-    def __init__(self):
-        self.message = "The file extension isn´t supported. Please introduce a correct file."
-
-    def __str__(self):
-        return "{}".format(self.message)
-
-
-class SpecieIdentificationError(ProcessExecutionError):
-    def __init__(self):
-        self.message = "Error during the specie identification."
-    
-    def __str__(self):
-        return "{}".format(self.message)
-
-
-class AntifungalResistanceProcessError(Exception):
-    def  __init__(self):
-        self.message = "Error during the detection of antifungal resistance."
-
-    def __str__(self):
-        return "{}".format(self.message)
-
-
 class InformationExtractionError(Exception):
-    def  __init__(self):
+    def __init__(self):
         self.message = "Error during the information extraction."
 
     def __str__(self):
         return "{}".format(self.message)
 
 
-class SequenceLengthError(Exception):
+class InvalidSequenceError(Exception):
     def __init__(self):
-        self.message = "The sequence introduced haven't a correct length. Please review the sequence."
+        self.message = "The sequence isn't valid. Please review the sequence."
+
+    def __str__(self):
+        return "{}".format(self.message)
+
+
+class InvalidTranslationError(Exception):
+    def __init__(self):
+        self.message = "The amino acid sequence haven't a valid length. Please review the sequence."
 
     def __str__(self):
         return "{}".format(self.message)

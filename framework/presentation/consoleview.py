@@ -42,6 +42,7 @@ class ConsoleView(IUserInterface):
             print("\nRunning pipeline...")
 
             results = self.__controller.execute(params)
+            print(results)
 
             if should_exit:
                 break
@@ -105,87 +106,72 @@ class ConsoleView(IUserInterface):
     def __user_options(self):
         "The user responds to the form and gets the parameters."
 
-        try:
-            should_exit = False
-            params = {}
+        should_exit = False
+        params = {}
 
-            response = input("Test mode [y|N]: ")
-            if self.__parse_response(response):
-                params, should_exit = self.__mock_options()
+        response = input("Test mode [y|N]: ")
+        if self.__parse_response(response):
+            params, should_exit = self.__mock_options()
+
+            return params, should_exit
+
+        else:
+            while True:
+                response = input("Identify specie [Y|n]:")
+                params[ParameterKeys.IDENTIFICATION_KEY] = self.__parse_response(
+                    response
+                )
+                if self.__parse_response(response):
+                    filepath_identification = input("File directory: ")
+                    if self.__is_path(filepath_identification):
+                        params[ParameterKeys.FILEPATH_IDENTIFICATION] = convert_path(
+                            filepath_identification
+                        )
+                    else:
+                        raise WrongFilePath
+                        break
+
+                response = input("Detect mutations? [Y|n]: ")
+                params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
+                if self.__parse_response(response):
+                    filepath_detection = input("File directory: ")
+                    if self.__is_path(filepath_detection):
+                        params[ParameterKeys.FILEPATH_DETECTION] = convert_path(
+                            filepath_detection
+                        )
+                    else:
+                        raise WrongFilePath
+                        break
+
+                    specie_name = input("Specie name: ").capitalize()
+                    if self.__is__specie(specie_name):
+                        params[ParameterKeys.SPECIE_NAME] = specie_name
+                    else:
+                        raise WrongSpecieError
+                        break
+
+                    gene_name = input("Gene: ").upper()
+                    if self.__is_gene(gene_name):
+                        params[ParameterKeys.GENE_NAME] = gene_name
+                    else:
+                        raise WrongGeneError
+                        break
+
+                    forward_primer = input("Forward primer: ").upper()
+                    if self.__is_primer(forward_primer):
+                        params[ParameterKeys.FORWARD_PRIMER] = forward_primer
+                    else:
+                        raise WrongPrimerError
+                        break
+
+                    reverse_primer = input("Reverse primer: ").upper()
+                    if self.__is_primer(reverse_primer):
+                        params[ParameterKeys.REVERSE_PRIMER] = reverse_primer
+                    else:
+                        raise WrongPrimerError
+                        break
+
+                response = input("Will you continue executing other pipelines? [y|N]: ")
+                should_exit = self.__parse_response(response, default="n")
 
                 return params, should_exit
-
-            else:
-                while True:
-                    response = input("Identify specie [Y|n]:")
-                    params[ParameterKeys.IDENTIFICATION_KEY] = self.__parse_response(
-                        response
-                    )
-                    if self.__parse_response(response):
-                        filepath_identification = input("File directory: ")
-                        if self.__is_path(filepath_identification):
-                            params[
-                                ParameterKeys.FILEPATH_IDENTIFICATION
-                            ] = convert_path(filepath_identification)
-                        else:
-                            raise WrongFilePath
-                            break
-
-                    response = input("Detect mutations? [Y|n]: ")
-                    params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
-                    if self.__parse_response(response):
-                        filepath_detection = input("File directory: ")
-                        if self.__is_path(filepath_detection):
-                            params[ParameterKeys.FILEPATH_DETECTION] = convert_path(
-                                filepath_detection
-                            )
-                        else:
-                            raise WrongFilePath
-                            break
-
-                        specie_name = input("Specie name: ").capitalize()
-                        if self.__is__specie(specie_name):
-                            params[ParameterKeys.SPECIE_NAME] = specie_name
-                        else:
-                            raise WrongSpecieError
-                            break
-
-                        gene_name = input("Gene: ").upper()
-                        if self.__is_gene(gene_name):
-                            params[ParameterKeys.GENE_NAME] = gene_name
-                        else:
-                            raise WrongGeneError
-                            break
-
-                        forward_primer = input("Forward primer: ").upper()
-                        if self.__is_primer(forward_primer):
-                            params[ParameterKeys.FORWARD_PRIMER] = forward_primer
-                        else:
-                            raise WrongPrimerError
-                            break
-
-                        reverse_primer = input("Reverse primer: ").upper()
-                        if self.__is_primer(reverse_primer):
-                            params[ParameterKeys.REVERSE_PRIMER] = reverse_primer
-                        else:
-                            raise WrongPrimerError
-                            break
-
-                    response = input(
-                        "Will you continue executing other pipelines? [y|N]: "
-                    )
-                    should_exit = self.__parse_response(response, default="n")
-
-                    return params, should_exit
-
-        except WrongFilePath as error:
-            print(error.message)
-
-        except WrongGeneError as error:
-            print(error.message)
-
-        except WrongPrimerError as error:
-            print(error.message)
-
-        except WrongSpecieError as error:
-            print(error.message)

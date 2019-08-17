@@ -23,7 +23,10 @@ class Extract(IStep):
         dna_sequence, dna_position = self.__sequence_position_reference()
         mardy_information = self.__drugs_mutations_reference()
 
-        return dna_sequence, dna_position, mardy_information
+        if dna_sequence and dna_position and mardy_information:
+            return dna_sequence, dna_position, mardy_information
+
+        raise InformationExtractionError
 
     def __drugs_mutations_reference(self):
         "Obtains the reference information about drugs and mutations from Mardy database."

@@ -7,7 +7,6 @@ from framework.domain.Remove import Remove
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
-from framework.exceptions.exceptions import AntifungalResistanceProcessError
 import os
 import urllib.request
 from abc import ABC, abstractmethod
@@ -22,46 +21,6 @@ class IPipeline(ABC):
     @abstractmethod
     def run(self):
         pass
-
-
-# class DetectionResistance(IStep):
-
-#     """
-#         It allows the detection of resistance present in the file imported.
-#     """
-
-#     def __init__(self, configuration, filepath, specie, gene, primers):
-#         self.__configuration = configuration
-#         self.__input_file = filepath
-#         self.__specie = specie
-#         self.__gene = gene
-#         self.__primersss = primers
-#         self.__pipelines = self.__add_pipeline()
-
-#     def execute(self):
-#         "Execute the detection resistance pipeline, accordinf the list of pipelines."
-
-#         for pipeline in self.__pipelines:
-#             result = pipeline.run()
-
-#             if result:
-#                 return result
-
-#     def __add_pipeline(self):
-#         "Add the pipelines."
-
-#         pipelines = []
-
-#         pipelines.append(
-#             AntifungalResistancePipeline(
-#                 self.__configuration,
-#                 self.__input_file,
-#                 self.__specie,
-#                 self.__gene,
-#                 self.__primerss,
-#             )
-#         )
-#         return pipelines
 
 
 class AntifungalResistancePipeline(IPipeline):
@@ -80,7 +39,7 @@ class AntifungalResistancePipeline(IPipeline):
 
     def run(self):
         "Executes all the steps of the pipeline."
-        
+
         stage_1 = self.__read()
         stage_2 = self.__extract()
         stage_3 = self.__remove(stage_1, stage_2[0])
@@ -88,6 +47,11 @@ class AntifungalResistancePipeline(IPipeline):
         stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
         stage_6 = self.__antifungals(stage_2[2], stage_5)
         output_file = self.__write(stage_5, stage_6)
+
+        if output_file:
+            return "Detection resistance pipeline executed."
+
+        return False
 
     def __antifungals(self, reference_data, mutations):
         "Creates the AntifungalResistance object to identify the antifungals to which the organism is resistant."

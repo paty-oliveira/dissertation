@@ -20,7 +20,7 @@ class AntifungalResistance(IStep):
         if antifungal_resistance:
             return antifungal_resistance
 
-        return "No antifungal resistance identified."
+        return False
 
     def __identify(self, reference_data):
         "Identifies the antifungals according to the antifungal resistance promoted by the mutations."
