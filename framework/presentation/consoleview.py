@@ -24,6 +24,18 @@ def convert_path(path):
     return str(result)
 
 
+def valid_path(path):
+    "Checks if the path is valid."
+
+    return os.path.exists(path)
+
+
+def valid_primer(primer):
+    "Checks if primer has the correct characters."
+
+    return set(primer).issubset("AGTC")
+
+
 class ConsoleView(IUserInterface):
     """
         Console View presents the user with the form for running the pipeline
@@ -54,30 +66,37 @@ class ConsoleView(IUserInterface):
         print("#### Identification and Detection - Framework ####")
         print("##################################################")
 
-    def __is_gene(self, gene):
+    def __parse_gene(self, response):
         "Checks if is the correct gene."
 
-        return gene in ["ERG11", "FKS1", "FKS2"]
+        gene_code = {"1": "ERG11", "2": "FKS1", "3": "FKS2"}
+        for code, gene in gene_code.items():
+            if response == code:
+                return gene
 
-    def __is_primer(self, primer):
-        "Checks if primer has the correct characters."
+        return False
 
-        return set(primer).issubset("AGTC")
+    def __parse_response(self, response, default="y"):
+        "Parses the response given by the user."
 
-    def __is__specie(self, specie):
+        return (
+            response == default.lower() or response == default.upper() or response == ""
+        )
+
+    def __parse_specie(self, response):
         "Checks if is the correct specie."
 
-        return specie in [
-            "Candida albicans",
-            "Candida glabrata",
-            "Candida tropicalis",
-            "Candida parapsilosis",
-        ]
+        specie_code = {
+            "1": "Candida albicans",
+            "2": "Candida glabrata",
+            "3": "Candida tropicalis",
+            "4": "Candida parapsilosis",
+        }
+        for code, specie in specie_code.items():
+            if response == code:
+                return specie
 
-    def __is_path(self, path):
-        "Checks if the path is valid."
-
-        return os.path.exists(path)
+        return False
 
     def __mock_options(self):
         "Represents a dictionary with parameters for test mode."
@@ -96,34 +115,38 @@ class ConsoleView(IUserInterface):
         should_exit = True
         return params, should_exit
 
-    def __parse_response(self, response, default="y"):
-        "Parses the response given by the user."
-
-        return (
-            response == default.lower() or response == default.upper() or response == ""
-        )
+    def __show_status(self, response):
+        response_code = {
+            "ID-1": "Specie identification was executed with sucess. Please check the results.",
+            "ID-0": "It wasn't possible execute the specie identification. ",
+            "ANTI-1": "Antifungal resistance detection was executed with sucess. Please check the results.",
+            "ANRI-0": "Is wasn't possible execute the detection of antifungal resistance.",
+        }
+        for code, action in response_code.items():
+            if response == code:
+                print(action)
 
     def __user_options(self):
         "The user responds to the form and gets the parameters."
 
-        should_exit = False
-        params = {}
-
-        response = input("Test mode [y|N]: ")
-        if self.__parse_response(response):
+        question = input("Test mode [y|N]: ")
+        response = self.__parse_response(question)
+        if response:
             params, should_exit = self.__mock_options()
 
             return params, should_exit
 
         else:
             while True:
-                response = input("Identify specie [Y|n]:")
-                params[ParameterKeys.IDENTIFICATION_KEY] = self.__parse_response(
-                    response
-                )
-                if self.__parse_response(response):
+                params = {}
+                should_exit = False
+
+                question = input("Identify specie [Y|n]:")
+                response = self.__parse_response(question)
+                if response:
+                    params[ParameterKeys.IDENTIFICATION_KEY] = response
                     filepath_identification = input("File directory: ")
-                    if self.__is_path(filepath_identification):
+                    if valid_path(filepath_identification):
                         params[ParameterKeys.FILEPATH_IDENTIFICATION] = convert_path(
                             filepath_identification
                         )
@@ -131,11 +154,12 @@ class ConsoleView(IUserInterface):
                         raise WrongFilePath
                         break
 
-                response = input("Detect mutations? [Y|n]: ")
-                params[ParameterKeys.MUTATION_KEY] = self.__parse_response(response)
-                if self.__parse_response(response):
+                question = input("Detect mutations? [Y|n]: ")
+                response = self.__parse_response(question)
+                if response:
+                    params[ParameterKeys.MUTATION_KEY] = response
                     filepath_detection = input("File directory: ")
-                    if self.__is_path(filepath_detection):
+                    if valid_path(filepath_detection):
                         params[ParameterKeys.FILEPATH_DETECTION] = convert_path(
                             filepath_detection
                         )
@@ -143,29 +167,37 @@ class ConsoleView(IUserInterface):
                         raise WrongFilePath
                         break
 
-                    specie_name = input("Specie name: ").capitalize()
-                    if self.__is__specie(specie_name):
+                    response = str(
+                        input(
+                            "Choose the specie:\n 1. C. albicans\n 2. C. glabrata\n 3. C. parapsilosis\n 4. C. tropicalis\n"
+                        )
+                    ).strip()
+                    specie_name = self.__parse_specie(response)
+                    if specie_name:
                         params[ParameterKeys.SPECIE_NAME] = specie_name
                     else:
                         raise WrongSpecieError
                         break
 
-                    gene_name = input("Gene: ").upper()
-                    if self.__is_gene(gene_name):
+                    response = str(
+                        input("Choose the gene:\n 1. ERG11\n 2. FKS1\n 3. FKS2\n")
+                    ).strip()
+                    gene_name = self.__parse_gene(response)
+                    if gene_name:
                         params[ParameterKeys.GENE_NAME] = gene_name
                     else:
                         raise WrongGeneError
                         break
 
                     forward_primer = input("Forward primer: ").upper()
-                    if self.__is_primer(forward_primer):
+                    if valid_primer(forward_primer):
                         params[ParameterKeys.FORWARD_PRIMER] = forward_primer
                     else:
                         raise WrongPrimerError
                         break
 
                     reverse_primer = input("Reverse primer: ").upper()
-                    if self.__is_primer(reverse_primer):
+                    if valid_primer(reverse_primer):
                         params[ParameterKeys.REVERSE_PRIMER] = reverse_primer
                     else:
                         raise WrongPrimerError
@@ -175,14 +207,3 @@ class ConsoleView(IUserInterface):
                 should_exit = self.__parse_response(response, default="n")
 
                 return params, should_exit
-
-    def __show_status(self, response):
-        status_code = {
-            "ID-1": "Specie identification was executed with sucess. Please check the results.",
-            "ID-0": "It wasn't possible execute the specie identification. ",
-            "ANTI-1": "Antifungal resistance detection was executed with sucess. Please check the results.",
-            "ANRI-0": "Is wasn't possible execute the detection of antifungal resistance.",
-        }
-        for code, action in status_code.items():
-            if response == code:
-                print(action)

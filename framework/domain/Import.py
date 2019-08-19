@@ -1,4 +1,5 @@
 from framework.domain.IStep import IStep
+from framework.exceptions.exceptions import WrongFilePath
 import shutil
 import os
 import subprocess
@@ -17,13 +18,13 @@ class Import(IStep):
     def execute(self):
         "Execute the importing of the files."
 
-        file = self.__import_file()
+        file = self.__import_file(self.__data_folder)
 
         return file
 
-    def __import_file(self):
+    def __import_file(self, folder):
         "Copy files from path introduced by user to specific data folder."
 
         with os.scandir(self.__filepath) as data_folder:
             for file in data_folder:
-                shutil.copy(file, self.__data_folder)
+                shutil.copy(file, folder)
