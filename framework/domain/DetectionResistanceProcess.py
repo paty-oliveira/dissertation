@@ -32,9 +32,9 @@ class DetectionResistanceProcess(IProcess):
             resistance = pipeline.run()
 
             if resistance:
-                return resistance
+                return "ANTI-1"
 
-            return "No antifungal resistance identified."
+            return "ANTI-0"
 
     def __add_pipeline(self):
         "Adds the steps of the process."

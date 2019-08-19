@@ -42,7 +42,7 @@ class ConsoleView(IUserInterface):
             print("\nRunning pipeline...")
 
             results = self.__controller.execute(params)
-            print(results)
+            self.__show_status(results)
 
             if should_exit:
                 break
@@ -175,3 +175,14 @@ class ConsoleView(IUserInterface):
                 should_exit = self.__parse_response(response, default="n")
 
                 return params, should_exit
+
+    def __show_status(self, response):
+        status_code = {
+            "ID-1": "Specie identification was executed with sucess. Please check the results.",
+            "ID-0": "It wasn't possible execute the specie identification. ",
+            "ANTI-1": "Antifungal resistance detection was executed with sucess. Please check the results.",
+            "ANRI-0": "Is wasn't possible execute the detection of antifungal resistance.",
+        }
+        for code, action in status_code.items():
+            if response == code:
+                print(action)

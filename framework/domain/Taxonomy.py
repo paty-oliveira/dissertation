@@ -35,7 +35,7 @@ class Taxonomy(IStep):
             result = identifier.identify()
 
             if result:
-                return result
+                return True
 
             return False
 
@@ -109,7 +109,7 @@ class PipitsPipeline(IIdentification):
         result = self.__fungi_specie()
 
         if result:
-            return "Specie identification pipeline executed."
+            return True
 
         return False
 

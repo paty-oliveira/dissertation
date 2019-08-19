@@ -49,7 +49,7 @@ class AntifungalResistancePipeline(IPipeline):
         output_file = self.__write(stage_5, stage_6)
 
         if output_file:
-            return "Detection resistance pipeline executed."
+            return True
 
         return False
 
