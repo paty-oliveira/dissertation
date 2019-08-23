@@ -1,9 +1,9 @@
 from framework.domain.IStep import IStep
-from framework.domain.Read import ReadCsv
+from framework.domain.FileReading import CsvReading
 import pandas as pd
 
 
-class Extract(IStep):
+class InformationExtraction(IStep):
 
     """
         It allows the extraction of specific information from files.
@@ -12,7 +12,7 @@ class Extract(IStep):
     def __init__(self, filepath_ref_genes, filepath_mardy, specie, gene):
         self.__ref_genes_file = filepath_ref_genes
         self.__mardy_file = filepath_mardy
-        self.__file_reader = ReadCsv()
+        self.__file_reader = CsvReading()
         self.__specie = specie
         self.__gene = gene
 

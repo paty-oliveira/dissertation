@@ -1,6 +1,6 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
-from framework.domain.Import import Import
+from framework.domain.FileImported import FileImported
 from framework.domain.Taxonomy import Taxonomy
 
 
@@ -31,7 +31,7 @@ class IdentificationSpecieProcess(IProcess):
         "Adds the steps of the process."
 
         steps = []
-        steps.append(Import(self.__filepath, self.__data_folder))
+        steps.append(FileImported(self.__filepath, self.__data_folder))
         steps.append(Taxonomy(self.__configuration, self.__filepath))
 
         return steps

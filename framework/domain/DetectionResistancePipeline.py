@@ -1,9 +1,9 @@
 from framework.domain.IStep import IStep
-from framework.domain.Import import Import
+from framework.domain.FileImported import FileImported
 from framework.common.ParameterKeys import ParameterKeys
-from framework.domain.Read import Read
-from framework.domain.Extract import Extract
-from framework.domain.Remove import Remove
+from framework.domain.FileReading import FileReading
+from framework.domain.InformationExtraction import InformationExtraction
+from framework.domain.StringRemoval import StringRemoval
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
@@ -63,7 +63,7 @@ class AntifungalResistancePipeline(IPipeline):
     def __extract(self):
         "Creates the Extract object to extract information."
 
-        reference_sequence, position, mardy_information = Extract(
+        reference_sequence, position, mardy_information = InformationExtraction(
             self.__ref_genes_filepath, self.__mardy_file, self.__specie, self.__gene
         ).execute()
 
@@ -79,14 +79,14 @@ class AntifungalResistancePipeline(IPipeline):
     def __read(self):
         "Creates the Read object to read the file."
 
-        dna_sequences = Read(self.__input_file).execute()
+        dna_sequences = FileReading(self.__input_file).execute()
         if dna_sequences:
             return dna_sequences[1]
 
     def __remove(self, query_sequence, ref_sequence):
         "Creates the Remove object to remove primers and trims sequences."
 
-        query_trimmed, ref_trimmed = Remove(
+        query_trimmed, ref_trimmed = StringRemoval(
             query_sequence, ref_sequence, self.__primers
         ).execute()
 

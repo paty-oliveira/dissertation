@@ -1,6 +1,6 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
-from framework.domain.DetectionResistance import AntifungalResistancePipeline
+from framework.domain.DetectionResistancePipeline import AntifungalResistancePipeline
 from framework.common.Utilities import add_elements
 
 

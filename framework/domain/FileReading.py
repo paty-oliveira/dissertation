@@ -18,7 +18,7 @@ class IReadFile(ABC):
         pass
 
 
-class Read(IStep):
+class FileReading(IStep):
 
     """
         Allows the read  of the files with *.txt and *.fasta extensions.
@@ -46,13 +46,13 @@ class Read(IStep):
         "Adds the readers."
 
         list_readers = []
-        list_readers.append(ReadFasta())
-        list_readers.append(ReadTxt())
+        list_readers.append(FastaReading())
+        list_readers.append(TxtReading())
 
         return list_readers
 
 
-class ReadFasta(IReadFile):
+class FastaReading(IReadFile):
 
     EXTENSIONS = [".fa", ".fasta"]
 
@@ -73,10 +73,10 @@ class ReadFasta(IReadFile):
 
         file_name, file_extension = os.path.splitext(file)
 
-        return file_extension in ReadFasta.EXTENSIONS
+        return file_extension in FastaReading.EXTENSIONS
 
 
-class ReadTxt(IReadFile):
+class TxtReading(IReadFile):
 
     EXTENSIONS = [".txt"]
 
@@ -106,10 +106,10 @@ class ReadTxt(IReadFile):
 
         file_name, file_extension = os.path.splitext(file)
 
-        return file_extension in ReadTxt.EXTENSIONS
+        return file_extension in TxtReading.EXTENSIONS
 
 
-class ReadCsv(IReadFile):
+class CsvReading(IReadFile):
 
     EXTENSIONS = [".csv"]
 
@@ -127,4 +127,4 @@ class ReadCsv(IReadFile):
 
         file_name, file_extension = os.path.splitext(file)
 
-        return file_extension in ReadCsv.EXTENSIONS
+        return file_extension in CsvReading.EXTENSIONS

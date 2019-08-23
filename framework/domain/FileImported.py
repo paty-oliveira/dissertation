@@ -5,7 +5,7 @@ import os
 import subprocess
 
 
-class Import(IStep):
+class FileImported(IStep):
 
     """
         Allows the importation of the file for the specific filepath. 

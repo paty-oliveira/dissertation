@@ -1,10 +1,9 @@
 from framework.domain.IStep import IStep
-from framework.domain.Extract import Extract
 from framework.common.Utilities import preffix, suffix
 import re
 
 
-class Remove(IStep):
+class StringRemoval(IStep):
 
     """
         It allows the removal of subsequences from reference sequence.
