@@ -1,5 +1,5 @@
 from framework.domain.IStep import IStep
-from framework.exceptions.exceptions import EmptyFileError
+from framework.common.Utilities import valid_file
 from abc import ABC, abstractmethod
 import pandas as pd
 import os
@@ -31,15 +31,16 @@ class Read(IStep):
     def execute(self):
         "Read the files according their extension."
 
-        for reader in self.__readers:
-            if os.path.getsize(self.__file):
-                biological_sequences = reader.read(self.__file)
+        try:
+            for reader in self.__readers:
+                if valid_file(self.__file):
+                    biological_sequences = reader.read(self.__file)
 
-                if biological_sequences:
-                    return biological_sequences
+                    if biological_sequences:
+                        return biological_sequences
 
-            else:
-                raise EmptyFileError
+        except FileExistsError as error:
+            return error
 
     def __add_readers(self):
         "Adds the readers."

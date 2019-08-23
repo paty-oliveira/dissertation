@@ -1,19 +1,7 @@
 from framework.domain.IStep import IStep
 from framework.domain.Extract import Extract
-from framework.exceptions.exceptions import InvalidSequenceError
+from framework.common.Utilities import preffix, suffix
 import re
-
-
-def preffix(string):
-    "Returns the first 11 characters of the string."
-
-    return string[0:11]
-
-
-def suffix(string):
-    "Returns the last 11 characters of the string."
-
-    return string[-11:]
 
 
 class Remove(IStep):
@@ -37,8 +25,6 @@ class Remove(IStep):
 
         if sbjct_sequence_trimmed and ref_sequence_trimmed:
             return sbjct_sequence_trimmed, ref_sequence_trimmed
-
-        raise InvalidSequenceError
 
     def __remove(self, sequence, primers):
         "Removes substrings of the string."

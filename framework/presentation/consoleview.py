@@ -1,19 +1,41 @@
-from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
+from framework.common.ParameterKeys import ParameterKeys
 from framework.common.Utilities import execution_status, convert_path
 from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.IUserInterface import IUserInterface
 
 
-def valid_path(path):
-    "Checks if the path is valid."
+class Question:
+    SPECIE_IDENTIFICATION = "Identify specie [Y|n]: "
+    ANTIFUNGAL_DETECTION = "Detect antifungal resistance? [Y|n]:  "
+    FILEPATH = "File directory: "
+    SPECIE = "Choose the specie: "
+    GENE = "Choose the gene: "
+    FORWARD_PRIMER = "Forward primer: "
+    REVERSE_PRIMER = "Reverse primer: "
+    PIPELINE_CONTINUATION = "Will you continue executing other pipelines? [y|N]: "
 
-    return os.path.exists(path)
+
+class Menu:
+    GENES = {"1": "ERG11", "2": "FKS1", "3": "FKS2"}
+    SPECIES = {
+        "1": "Candida albicans",
+        "2": "Candida glabrata",
+        "3": "Candida parapsilosis",
+        "4": "Candida tropicalis",
+    }
 
 
-def valid_primer(primer):
-    "Checks if primer has the correct characters."
-
-    return set(primer).issubset("AGTC")
+class Response:
+    GENERAL = "This is not valid. Please try again!"
+    SPECIE_RESPONSE = "Please introduces a valid specie."
+    GENE_RESPONSE = "Please introduces a valid gene."
+    PRIMER_RESPONSE = "Please introduces a valid primer."
+    STATUS = {
+        "ID-1": "Specie identification was executed with sucess. Please check the results.",
+        "ID-0": "It wasn't possible execute the specie identification.",
+        "ANTI-1": "Antifungal resistance detection was executed with sucess. Please check the results.",
+        "ANTI-0": "Is wasn't possible execute the detection of antifungal resistance.",
+    }
 
 
 class ConsoleView(IUserInterface):
@@ -30,11 +52,11 @@ class ConsoleView(IUserInterface):
         self.__headline()
 
         while True:
-            params, should_exit = self.__user_options()
+            params, should_exit = self.__mock_options()
             print("\nRunning pipeline...")
 
             result = self.__controller.execute(params)
-            print(execution_status(result, ExecutionCode.message))
+            print(execution_status(result, Response.STATUS))
 
             if should_exit:
                 break
@@ -46,7 +68,7 @@ class ConsoleView(IUserInterface):
         params[key_1] = response
         if response:
             answer = self.__open_option(question_2, response)
-            params[key_2] = convert_path(answer)
+            params[key_2] = answer
 
         return params
 
@@ -102,57 +124,50 @@ class ConsoleView(IUserInterface):
         params = {}
 
         params = self.__boolean_question(
-            "Identify specie [Y|n]:",
-            "File directory: ",
-            "This is not valid. Please try again!",
+            Question.SPECIE_IDENTIFICATION,
+            Question.FILEPATH,
+            Response.GENERAL,
             ParameterKeys.IDENTIFICATION_KEY,
-            ParameterKeys.FILEPATH_IDENTIFICATION,
+            convert_path(ParameterKeys.FILEPATH_IDENTIFICATION),
             params,
         )
         params = self.__boolean_question(
-            "Detect mutations? [Y|n]: ",
-            "File directory: ",
-            "This is not valid. Please try again!",
+            Question.ANTIFUNGAL_DETECTION,
+            Question.FILEPATH,
+            Response.GENERAL,
             ParameterKeys.MUTATION_KEY,
-            ParameterKeys.FILEPATH_DETECTION,
+            convert_path(ParameterKeys.FILEPATH_DETECTION),
             params,
         )
         if params[ParameterKeys.MUTATION_KEY]:
             params = self.__choice_question(
-                "Choose the specie: ",
-                "Please introduces a valid specie.",
-                {
-                    "1": "Candida albicans",
-                    "2": "Candida glabrata",
-                    "3": "Candida parapsilosis",
-                    "4": "Candida tropicalis",
-                },
+                Question.SPECIE,
+                Response.SPECIE_RESPONSE,
+                Menu.SPECIES,
                 ParameterKeys.SPECIE_NAME,
                 params,
             )
             params = self.__choice_question(
-                "Choose the gene: ",
-                "Please introduces a valid gene.",
-                {"1": "ERG11", "2": "FKS1", "3": "FKS2"},
+                Question.GENE,
+                Response.GENE_RESPONSE,
+                Menu.GENES,
                 ParameterKeys.GENE_NAME,
                 params,
             )
             params = self.__open_question(
-                "Forward primer: ",
-                "Please introduces a valid primer.",
+                Question.FORWARD_PRIMER,
+                Response.PRIMER_RESPONSE,
                 ParameterKeys.FORWARD_PRIMER,
                 params,
             )
             params = self.__open_question(
-                "Reverse primer: ",
-                "Please introduces a valid primer.",
+                Question.REVERSE_PRIMER,
+                Response.PRIMER_RESPONSE,
                 ParameterKeys.REVERSE_PRIMER,
                 params,
             )
         should_exit = self.__boolean_option(
-            "Will you continue executing other pipelines? [y|N]: ",
-            "This is not valid. Please try again.",
-            "N",
+            Question.PIPELINE_CONTINUATION, Response.GENERAL, "N"
         )
 
         return params, should_exit

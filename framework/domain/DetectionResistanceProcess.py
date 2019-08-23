@@ -1,12 +1,7 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
 from framework.domain.DetectionResistance import AntifungalResistancePipeline
-
-
-def add_elements(first_element, second_element):
-    "Add elements to a list."
-
-    return list([first_element, second_element])
+from framework.common.Utilities import add_elements
 
 
 class DetectionResistanceProcess(IProcess):

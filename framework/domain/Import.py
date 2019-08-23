@@ -1,5 +1,5 @@
 from framework.domain.IStep import IStep
-from framework.exceptions.exceptions import WrongFilePath
+from framework.common.Utilities import valid_path
 import shutil
 import os
 import subprocess
@@ -18,13 +18,16 @@ class Import(IStep):
     def execute(self):
         "Execute the importing of the files."
 
-        file = self.__import_file(self.__data_folder)
+        try:
+            if valid_path(self.__filepath):
+                file = self.__import_file(self.__filepath, self.__data_folder)
 
-        return file
+        except FileNotFoundError as error:
+            return error
 
-    def __import_file(self, folder):
+    def __import_file(self, filepath, folder):
         "Copy files from path introduced by user to specific data folder."
 
-        with os.scandir(self.__filepath) as data_folder:
+        with os.scandir(filepath) as data_folder:
             for file in data_folder:
                 shutil.copy(file, folder)

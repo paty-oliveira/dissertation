@@ -1,6 +1,5 @@
 from framework.domain.IStep import IStep
 from framework.domain.Read import ReadCsv
-from framework.exceptions.exceptions import InformationExtractionError
 import pandas as pd
 
 
@@ -25,8 +24,6 @@ class Extract(IStep):
 
         if dna_sequence and dna_position and mardy_information:
             return dna_sequence, dna_position, mardy_information
-
-        raise InformationExtractionError
 
     def __drugs_mutations_reference(self):
         "Obtains the reference information about drugs and mutations from Mardy database."

@@ -6,6 +6,7 @@ from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.ConsoleView import ConsoleView
 from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
+from framework.common.Utilities import download
 
 
 class Application:
@@ -22,7 +23,7 @@ class Application:
         self.__filename = self.__configuration.get_file_name()
         self.__filepath = self.__configuration.get_path_detection_resistance_process()
         self.__prepare_environment()
-        self.__download(self.__url, self.__filename, self.__filepath)
+        download(self.__url, self.__filename, self.__filepath)
 
     def start(self):
         "This is the initialization of the application, throught the modes selected by user."
@@ -122,16 +123,6 @@ class Application:
         )
 
         return parser
-
-    def __download(self, url, file_name, path):
-        "Executes the download of the file from specific URL.."
-
-        try:
-            filepath = os.path.join(path, file_name)
-            urllib.request.urlretrieve(url, filepath)
-
-        except ConnectionRefusedError as error:
-            print("Connection error with the HTTP connection: ", error)
 
     def __is_mode(self, base_mode, mode):
         "Verifies if the arguments contain the given mode."
