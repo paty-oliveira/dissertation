@@ -1,5 +1,5 @@
 from framework.domain.IProcess import IProcess
-from framework.common.ParameterKeys import ParameterKeys
+from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
 from framework.domain.Import import Import
 from framework.domain.Taxonomy import Taxonomy
 
@@ -23,9 +23,9 @@ class IdentificationSpecieProcess(IProcess):
             identification = step.execute()
 
             if identification:
-                return "ID-1"
+                return ExecutionCode.ID_SUCCESS
 
-            return "ID-O"
+            return ExecutionCode.ID_FAILED
 
     def __add_step(self):
         "Adds the steps of the process."

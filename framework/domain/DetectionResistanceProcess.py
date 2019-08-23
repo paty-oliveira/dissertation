@@ -1,5 +1,5 @@
 from framework.domain.IProcess import IProcess
-from framework.common.ParameterKeys import ParameterKeys
+from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
 from framework.domain.DetectionResistance import AntifungalResistancePipeline
 
 
@@ -32,9 +32,9 @@ class DetectionResistanceProcess(IProcess):
             resistance = pipeline.run()
 
             if resistance:
-                return "ANTI-1"
+                return ExecutionCode.ANTI_SUCCESS
 
-            return "ANTI-0"
+            return ExecutionCode.ANTI_SUCCESS
 
     def __add_pipeline(self):
         "Adds the steps of the process."
