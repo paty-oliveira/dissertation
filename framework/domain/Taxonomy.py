@@ -102,10 +102,10 @@ class PipitsPipeline(IIdentification):
         "Execute all commands for identification of specie."
 
         try:
-            pair_list = self.__generate_read_pairs_list()
-            preprocessing = self.__preprocessing_sequence()
-            extraction = self.__extract_its_regions()
-            taxonomy = self.__analyze_taxonomy()
+            self.__generate_read_pairs_list()
+            self.__preprocessing_sequence()
+            self.__extract_its_regions()
+            self.__analyze_taxonomy()
             result = self.__fungi_specie()
 
             if result:
