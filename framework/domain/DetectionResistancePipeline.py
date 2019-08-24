@@ -24,7 +24,8 @@ class IPipeline(ABC):
 class AntifungalResistancePipeline(IPipeline):
 
     """
-        Example of pipeline for the detection of the antifungal resistance present in the file imported. 
+        Example of pipeline for the detection of the antifungal
+        resistance present in the file imported. 
     """
 
     def __init__(self, configuration, filepath, specie, gene, primers):
@@ -60,7 +61,10 @@ class AntifungalResistancePipeline(IPipeline):
         return False
 
     def __antifungals(self, reference_data, mutations):
-        "Creates the AntifungalResistance object to identify the antifungals to which the organism is resistant."
+        """
+            Creates the AntifungalResistance object to identify
+            the antifungals to which the organism is resistant.
+        """
 
         antifungals = AntifungalResistance(reference_data, mutations).execute()
 

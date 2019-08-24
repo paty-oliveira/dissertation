@@ -1,7 +1,6 @@
 import os
 import argparse
 import shutil
-import urllib.request
 from framework.application.BuildDataFlow import BuildDataFlow
 from framework.presentation.ConsoleView import ConsoleView
 from framework.presentation.GuiView import GuiView

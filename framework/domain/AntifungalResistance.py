@@ -4,8 +4,9 @@ from framework.domain.IStep import IStep
 class AntifungalResistance(IStep):
 
     """
-        It allows the identification of antifungal resistance, through the 
-        association of the mutations identified and the information of Mardy Database.
+        It allows the identification of antifungal 
+        resistance, through the association of the
+        mutations identified and the information of Mardy Database.
     """
 
     def __init__(self, reference_data, list_mutations):
@@ -23,7 +24,9 @@ class AntifungalResistance(IStep):
         return False
 
     def __identify(self, reference_data):
-        "Identifies the antifungals according to the antifungal resistance promoted by the mutations."
+        """Identifies the antifungals according to the 
+        antifungal resistance promoted by the mutations.
+        """
 
         return [
             elements[0]
