@@ -13,7 +13,8 @@ from framework.domain.FileReading import TxtReading
 from framework.domain.FileReading import CsvReading
 from framework.domain.Mutation import Mutation
 from framework.domain.InformationExtraction import InformationExtraction
-from framework.domain.StringRemoval import StringRemoval
+from framework.domain.SequenceTrimmed import SequenceTrimmed
+from framework.domain.SequenceWithoutPrimer import SequenceWithoutPrimer
 from framework.domain.Translation import Translation
 from framework.domain.DetectionResistancePipeline import IPipeline
 from framework.domain.DetectionResistancePipeline import AntifungalResistancePipeline

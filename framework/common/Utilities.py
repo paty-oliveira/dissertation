@@ -39,16 +39,16 @@ def execution_status(code, execution_codes):
             return message
 
 
-def preffix(string):
+def preffix(string, number):
     "Returns the first 11 characters of the string."
 
-    return string[0:11]
+    return string[0:int(number)]
 
 
-def suffix(string):
+def suffix(string, number):
     "Returns the last 11 characters of the string."
 
-    return string[-11:]
+    return string[-int(number):]
 
 
 def valid_file(file):
@@ -63,7 +63,7 @@ def valid_path(path):
     return os.path.exists(path)
 
 
-def valid_string(string, valid_characters):
+def valid_string(list_strings, valid_characters):
     "Checks if primer has the correct characters."
 
-    return set(string).issubset(valid_characters)
+    return all(character in valid_characters for string in list_strings for character in string) 

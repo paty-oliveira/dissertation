@@ -1,16 +1,13 @@
 from framework.domain.IStep import IStep
-from framework.domain.FileImported import FileImported
-from framework.common.ParameterKeys import ParameterKeys
 from framework.domain.FileReading import FileReading
 from framework.domain.InformationExtraction import InformationExtraction
-from framework.domain.StringRemoval import StringRemoval
+from framework.domain.SequenceTrimmed import SequenceTrimmed
+from framework.domain.SequenceWithoutPrimer import SequenceWithoutPrimer
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
-import os
-import urllib.request
 from abc import ABC, abstractmethod
-
+import os
 
 class IPipeline(ABC):
 
@@ -36,17 +33,25 @@ class AntifungalResistancePipeline(IPipeline):
         self.__specie = specie
         self.__gene = gene
         self.__primers = primers
+        self.__alphabet = "AGTC"
 
     def run(self):
         "Executes all the steps of the pipeline."
 
         stage_1 = self.__read()
         stage_2 = self.__extract()
-        stage_3 = self.__remove(stage_1, stage_2[0])
-        stage_4 = self.__translate(stage_3)
-        stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
-        stage_6 = self.__antifungals(stage_2[2], stage_5)
-        output_file = self.__write(stage_5, stage_6)
+        stage_3 = self.__remove_primer(stage_1)
+        stage_4 = self.__trims(stage_3, stage_2[0])
+        stage_5 = self.__translate(stage_3, stage_4)
+        stage_6 = self.__mutation(stage_5[1], stage_5[0], stage_2[1])
+        stage_7 = self.__antifungals(stage_2[2], stage_6)
+        output_file = self.__write(stage_6, stage_7)
+
+        # stage_3 = self.__remove(stage_1, stage_2[0])
+        # stage_4 = self.__translate(stage_3)
+        # stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
+        # stage_6 = self.__antifungals(stage_2[2], stage_5)
+        # output_file = self.__write(stage_5, stage_6)
 
         if output_file:
             return True
@@ -83,21 +88,26 @@ class AntifungalResistancePipeline(IPipeline):
         if dna_sequences:
             return dna_sequences[1]
 
-    def __remove(self, query_sequence, ref_sequence):
+    def __remove_primer(self, query_sequence):
         "Creates the Remove object to remove primers and trims sequences."
 
-        query_trimmed, ref_trimmed = StringRemoval(
-            query_sequence, ref_sequence, self.__primers
-        ).execute()
+        new_sequence = SequenceWithoutPrimer(query_sequence, self.__primers, self.__alphabet).execute()
+        
+        return new_sequence
 
-        return query_trimmed, ref_trimmed
-
-    def __translate(self, sequence):
+    def __translate(self, sequence_1, sequence_2):
         "Creates the Translation object to translate the dna sequences."
 
-        aminoacid_sequence = Translation(sequence).execute()
+        sequences = [sequence_1, sequence_2]
+        aminoacid_sequence = Translation(sequences).execute()
 
         return aminoacid_sequence
+
+    def __trims(self, query_sequence, ref_sequence, limit_number = 11):
+        
+        new_sequence = SequenceTrimmed(query_sequence, ref_sequence, limit_number).execute()
+
+        return new_sequence
 
     def __write(self, mutations, antifungals):
         "Writes the results of the detection of resistance on the csv file."
@@ -117,7 +127,10 @@ class AntifungalResistancePipeline(IPipeline):
             output_file.write("\n")
             output_file.write("\nAntifungal Resistance \n")
 
-            for result in antifungals:
-                output_file.write(result + "\n")
+            if antifungals:
+                for result in antifungals:
+                    output_file.write(result + "\n")
+            else:
+                output_file.write("No antifungal resistance detected.")
 
         return output_file

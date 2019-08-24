@@ -91,7 +91,7 @@ class ConsoleView(IUserInterface):
 
     def __open_question(self, question, response, key, params):
         response = self.__open_option(question, response)
-        params[key] = response
+        params[key] = response.upper()
 
         return params
 

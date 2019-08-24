@@ -29,7 +29,7 @@ class DetectionResistanceProcess(IProcess):
             if resistance:
                 return ExecutionCode.ANTI_SUCCESS
 
-            return ExecutionCode.ANTI_SUCCESS
+            return ExecutionCode.ANTI_FAILED
 
     def __add_pipeline(self):
         "Adds the steps of the process."
