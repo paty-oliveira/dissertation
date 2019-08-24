@@ -49,12 +49,6 @@ class AntifungalResistancePipeline(IPipeline):
         stage_7 = self.__antifungals(stage_2[2], stage_6)
         output_file = self.__write(stage_6, stage_7)
 
-        # stage_3 = self.__remove(stage_1, stage_2[0])
-        # stage_4 = self.__translate(stage_3)
-        # stage_5 = self.__mutation(stage_4[1], stage_4[0], stage_2[1])
-        # stage_6 = self.__antifungals(stage_2[2], stage_5)
-        # output_file = self.__write(stage_5, stage_6)
-
         if output_file:
             return True
 

@@ -23,17 +23,17 @@ class Configuration:
 
     def get_path_detection_resistance_process(self):
         return self.__parser.get(
-            "DETECTIONMUTATIONPROCESS", "detection_mutation_folder"
+            "DETECTIONRESISTANCEPROCESS", "detection_mutation_folder"
         )
 
     def get_antifungal_genes_file(self):
-        return self.__parser.get("DETECTIONMUTATIONPROCESS", "antifungal_genes")
+        return self.__parser.get("DETECTIONRESISTANCEPROCESS", "antifungal_genes")
 
     def get_mardy_file(self):
-        return self.__parser.get("DETECTIONMUTATIONPROCESS", "mardy_file")
+        return self.__parser.get("DETECTIONRESISTANCEPROCESS", "mardy_file")
 
     def get_resource_folder_path(self):
-        return self.__parser.get("DETECTIONMUTATIONPROCESS", "resource_folder")
+        return self.__parser.get("DETECTIONRESISTANCEPROCESS", "resource_folder")
 
     def get_url(self):
         return self.__parser.get("DOWNLOAD", "url")
