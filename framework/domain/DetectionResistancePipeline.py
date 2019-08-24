@@ -9,6 +9,7 @@ from framework.domain.AntifungalResistance import AntifungalResistance
 from abc import ABC, abstractmethod
 import os
 
+
 class IPipeline(ABC):
 
     """
@@ -91,8 +92,10 @@ class AntifungalResistancePipeline(IPipeline):
     def __remove_primer(self, query_sequence):
         "Creates the Remove object to remove primers and trims sequences."
 
-        new_sequence = SequenceWithoutPrimer(query_sequence, self.__primers, self.__alphabet).execute()
-        
+        new_sequence = SequenceWithoutPrimer(
+            query_sequence, self.__primers, self.__alphabet
+        ).execute()
+
         return new_sequence
 
     def __translate(self, sequence_1, sequence_2):
@@ -103,9 +106,11 @@ class AntifungalResistancePipeline(IPipeline):
 
         return aminoacid_sequence
 
-    def __trims(self, query_sequence, ref_sequence, limit_number = 11):
-        
-        new_sequence = SequenceTrimmed(query_sequence, ref_sequence, limit_number).execute()
+    def __trims(self, query_sequence, ref_sequence, limit_number=11):
+
+        new_sequence = SequenceTrimmed(
+            query_sequence, ref_sequence, limit_number
+        ).execute()
 
         return new_sequence
 

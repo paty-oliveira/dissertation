@@ -38,4 +38,3 @@ class Mutation(IStep):
         "Verifies if two sequences are equals."
 
         return str(reference_sequence) == str(query_sequence)
-        

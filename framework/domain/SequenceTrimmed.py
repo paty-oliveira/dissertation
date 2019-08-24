@@ -1,12 +1,13 @@
 from framework.domain.IStep import IStep
 from framework.common.Utilities import preffix, suffix
 
+
 class SequenceTrimmed(IStep):
 
     """
         It allows the trimming of the sequence.
     """
-    
+
     def __init__(self, query_sequence, reference_sequence, limit_number):
         self.__query_sequence = query_sequence
         self.__reference_sequence = reference_sequence
@@ -16,8 +17,10 @@ class SequenceTrimmed(IStep):
         "Executes the trimms of sequence."
 
         for name, sequence in self.__reference_sequence.items():
-            new_sequence = self.__trims(self.__query_sequence, sequence, self.__constraint)
-            
+            new_sequence = self.__trims(
+                self.__query_sequence, sequence, self.__constraint
+            )
+
             if new_sequence:
                 return new_sequence
 
@@ -35,5 +38,3 @@ class SequenceTrimmed(IStep):
             return trimmed_sequence
 
         return False
-
-    

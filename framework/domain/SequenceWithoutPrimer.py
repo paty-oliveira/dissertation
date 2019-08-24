@@ -4,7 +4,7 @@ import re
 
 
 class SequenceWithoutPrimer(IStep):
-    
+
     """
         It allows the removal of primers in sequence.
     """
@@ -19,7 +19,7 @@ class SequenceWithoutPrimer(IStep):
 
         if valid_string(self.__primers, self.__alphabet):
             new_sequence = self.__remove(self.__sequence, self.__primers)
-            
+
             return new_sequence
 
         return False
@@ -28,4 +28,3 @@ class SequenceWithoutPrimer(IStep):
         "Removes substrings of the string."
 
         return re.sub(r"|".join(map(re.escape, primers)), "", sequence)
-
