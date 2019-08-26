@@ -1,7 +1,7 @@
 import os
 import argparse
 import shutil
-from framework.application.BuildDataFlow import BuildDataFlow
+from framework.application.RunProcessController import RunProcessController
 from framework.presentation.ConsoleView import ConsoleView
 from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
@@ -52,21 +52,21 @@ class Application:
     def run_console(self):
         "This is the default behavior. The application calls the console view."
 
-        controller = BuildDataFlow(self.__configuration)
+        controller = RunProcessController(self.__configuration)
         view = ConsoleView(controller)
         view.show()
 
     def run_gui(self):
         "The application calls the gui view."
 
-        controller = BuildDataFlow(self.__configuration)
+        controller = RunProcessController(self.__configuration)
         view = GuiView(controller)
         view.show()
 
     def run_batch_mode(self, params):
         "Runs the application in batch mode."
 
-        controller = BuildDataFlow(self.__configuration)
+        controller = RunProcessController(self.__configuration)
         controller.execute(params)
 
     def __configure_arguments(self):

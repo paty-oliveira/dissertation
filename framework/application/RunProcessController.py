@@ -3,7 +3,7 @@ from framework.domain.IdentificationSpecieProcess import IdentificationSpeciePro
 from framework.domain.DetectionResistanceProcess import DetectionResistanceProcess
 
 
-class BuildDataFlow:
+class RunProcessController:
 
     """
         Logic of pipelines controllers.

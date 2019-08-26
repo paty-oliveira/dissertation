@@ -1,19 +1,9 @@
 from framework.domain.IStep import IStep
+from framework.domain.IPipeline import IPipeline
 from abc import ABC, abstractmethod
 import subprocess
 import shutil
 import pandas as pd
-
-
-class IIdentification(ABC):
-
-    """
-        Interface that implements the specie identification behavior.
-    """
-
-    @abstractmethod
-    def identify(self):
-        pass
 
 
 class Taxonomy(IStep):
@@ -25,29 +15,29 @@ class Taxonomy(IStep):
     def __init__(self, configuration, filepath):
         self.__configuration = configuration
         self.__filepath = filepath
-        self.__list_identifiers = self.__add_identifiers()
+        self.__pipelines = self.__add_pipelines()
 
     def execute(self):
         "Executes the identification pipeline, according the list of identifiers."
 
-        for identifier in self.__list_identifiers:
-            result = identifier.identify()
+        for pipeline in self.__pipelines:
+            result = pipeline.run()
 
             if result:
                 return True
 
             return False
 
-    def __add_identifiers(self):
+    def __add_pipelines(self):
         "Adds the identifiers."
 
-        list_identifiers = []
-        list_identifiers.append(PipitsPipeline(self.__configuration, self.__filepath))
+        list_pipelines = []
+        list_pipelines.append(PipitsPipeline(self.__configuration, self.__filepath))
 
-        return list_identifiers
+        return list_pipelines
 
 
-class PipitsPipeline(IIdentification):
+class PipitsPipeline(IPipeline):
 
     """
         Pipeline for specie identification (PIPITS) from Bioconda library.
@@ -98,7 +88,7 @@ class PipitsPipeline(IIdentification):
         self.__phylotype_file = configuration.get_phylotype_table_results()
         self.__folder_results = filepath
 
-    def identify(self):
+    def run(self):
         "Execute all commands for identification of specie."
 
         try:

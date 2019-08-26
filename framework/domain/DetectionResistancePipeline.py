@@ -1,4 +1,5 @@
 from framework.domain.IStep import IStep
+from framework.domain.IPipeline import IPipeline
 from framework.domain.FileReading import FileReading
 from framework.domain.InformationExtraction import InformationExtraction
 from framework.domain.SequenceTrimmed import SequenceTrimmed
@@ -6,19 +7,8 @@ from framework.domain.SequenceWithoutPrimer import SequenceWithoutPrimer
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
-from abc import ABC, abstractmethod
 import os
 
-
-class IPipeline(ABC):
-
-    """
-        Interface that implements the antifungal resistance behavior.
-    """
-
-    @abstractmethod
-    def run(self):
-        pass
 
 
 class AntifungalResistancePipeline(IPipeline):
