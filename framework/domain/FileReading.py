@@ -17,6 +17,9 @@ class IReadFile(ABC):
     def read(self, file):
         pass
 
+    @abstractmethod
+    def is_extension(self, file):
+        pass
 
 class FileReading(IStep):
 
@@ -59,7 +62,7 @@ class FastaReading(IReadFile):
     def read(self, file):
         "Read files with *.fasta extension."
 
-        if self.__is_extension(file):
+        if self.is_extension(file):
             record = SeqIO.read(file, "fasta")
             id_sequence = str(record.id)
             sequence = str(record.seq)
@@ -68,7 +71,7 @@ class FastaReading(IReadFile):
 
         return False
 
-    def __is_extension(self, file):
+    def is_extension(self, file):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
@@ -83,7 +86,7 @@ class TxtReading(IReadFile):
     def read(self, file):
         "Read files with *.txt extension."
 
-        if self.__is_extension(file):
+        if self.is_extension(file):
             sequence = ""
             id_sequence = ""
 
@@ -101,7 +104,7 @@ class TxtReading(IReadFile):
 
         return False
 
-    def __is_extension(self, file):
+    def is_extension(self, file):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)
@@ -116,13 +119,13 @@ class CsvReading(IReadFile):
     def read(self, file, header):
         "Read files with *.csv extension."
 
-        if self.__is_extension(file):
+        if self.is_extension(file):
             dataframe = pd.read_csv(file, header=header)
             return dataframe
 
         return False
 
-    def __is_extension(self, file):
+    def is_extension(self, file):
         "Verify the file extension."
 
         file_name, file_extension = os.path.splitext(file)

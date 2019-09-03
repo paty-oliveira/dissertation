@@ -18,9 +18,6 @@ class Configuration:
     def get_phylotype_table_results(self):
         return self.__parser.get("IDENTIFICATIONPROCESS", "phylotype_results_folder")
 
-    def get_file_preprocessed(self):
-        return self.__parser.get("IDENTIFICATIONPROCESS", "fasta_file_prepped")
-
     def get_path_detection_resistance_process(self):
         return self.__parser.get(
             "DETECTIONRESISTANCEPROCESS", "detection_mutation_folder"
@@ -32,8 +29,8 @@ class Configuration:
     def get_mardy_file(self):
         return self.__parser.get("DETECTIONRESISTANCEPROCESS", "mardy_file")
 
-    def get_resource_folder_path(self):
-        return self.__parser.get("DETECTIONRESISTANCEPROCESS", "resource_folder")
+    # def get_path_resource_folder(self):
+    #     return self.__parser.get("DETECTIONRESISTANCEPROCESS", "resource_folder")
 
     def get_url(self):
         return self.__parser.get("DOWNLOAD", "url")
