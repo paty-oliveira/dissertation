@@ -10,7 +10,6 @@ from framework.domain.AntifungalResistance import AntifungalResistance
 import os
 
 
-
 class AntifungalResistancePipeline(IPipeline):
 
     """

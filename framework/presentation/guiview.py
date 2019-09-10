@@ -3,7 +3,13 @@ from framework.common.Utilities import execution_status
 from framework.common.ParameterKeys import ParameterKeys
 from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QErrorMessage
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QApplication,
+    QFileDialog,
+    QMessageBox,
+    QErrorMessage,
+)
 from PyQt5.QtCore import QCoreApplication
 
 
@@ -12,14 +18,15 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
 
 
 class GuiView(IUserInterface, QMainWindow, Ui_MainWindow):
-    
     def __init__(self, controller):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
         self.Run.clicked.connect(self.display)
         self.Cancel.clicked.connect(self.__close_app)
-        self.folder_identification.clicked.connect(self.__dialog_box_identification_process)
+        self.folder_identification.clicked.connect(
+            self.__dialog_box_identification_process
+        )
         self.folder_detection.clicked.connect(self.__dialog_box_detection_process)
         self.__controller = controller
 
@@ -27,8 +34,12 @@ class GuiView(IUserInterface, QMainWindow, Ui_MainWindow):
         while True:
             params = self.__user_options()
             result_identification, result_resistance = self.__controller.execute(params)
-            self.status_result_box.append(execution_status(result_identification, ResponseExecutionCode.STATUS))
-            self.status_result_box.append(execution_status(result_resistance, ResponseExecutionCode.STATUS))
+            self.status_result_box.append(
+                execution_status(result_identification, ResponseExecutionCode.STATUS)
+            )
+            self.status_result_box.append(
+                execution_status(result_resistance, ResponseExecutionCode.STATUS)
+            )
 
     def __close_app(self):
         QCoreApplication.instance().quit()

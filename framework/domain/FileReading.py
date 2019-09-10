@@ -21,6 +21,7 @@ class IReadFile(ABC):
     def is_extension(self, file):
         pass
 
+
 class FileReading(IStep):
 
     """

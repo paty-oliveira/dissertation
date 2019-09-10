@@ -1,4 +1,3 @@
-
 class ResponseExecutionCode:
     STATUS = {
         "ID-1": "Specie identification was executed with sucess. Please check the results.",

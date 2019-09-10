@@ -32,7 +32,6 @@ class Response:
     PRIMER_RESPONSE = "Please introduces a valid primer."
 
 
-
 class ConsoleView(IUserInterface):
     """
         Console View presents the user with the form for running the pipeline

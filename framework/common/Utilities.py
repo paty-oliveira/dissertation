@@ -34,7 +34,7 @@ def download(url, file_name, path):
 
 def execution_status(code, execution_codes):
     "Verify the status of the code inserted based on execution codes."
-    
+
     for status, message in execution_codes.items():
         if status == code:
             return message
