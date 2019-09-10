@@ -54,14 +54,14 @@ class Application:
 
         controller = RunProcessController(self.__configuration)
         view = ConsoleView(controller)
-        view.show()
+        view.display()
 
     def run_gui(self):
         "The application calls the gui view."
 
         controller = RunProcessController(self.__configuration)
         view = GuiView(controller)
-        view.show()
+        view.display()
 
     def run_batch_mode(self, params):
         "Runs the application in batch mode."
@@ -117,7 +117,7 @@ class Application:
         parser.add_argument(
             "-d",
             action="store_true",
-            dest=ParameterKeys.MUTATION_KEY,
+            dest=ParameterKeys.DETECTION_KEY,
             help="Detects mutation from the dataset",
         )
 

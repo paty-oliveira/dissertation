@@ -23,7 +23,7 @@ class RunProcessController:
 
             return result
 
-        if params[ParameterKeys.MUTATION_KEY]:
+        if params[ParameterKeys.DETECTION_KEY]:
             result = DetectionResistanceProcess(self.__config, params).run()
 
             return result

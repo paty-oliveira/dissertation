@@ -1,4 +1,5 @@
 from framework.common.ParameterKeys import ParameterKeys
+from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
 from framework.common.Utilities import execution_status, convert_path
 from framework.presentation.IUserInterface import IUserInterface
 
@@ -29,12 +30,7 @@ class Response:
     SPECIE_RESPONSE = "Please introduces a valid specie."
     GENE_RESPONSE = "Please introduces a valid gene."
     PRIMER_RESPONSE = "Please introduces a valid primer."
-    STATUS = {
-        "ID-1": "Specie identification was executed with sucess. Please check the results.",
-        "ID-0": "It wasn't possible execute the specie identification.",
-        "ANTI-1": "Antifungal resistance detection was executed with sucess. Please check the results.",
-        "ANTI-0": "Is wasn't possible execute the detection of antifungal resistance.",
-    }
+
 
 
 class ConsoleView(IUserInterface):
@@ -45,7 +41,7 @@ class ConsoleView(IUserInterface):
     def __init__(self, controller):
         self.__controller = controller
 
-    def show(self):
+    def display(self):
         "Presents the user with the form needed for running the pipeline."
 
         self.__headline()
@@ -55,7 +51,7 @@ class ConsoleView(IUserInterface):
             print("\nRunning pipeline...")
 
             result = self.__controller.execute(params)
-            print(execution_status(result, Response.STATUS))
+            print(execution_status(result, ResponseExecutionCode.STATUS))
 
             if should_exit:
                 break
@@ -134,7 +130,7 @@ class ConsoleView(IUserInterface):
             Question.ANTIFUNGAL_DETECTION,
             Question.FILEPATH,
             Response.GENERAL,
-            ParameterKeys.MUTATION_KEY,
+            ParameterKeys.DETECTION_KEY,
             convert_path(ParameterKeys.FILEPATH_DETECTION),
             params,
         )
@@ -176,7 +172,7 @@ class ConsoleView(IUserInterface):
 
         params = {
             ParameterKeys.IDENTIFICATION_KEY: False,
-            ParameterKeys.MUTATION_KEY: True,
+            ParameterKeys.DETECTION_KEY: True,
             ParameterKeys.FILEPATH_DETECTION: convert_path(
                 "C:/Users/anapatricia/Documents/test_data/test_calbicans_erg11.txt"
             ),

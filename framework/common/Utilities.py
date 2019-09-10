@@ -34,19 +34,20 @@ def download(url, file_name, path):
 
 def execution_status(code, execution_codes):
     "Verify the status of the code inserted based on execution codes."
+    
     for status, message in execution_codes.items():
         if status == code:
             return message
 
 
 def preffix(string, number):
-    "Returns the first 11 characters of the string."
+    "Returns the first characters of the string."
 
     return string[0 : int(number)]
 
 
 def suffix(string, number):
-    "Returns the last 11 characters of the string."
+    "Returns the last characters of the string."
 
     return string[-int(number) :]
 
@@ -64,7 +65,7 @@ def valid_path(path):
 
 
 def valid_string(list_strings, valid_characters):
-    "Checks if primer has the correct characters."
+    "Checks if string has the correct characters."
 
     return all(
         character in valid_characters for string in list_strings for character in string
