@@ -1,10 +1,11 @@
 import os
 import argparse
 import shutil
-from PyQt5.QtWidgets import QApplication, QMainWindow
+import sys
+# from PyQt5.QtWidgets import QApplication
 from framework.application.RunProcessController import RunProcessController
 from framework.presentation.ConsoleView import ConsoleView
-from framework.presentation.GuiView import GuiView
+# from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
 from framework.common.Utilities import download
 
@@ -37,8 +38,8 @@ class Application:
             if self.__is_mode(params["mode"], "console"):
                 self.run_console()
 
-            elif self.__is_mode(params["mode"], "gui"):
-                self.run_gui()
+            # elif self.__is_mode(params["mode"], "gui"):
+            #     self.run_gui()
 
             else:
                 self.run_batch_mode(params)
@@ -55,17 +56,17 @@ class Application:
 
         controller = RunProcessController(self.__configuration)
         view = ConsoleView(controller)
-        view.display()
-
-    def run_gui(self):
-        "The application calls the gui view."
-
-        controller = RunProcessController(self.__configuration)
-        app = QApplication([])
-        view = GuiView(controller)
         view.show()
-        app.exec_()
 
+    # def run_gui(self):
+    #     "The application calls the gui view."
+
+    #     controller = RunProcessController(self.__configuration)
+    #     app = QApplication(sys.argv)
+    #     view = GuiView(controller)
+    #     view.show()
+    #     sys.exit(app.exec_())
+        
     def run_batch_mode(self, params):
         "Runs the application in batch mode."
 

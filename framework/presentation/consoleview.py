@@ -40,7 +40,7 @@ class ConsoleView(IUserInterface):
     def __init__(self, controller):
         self.__controller = controller
 
-    def display(self):
+    def show(self):
         "Presents the user with the form needed for running the pipeline."
 
         self.__headline()
