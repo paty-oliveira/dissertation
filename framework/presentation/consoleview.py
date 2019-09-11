@@ -62,7 +62,7 @@ class ConsoleView(IUserInterface):
         params[key_1] = response
         if response:
             answer = self.__open_option(question_2, response)
-            params[key_2] = answer
+            params[key_2] = convert_path(answer)
 
         return params
 
@@ -122,7 +122,7 @@ class ConsoleView(IUserInterface):
             Question.FILEPATH,
             Response.GENERAL,
             ParameterKeys.IDENTIFICATION_KEY,
-            convert_path(ParameterKeys.FILEPATH_IDENTIFICATION),
+            ParameterKeys.FILEPATH_IDENTIFICATION,
             params,
         )
         params = self.__boolean_question(
@@ -130,10 +130,10 @@ class ConsoleView(IUserInterface):
             Question.FILEPATH,
             Response.GENERAL,
             ParameterKeys.DETECTION_KEY,
-            convert_path(ParameterKeys.FILEPATH_DETECTION),
+            ParameterKeys.FILEPATH_DETECTION,
             params,
         )
-        if params[ParameterKeys.MUTATION_KEY]:
+        if params[ParameterKeys.DETECTION_KEY]:
             params = self.__choice_question(
                 Question.SPECIE,
                 Response.SPECIE_RESPONSE,

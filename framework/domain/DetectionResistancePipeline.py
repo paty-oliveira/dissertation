@@ -7,6 +7,7 @@ from framework.domain.SequenceWithoutPrimer import SequenceWithoutPrimer
 from framework.domain.Translation import Translation
 from framework.domain.Mutation import Mutation
 from framework.domain.AntifungalResistance import AntifungalResistance
+from framework.common.ParameterKeys import ExecutionCode
 import os
 
 
@@ -39,9 +40,9 @@ class AntifungalResistancePipeline(IPipeline):
         output_file = self.__write(stage_6, stage_7)
 
         if output_file:
-            return True
+            return ExecutionCode.ANTI_SUCCESS
 
-        return False
+        return ExecutionCode.ANTI_FAILED
 
     def __antifungals(self, reference_data, mutations):
         """

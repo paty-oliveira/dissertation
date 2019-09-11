@@ -20,7 +20,7 @@ class FileImported(IStep):
 
         try:
             if valid_path(self.__filepath):
-                file = self.__import_file(self.__filepath, self.__data_folder)
+                self.__import_file(self.__filepath, self.__data_folder)
 
         except FileNotFoundError as error:
             return error

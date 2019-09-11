@@ -32,13 +32,16 @@ def download(url, file_name, path):
         return error
 
 
-def execution_status(code, execution_codes):
+def execution_status(codes, execution_codes):
     "Verify the status of the code inserted based on execution codes."
 
     for status, message in execution_codes.items():
-        if status == code:
-            return message
+        for code in codes:
+            if status == code:
+                return message
 
+def exists_file(path):
+    return os.path.exists(path)
 
 def preffix(string, number):
     "Returns the first characters of the string."
@@ -70,3 +73,4 @@ def valid_string(list_strings, valid_characters):
     return all(
         character in valid_characters for string in list_strings for character in string
     )
+

@@ -1,5 +1,7 @@
 from framework.domain.IStep import IStep
 from framework.domain.IPipeline import IPipeline
+from framework.common.ParameterKeys import ExecutionCode
+from framework.common.Utilities import exists_file
 from abc import ABC, abstractmethod
 import subprocess
 import shutil
@@ -14,7 +16,9 @@ class Taxonomy(IStep):
 
     def __init__(self, configuration, filepath):
         self.__configuration = configuration
-        self.__filepath = filepath
+        self.__folder_identification_process = self.__configuration.get_path_identification_process()
+        self.__phylotype_file = self.__configuration.get_phylotype_table_results()
+        self.__results_folder = filepath
         self.__pipelines = self.__add_pipelines()
 
     def execute(self):
@@ -24,15 +28,20 @@ class Taxonomy(IStep):
             result = pipeline.run()
 
             if result:
-                return True
+                return ExecutionCode.ID_SUCCESS
 
-            return False
+            else:
+                return ExecutionCode.ID_FAILED
 
     def __add_pipelines(self):
         "Adds the identifiers."
 
         list_pipelines = []
-        list_pipelines.append(PipitsPipeline(self.__configuration, self.__filepath))
+        list_pipelines.append(PipitsPipeline(
+            self.__folder_identification_process, 
+            self.__phylotype_file, 
+            self.__results_folder
+        ))
 
         return list_pipelines
 
@@ -83,28 +92,26 @@ class PipitsPipeline(IPipeline):
         "-r",
     ]
 
-    def __init__(self, configuration, filepath):
-        self.__tmp_identification = configuration.get_path_identification_process()
-        self.__phylotype_file = configuration.get_phylotype_table_results()
-        self.__folder_results = filepath
+    def __init__(self, folder_identification, phylotype_file, folder_results):
+        self.__tmp_identification = folder_identification
+        self.__phylotype_file = phylotype_file
+        self.__folder_results = folder_results
 
     def run(self):
         "Execute all commands for identification of specie."
 
-        try:
+        while True:
             self.__generate_read_pairs_list()
             self.__preprocessing_sequence()
             self.__extract_its_regions()
             self.__analyze_taxonomy()
-            result = self.__fungi_specie()
+            self.__fungi_specie()
 
-            if result:
+            if exists_file(self.__phylotype_file):
                 return True
 
-            return False
-
-        except ConnectionError as error:
-            return error
+            else:
+                return False
 
     def __analyze_taxonomy(self):
         """Return the identification of the fungal specie present in the sequencing files,

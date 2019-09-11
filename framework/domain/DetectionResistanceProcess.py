@@ -18,18 +18,18 @@ class DetectionResistanceProcess(IProcess):
         self.__primers = add_elements(
             params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER]
         )
-        self.__pipeline = self.__add_pipeline()
+        self.__pipelines = self.__add_pipeline()
 
     def run(self):
         "Executes all the steps of the process."
 
-        for pipeline in self.__pipeline:
-            resistance = pipeline.run()
+        execution_codes = [
+            pipeline.run()
+            for pipeline in self.__pipelines
+        ]
 
-            if resistance:
-                return ExecutionCode.ANTI_SUCCESS
+        return execution_codes
 
-            return ExecutionCode.ANTI_FAILED
 
     def __add_pipeline(self):
         "Adds the steps of the process."
