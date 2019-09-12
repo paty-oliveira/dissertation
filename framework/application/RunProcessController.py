@@ -13,17 +13,16 @@ class RunProcessController:
     """
 
     def __init__(self, configuration):
-        self.__config = configuration
+        self.__configuration = configuration
 
-    def execute(self, params):
-        "Execute the pipelines according the parameters transmitted."
+    def execute_specie_identification(self, params):
 
-        if params[ParameterKeys.IDENTIFICATION_KEY]:
-            result = IdentificationSpecieProcess(self.__config, params).run()
+        result = IdentificationSpecieProcess(self.__configuration, params).run()
 
-            return result
+        return result
 
-        if params[ParameterKeys.DETECTION_KEY]:
-            result = DetectionResistanceProcess(self.__config, params).run()
+    def execute_antifungal_resistance_detection(self, params):
 
-            return result
+        result = DetectionResistanceProcess(self.__configuration, params).run()
+
+        return result

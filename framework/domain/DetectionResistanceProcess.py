@@ -12,20 +12,31 @@ class DetectionResistanceProcess(IProcess):
 
     def __init__(self, configuration, params):
         self.__configuration = configuration
-        self.__filepath = params[ParameterKeys.FILEPATH_DETECTION]
-        self.__specie = params[ParameterKeys.SPECIE_NAME]
-        self.__gene = params[ParameterKeys.GENE_NAME]
-        self.__primers = add_elements(
-            params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER]
-        )
-        self.__steps = self.__add_steps()
+        self.__params = params
+        self.__execution = params[ParameterKeys.DETECTION_KEY]
+        self.__filepath = ""
+        self.__specie = ""
+        self.__gene = ""
+        self.__primers = ""
 
     def run(self):
         "Executes all the steps of the process."
 
-        execution_codes = [step.execute() for step in self.__steps]
+        if self.__execution:
+            self.__filepath = self.__params[ParameterKeys.FILEPATH_DETECTION]
+            self.__specie = self.__params[ParameterKeys.SPECIE_NAME]
+            self.__gene = self.__params[ParameterKeys.GENE_NAME]
+            self.__primers = add_elements(
+                self.__params[ParameterKeys.FORWARD_PRIMER], 
+                self.__params[ParameterKeys.REVERSE_PRIMER]
+            )
+            steps = self.__add_steps()
+            execution_codes = [step.execute() for step in steps]
 
-        return execution_codes
+            return execution_codes
+        
+        else:
+            pass
 
     def __add_steps(self):
         "Adds the steps of the process."

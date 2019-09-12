@@ -32,8 +32,6 @@ class Application:
         "This is the initialization of the application, throught the modes selected by user."
 
         try:
-            print(self.__configuration.get_initial_message())
-
             args = self.__args_parser.parse_args()
             params = vars(args)
 
@@ -48,8 +46,6 @@ class Application:
 
             self.__removal_folder_content(self.__tmp_folder_path)
 
-            print(self.__configuration.get_final_message())
-
         except Exception as error:
             print("Error during the execution of the application.", error)
 
@@ -57,7 +53,7 @@ class Application:
         "This is the default behavior. The application calls the console view."
 
         controller = RunProcessController(self.__configuration)
-        view = ConsoleView(controller)
+        view = ConsoleView(controller, self.__configuration)
         view.show()
 
     # def run_gui(self):

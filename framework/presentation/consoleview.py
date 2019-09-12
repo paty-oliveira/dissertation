@@ -37,23 +37,32 @@ class ConsoleView(IUserInterface):
         Console View presents the user with the form for running the pipeline
     """
 
-    def __init__(self, controller):
+    def __init__(self, controller, configuration):
         self.__controller = controller
+        self.__configuration = configuration
 
     def show(self):
         "Presents the user with the form needed for running the pipeline."
 
+        print(self.__configuration.get_initial_message())
         self.__headline()
 
         while True:
-            params, should_exit = self.__mock_options()
-            print("\nRunning pipeline...")
+            params, should_exit = self.__user_options()
+            print("\nRunning framework...")
 
-            result = self.__controller.execute(params)
-            print(execution_status(result, ResponseExecutionCode.STATUS))
+            result_identification = self.__controller.execute_specie_identification(params)
+            if result_identification:
+                print(execution_status(result_identification, ResponseExecutionCode.STATUS))
 
+            result_detection = self.__controller.execute_antifungal_resistance_detection(params)    
+            if result_detection:
+                print(execution_status(result_detection, ResponseExecutionCode.STATUS))
+            
             if should_exit:
                 break
+        
+        print(self.__configuration.get_final_message())
 
     def __boolean_question(
         self, question_1, question_2, response, key_1, key_2, params
@@ -170,7 +179,10 @@ class ConsoleView(IUserInterface):
         "Represents a dictionary with parameters for test mode."
 
         params = {
-            ParameterKeys.IDENTIFICATION_KEY: False,
+            ParameterKeys.IDENTIFICATION_KEY: True,
+            ParameterKeys.FILEPATH_IDENTIFICATION: convert_path(
+                "C:/Users/anapatricia/Documents/test/PIPITS-TEST/pipits_test/rawdata"
+            ),
             ParameterKeys.DETECTION_KEY: True,
             ParameterKeys.FILEPATH_DETECTION: convert_path(
                 "C:/Users/anapatricia/Documents/test_data/test_calbicans_erg11.txt"
