@@ -1,7 +1,7 @@
-from .IUserInterface import IUserInterface
-from framework.common.Utilities import execution_status
-from framework.common.ParameterKeys import ParameterKeys
-from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
+# from .IUserInterface import IUserInterface
+# from framework.common.Utilities import execution_status
+# from framework.common.ParameterKeys import ParameterKeys
+# from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
 
 # from PyQt5 import QtCore, QtWidgets
 # from PyQt5.QtWidgets import QMainWindow, QFileDialog
@@ -120,13 +120,22 @@ from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
 #     def display(self):
 #         while True:
 #             params = self.__user_options()
-#             result_identification, result_resistance = self.__controller.execute(params)
-#             self.__ui.status_result_box.append(
-#                 execution_status(result_identification, ResponseExecutionCode.STATUS)
-#             )
-#             self.__ui.status_result_box.append(
-#                 execution_status(result_resistance, ResponseExecutionCode.STATUS)
-#             )
+#             self.show_specie_identification(params)
+#             self.show_antifungal_resistance_detection(params)
+
+
+#     def show_antifungal_resistance_detection(self, params):
+#         result = self.__controller.execute_specie_identification(params)
+#         if result:
+#             status = execution_status(result, ResponseExecutionCode.STATUS)
+#             self.__ui.status_result_box.append(status)
+
+#     def show_specie_identification(self, params):
+
+#         result = self.__controller.execute_antifungal_resistance_detection(params)
+#         if result:
+#             status = execution_status(result, ResponseExecutionCode.STATUS)
+#             self.__ui.status_result_box.append(status)
 
 #     def __close_app(self):
 #         QCoreApplication.instance().quit()

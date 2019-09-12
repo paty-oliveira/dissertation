@@ -6,9 +6,9 @@ from framework.domain.DetectionResistanceProcess import DetectionResistanceProce
 class RunProcessController:
 
     """
-        Logic of pipelines controllers.
+        Logic of processes controllers.
         Receive configurations from the app settings.
-        Execute the pipelines according parameters introduced in console or GUI mode.
+        Execute the process according parameters introduced in console or GUI mode.
 
     """
 

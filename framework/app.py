@@ -54,7 +54,7 @@ class Application:
 
         controller = RunProcessController(self.__configuration)
         view = ConsoleView(controller, self.__configuration)
-        view.show()
+        view.display()
 
     # def run_gui(self):
     #     "The application calls the gui view."

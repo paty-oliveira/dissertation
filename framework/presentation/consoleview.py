@@ -41,36 +41,46 @@ class ConsoleView(IUserInterface):
         self.__controller = controller
         self.__configuration = configuration
 
-    def show(self):
+    def display(self):
         "Presents the user with the form needed for running the pipeline."
 
         print(self.__configuration.get_initial_message())
         self.__headline()
 
         while True:
-            params, should_exit = self.__user_options()
+            params, should_exit = self.__mock_options()
             print("\nRunning framework...")
-
-            result_identification = self.__controller.execute_specie_identification(
-                params
-            )
-            if result_identification:
-                print(
-                    execution_status(
-                        result_identification, ResponseExecutionCode.STATUS
-                    )
-                )
-
-            result_detection = self.__controller.execute_antifungal_resistance_detection(
-                params
-            )
-            if result_detection:
-                print(execution_status(result_detection, ResponseExecutionCode.STATUS))
+    
+            self.show_specie_identification(params)
+            self.show_antifungal_resistance_detection(params)
 
             if should_exit:
                 break
 
         print(self.__configuration.get_final_message())
+
+    def show_antifungal_resistance_detection(self, params):
+
+        result = self.__controller.execute_antifungal_resistance_detection(
+            params
+        )
+        if result:
+            print(execution_status(
+                result, ResponseExecutionCode.STATUS
+                )
+            )    
+
+    def show_specie_identification(self, params):
+
+        result = self.__controller.execute_specie_identification(
+            params
+        )
+        if result:
+            print(
+                execution_status(
+                    result, ResponseExecutionCode.STATUS
+                )
+            )
 
     def __boolean_question(
         self, question_1, question_2, response, key_1, key_2, params
