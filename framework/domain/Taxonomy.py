@@ -36,10 +36,7 @@ class Taxonomy(IStep):
 
         list_pipelines = []
         list_pipelines.append(
-            PipitsPipeline(
-                self.__configuration,
-                self.__results_folder,
-            )
+            PipitsPipeline(self.__configuration, self.__results_folder)
         )
 
         return list_pipelines
@@ -119,7 +116,8 @@ class PipitsPipeline(IPipeline):
          throught the subprocess of PIPITS."""
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_TAXONOMIC_ID, cwd=self.__folder_identification_process
+            PipitsPipeline.CMD_ARGS_TAXONOMIC_ID,
+            cwd=self.__folder_identification_process,
         )
 
         if self.__is_success(process_to_execute):
@@ -129,7 +127,8 @@ class PipitsPipeline(IPipeline):
         "Extract all ITS regions throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_ITS_EXTRACTION, cwd=self.__folder_identification_process
+            PipitsPipeline.CMD_ARGS_ITS_EXTRACTION,
+            cwd=self.__folder_identification_process,
         )
 
         if self.__is_success(process_to_execute):
@@ -139,7 +138,8 @@ class PipitsPipeline(IPipeline):
         "Create read pair list file throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_READPAIRLIST, cwd=self.__folder_identification_process
+            PipitsPipeline.CMD_ARGS_READPAIRLIST,
+            cwd=self.__folder_identification_process,
         )
 
         if self.__is_success(process_to_execute):
@@ -161,7 +161,8 @@ class PipitsPipeline(IPipeline):
         "Preprocess the sequencing files throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_SEQUENCEPREP, cwd=self.__folder_identification_process
+            PipitsPipeline.CMD_ARGS_SEQUENCEPREP,
+            cwd=self.__folder_identification_process,
         )
 
         if self.__is_success(process_to_execute):

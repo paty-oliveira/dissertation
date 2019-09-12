@@ -26,7 +26,7 @@ class IdentificationSpecieProcess(IProcess):
             execution_code = [step.execute() for step in steps]
 
             return execution_code
-            
+
         else:
             pass
 

@@ -51,17 +51,25 @@ class ConsoleView(IUserInterface):
             params, should_exit = self.__user_options()
             print("\nRunning framework...")
 
-            result_identification = self.__controller.execute_specie_identification(params)
+            result_identification = self.__controller.execute_specie_identification(
+                params
+            )
             if result_identification:
-                print(execution_status(result_identification, ResponseExecutionCode.STATUS))
+                print(
+                    execution_status(
+                        result_identification, ResponseExecutionCode.STATUS
+                    )
+                )
 
-            result_detection = self.__controller.execute_antifungal_resistance_detection(params)    
+            result_detection = self.__controller.execute_antifungal_resistance_detection(
+                params
+            )
             if result_detection:
                 print(execution_status(result_detection, ResponseExecutionCode.STATUS))
-            
+
             if should_exit:
                 break
-        
+
         print(self.__configuration.get_final_message())
 
     def __boolean_question(

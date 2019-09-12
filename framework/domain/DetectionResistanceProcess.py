@@ -27,14 +27,14 @@ class DetectionResistanceProcess(IProcess):
             self.__specie = self.__params[ParameterKeys.SPECIE_NAME]
             self.__gene = self.__params[ParameterKeys.GENE_NAME]
             self.__primers = add_elements(
-                self.__params[ParameterKeys.FORWARD_PRIMER], 
-                self.__params[ParameterKeys.REVERSE_PRIMER]
+                self.__params[ParameterKeys.FORWARD_PRIMER],
+                self.__params[ParameterKeys.REVERSE_PRIMER],
             )
             steps = self.__add_steps()
             execution_codes = [step.execute() for step in steps]
 
             return execution_codes
-        
+
         else:
             pass
 
