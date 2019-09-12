@@ -11,18 +11,16 @@ import pandas as pd
 class Taxonomy(IStep):
 
     """
-        It allows the identification of species present in the dataset.
+        It allows the integration of pipelines to identify the species.
     """
 
     def __init__(self, configuration, filepath):
         self.__configuration = configuration
-        self.__folder_identification_process = self.__configuration.get_path_identification_process()
-        self.__phylotype_file = self.__configuration.get_phylotype_table_results()
         self.__results_folder = filepath
         self.__pipelines = self.__add_pipelines()
 
     def execute(self):
-        "Executes the identification pipeline, according the list of identifiers."
+        "Executes the pipeline, according to the list of pipelines available."
 
         for pipeline in self.__pipelines:
             result = pipeline.run()
@@ -34,14 +32,15 @@ class Taxonomy(IStep):
                 return ExecutionCode.ID_FAILED
 
     def __add_pipelines(self):
-        "Adds the identifiers."
+        "Adds pipelines."
 
         list_pipelines = []
-        list_pipelines.append(PipitsPipeline(
-            self.__folder_identification_process, 
-            self.__phylotype_file, 
-            self.__results_folder
-        ))
+        list_pipelines.append(
+            PipitsPipeline(
+                self.__configuration,
+                self.__results_folder,
+            )
+        )
 
         return list_pipelines
 
@@ -92,10 +91,12 @@ class PipitsPipeline(IPipeline):
         "-r",
     ]
 
-    def __init__(self, folder_identification, phylotype_file, folder_results):
-        self.__tmp_identification = folder_identification
-        self.__phylotype_file = phylotype_file
-        self.__folder_results = folder_results
+    def __init__(self, configuration, results_folder):
+        self.__folder_identification_process = (
+            configuration.get_path_identification_process()
+        )
+        self.__phylotype_file = configuration.get_phylotype_table_results()
+        self.__results_folder = results_folder
 
     def run(self):
         "Execute all commands for identification of specie."
@@ -118,7 +119,7 @@ class PipitsPipeline(IPipeline):
          throught the subprocess of PIPITS."""
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_TAXONOMIC_ID, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_TAXONOMIC_ID, cwd=self.__folder_identification_process
         )
 
         if self.__is_success(process_to_execute):
@@ -128,7 +129,7 @@ class PipitsPipeline(IPipeline):
         "Extract all ITS regions throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_ITS_EXTRACTION, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_ITS_EXTRACTION, cwd=self.__folder_identification_process
         )
 
         if self.__is_success(process_to_execute):
@@ -138,7 +139,7 @@ class PipitsPipeline(IPipeline):
         "Create read pair list file throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_READPAIRLIST, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_READPAIRLIST, cwd=self.__folder_identification_process
         )
 
         if self.__is_success(process_to_execute):
@@ -147,7 +148,7 @@ class PipitsPipeline(IPipeline):
     def __fungi_specie(self):
         "Obtains the specie identification from PipitsPipeline process"
 
-        phylotype_results = shutil.copy(self.__phylotype_file, self.__folder_results)
+        phylotype_results = shutil.copy(self.__phylotype_file, self.__results_folder)
 
         return phylotype_results
 
@@ -160,7 +161,7 @@ class PipitsPipeline(IPipeline):
         "Preprocess the sequencing files throught the subprocess of PipitsPipeline."
 
         process_to_execute = subprocess.call(
-            PipitsPipeline.CMD_ARGS_SEQUENCEPREP, cwd=self.__tmp_identification
+            PipitsPipeline.CMD_ARGS_SEQUENCEPREP, cwd=self.__folder_identification_process
         )
 
         if self.__is_success(process_to_execute):

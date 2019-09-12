@@ -19,10 +19,7 @@ class IdentificationSpecieProcess(IProcess):
     def run(self):
         "Executes all the steps of the process."
 
-        execution_code = [
-            step.execute()
-            for step in self.__steps
-        ]
+        execution_code = [step.execute() for step in self.__steps]
 
         return execution_code
 

@@ -11,11 +11,55 @@ from framework.common.ParameterKeys import ExecutionCode
 import os
 
 
+class Resistance(IStep):
+
+    """
+        It allows the integration of pipelines to detect the antifungal
+        resistance.
+    """
+
+    def __init__(self, configuration, filepath, specie, gene, primers):
+        self.__configuration = configuration
+        self.__filepath = filepath
+        self.__specie = specie
+        self.__gene = gene
+        self.__primers = primers
+        self.__pipelines = self.__add_pipeline()
+
+    def execute(self):
+        "Executes the pipeline, according to the list of pipelines available."
+
+        for pipeline in self.__pipelines:
+            result = pipeline.run()
+
+            if result:
+                return ExecutionCode.ANTI_SUCCESS
+
+            else:
+                return ExecutionCode.ANTI_FAILED
+
+    def __add_pipeline(self):
+        "Adds pipelines."
+
+        pipelines = []
+        pipelines.append(
+            AntifungalResistancePipeline(
+                self.__configuration,
+                self.__filepath,
+                self.__specie,
+                self.__gene,
+                self.__primers,
+            )
+        )
+
+        return pipelines
+
+
 class AntifungalResistancePipeline(IPipeline):
 
     """
         Example of pipeline for the detection of the antifungal
-        resistance present in the file imported. 
+        resistance present in the file inserted. 
     """
 
     def __init__(self, configuration, filepath, specie, gene, primers):
@@ -40,9 +84,9 @@ class AntifungalResistancePipeline(IPipeline):
         output_file = self.__write(stage_6, stage_7)
 
         if output_file:
-            return ExecutionCode.ANTI_SUCCESS
+            return True
 
-        return ExecutionCode.ANTI_FAILED
+        return False
 
     def __antifungals(self, reference_data, mutations):
         """

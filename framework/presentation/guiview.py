@@ -2,6 +2,7 @@ from .IUserInterface import IUserInterface
 from framework.common.Utilities import execution_status
 from framework.common.ParameterKeys import ParameterKeys
 from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
+
 # from PyQt5 import QtCore, QtWidgets
 # from PyQt5.QtWidgets import QMainWindow, QFileDialog
 # from PyQt5.QtCore import QCoreApplication
@@ -99,7 +100,6 @@ from framework.presentation.ResponseExecutionCode import ResponseExecutionCode
 #         self.folder_identification.setText(_translate("MainWindow", "..."))
 #         self.folder_detection.setText(_translate("MainWindow", "..."))
 #         self.status_label.setText(_translate("MainWindow", "Results status"))
-
 
 
 # class GuiView(QMainWindow):

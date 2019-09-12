@@ -1,6 +1,6 @@
 from framework.domain.IProcess import IProcess
 from framework.common.ParameterKeys import ParameterKeys, ExecutionCode
-from framework.domain.DetectionResistancePipeline import AntifungalResistancePipeline
+from framework.domain.Resistance import Resistance
 from framework.common.Utilities import add_elements
 
 
@@ -18,25 +18,21 @@ class DetectionResistanceProcess(IProcess):
         self.__primers = add_elements(
             params[ParameterKeys.FORWARD_PRIMER], params[ParameterKeys.REVERSE_PRIMER]
         )
-        self.__pipelines = self.__add_pipeline()
+        self.__steps = self.__add_steps()
 
     def run(self):
         "Executes all the steps of the process."
 
-        execution_codes = [
-            pipeline.run()
-            for pipeline in self.__pipelines
-        ]
+        execution_codes = [step.execute() for step in self.__steps]
 
         return execution_codes
 
-
-    def __add_pipeline(self):
+    def __add_steps(self):
         "Adds the steps of the process."
 
         steps = []
         steps.append(
-            AntifungalResistancePipeline(
+            Resistance(
                 self.__configuration,
                 self.__filepath,
                 self.__specie,

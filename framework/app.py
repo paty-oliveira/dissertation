@@ -2,9 +2,11 @@ import os
 import argparse
 import shutil
 import sys
+
 # from PyQt5.QtWidgets import QApplication
 from framework.application.RunProcessController import RunProcessController
 from framework.presentation.ConsoleView import ConsoleView
+
 # from framework.presentation.GuiView import GuiView
 from framework.common.ParameterKeys import ParameterKeys
 from framework.common.Utilities import download
@@ -66,7 +68,7 @@ class Application:
     #     view = GuiView(controller)
     #     view.show()
     #     sys.exit(app.exec_())
-        
+
     def run_batch_mode(self, params):
         "Runs the application in batch mode."
 
