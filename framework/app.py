@@ -31,23 +31,23 @@ class Application:
     def start(self):
         "This is the initialization of the application, throught the modes selected by user."
 
-        try:
-            args = self.__args_parser.parse_args()
-            params = vars(args)
+        # try:
+        args = self.__args_parser.parse_args()
+        params = vars(args)
 
-            if self.__is_mode(params["mode"], "console"):
-                self.run_console()
+        if self.__is_mode(params["mode"], "console"):
+            self.run_console()
 
-            # elif self.__is_mode(params["mode"], "gui"):
-            #     self.run_gui()
+        # elif self.__is_mode(params["mode"], "gui"):
+        #     self.run_gui()
 
-            else:
-                self.run_batch_mode(params)
+        else:
+            self.run_batch_mode(params)
 
-            self.__removal_folder_content(self.__tmp_folder_path)
+        self.__removal_folder_content(self.__tmp_folder_path)
 
-        except Exception as error:
-            print("Error during the execution of the application.", error)
+        # except Exception as error:
+        #     print("Error during the execution of the application.", error)
 
     def run_console(self):
         "This is the default behavior. The application calls the console view."

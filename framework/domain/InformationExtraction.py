@@ -29,9 +29,10 @@ class InformationExtraction(IStep):
         "Obtains the reference information about drugs and mutations from Mardy database."
 
         dataframe = self.__file_reader.read(self.__mardy_file, header=1)
-        dataframe.set_index("Organism", inplace=True)
 
-        subdata_specie = dataframe.loc[self.__specie]
+        subdata_specie = dataframe.loc[
+            dataframe["Organism"] == self.__specie, ["Gene name", "AA mutation", "Drug"]
+        ]
 
         subdata_antifungal = subdata_specie.loc[
             subdata_specie["Gene name"] == self.__gene, ["AA mutation", "Drug"]

@@ -197,15 +197,12 @@ class ConsoleView(IUserInterface):
         "Represents a dictionary with parameters for test mode."
 
         params = {
-            ParameterKeys.IDENTIFICATION_KEY: True,
-            ParameterKeys.FILEPATH_IDENTIFICATION: convert_path(
-                "C:/Users/anapatricia/Documents/test/PIPITS-TEST/pipits_test/rawdata"
-            ),
+            ParameterKeys.IDENTIFICATION_KEY: False,
             ParameterKeys.DETECTION_KEY: True,
             ParameterKeys.FILEPATH_DETECTION: convert_path(
-                "C:/Users/anapatricia/Documents/test_data/test_calbicans_erg11.txt"
+                "C:/Users/anapatricia/Documents/testing_antifungal_resistance/test_ctropicalis_erg11.txt"
             ),
-            ParameterKeys.SPECIE_NAME: "Candida albicans",
+            ParameterKeys.SPECIE_NAME: "Candida tropicalis",
             ParameterKeys.GENE_NAME: "ERG11",
             ParameterKeys.FORWARD_PRIMER: "AAAAAT",
             ParameterKeys.REVERSE_PRIMER: "TTTTTA",
