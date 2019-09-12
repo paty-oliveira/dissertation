@@ -150,18 +150,23 @@ class AntifungalResistancePipeline(IPipeline):
         "Writes the results of the detection of resistance on the csv file."
 
         output_folder = os.path.dirname(self.__input_file)
+        filename = os.path.basename(self.__input_file).split(".")[0] + "__results.csv"
 
-        with open(
-            os.path.join(output_folder, "antifungal_detection_results.csv"), "w"
-        ) as output_file:
+        with open(os.path.join(output_folder, filename), "w") as output_file:
 
             header = "Reference Position Substitutions\n"
-            mutations_results = "\n".join(
-                "{}".format(mutation) for mutation in mutations
-            )
             output_file.write(header)
-            output_file.write(mutations_results)
-            output_file.write("\n")
+
+            if mutations:
+                mutations_results = "\n".join(
+                    "{}".format(mutation) for mutation in mutations
+                )
+                output_file.write(mutations_results)
+                output_file.write("\n")
+
+            else:
+                output_file.write("No mutations identified.\n")
+
             output_file.write("\nAntifungal Resistance \n")
 
             if antifungals:

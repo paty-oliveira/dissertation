@@ -50,7 +50,7 @@ class ConsoleView(IUserInterface):
         while True:
             params, should_exit = self.__mock_options()
             print("\nRunning framework...")
-    
+
             self.show_specie_identification(params)
             self.show_antifungal_resistance_detection(params)
 
@@ -61,26 +61,15 @@ class ConsoleView(IUserInterface):
 
     def show_antifungal_resistance_detection(self, params):
 
-        result = self.__controller.execute_antifungal_resistance_detection(
-            params
-        )
+        result = self.__controller.execute_antifungal_resistance_detection(params)
         if result:
-            print(execution_status(
-                result, ResponseExecutionCode.STATUS
-                )
-            )    
+            print(execution_status(result, ResponseExecutionCode.STATUS))
 
     def show_specie_identification(self, params):
 
-        result = self.__controller.execute_specie_identification(
-            params
-        )
+        result = self.__controller.execute_specie_identification(params)
         if result:
-            print(
-                execution_status(
-                    result, ResponseExecutionCode.STATUS
-                )
-            )
+            print(execution_status(result, ResponseExecutionCode.STATUS))
 
     def __boolean_question(
         self, question_1, question_2, response, key_1, key_2, params
