@@ -16,7 +16,7 @@ class Question:
 
 
 class Menu:
-    GENES = {"1": "ERG11", "2": "FKS1", "3": "FKS2"}
+    GENES = {"1": "ERG11", "2": "FKS1"}
     SPECIES = {
         "1": "Candida albicans",
         "2": "Candida glabrata",
@@ -96,7 +96,7 @@ class ConsoleView(IUserInterface):
         "Prints the headline of the framework."
 
         print("##################################################")
-        print("#### Identification and Detection - Framework ####")
+        print("### Identification and Detection - Candida sp  ###")
         print("##################################################")
 
     def __open_question(self, question, response, key, params):
@@ -186,10 +186,13 @@ class ConsoleView(IUserInterface):
         "Represents a dictionary with parameters for test mode."
 
         params = {
-            ParameterKeys.IDENTIFICATION_KEY: False,
+            ParameterKeys.IDENTIFICATION_KEY: True,
+            ParameterKeys.FILEPATH_IDENTIFICATION: convert_path(
+                "C:/Users/anapatricia/Documents/test_framework/data_from_pipits_test"
+            ),
             ParameterKeys.DETECTION_KEY: True,
             ParameterKeys.FILEPATH_DETECTION: convert_path(
-                "C:/Users/anapatricia/Documents/testing_antifungal_resistance/test_ctropicalis_erg11.txt"
+                "C:/Users/anapatricia/Documents/test_framework/gene_sequences/test_ctropicalis_erg11.txt"
             ),
             ParameterKeys.SPECIE_NAME: "Candida tropicalis",
             ParameterKeys.GENE_NAME: "ERG11",
